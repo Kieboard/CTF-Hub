@@ -1,29 +1,38 @@
 # 🧠 CTF Hub
 
-Central repository for my offensive security learning:
-CTFs, labs, Active Directory environments, and personal notes.
+A structured knowledge base documenting my offensive security journey.
+
+This repository contains:
+- CTF and lab writeups
+- Active Directory attack paths
+- Enumeration and privilege escalation notes
+- Reusable cheatsheets and templates
+
+All writeups are authored in Notion and published here for version control and sharing.
 
 ---
 
 ## 📂 Platforms
 
 ### 🔴 TryHackMe
-- Easy / Medium / Hard room writeups
-- Focused on fundamentals & methodology
+Hands-on labs focused on fundamentals, methodology, and attack flow.
+Organized by difficulty for consistent progression.
 
 ### 🟢 Hack The Box
-- Machines (Easy → Hard)
-- Challenge-based labs
+Machine and challenge writeups covering real-world attack scenarios.
 
 ### 🧬 Active Directory
-- Forests, chains, privilege escalation paths
-- Separate notes & diagrams
+Dedicated environments focused on:
+- Enumeration
+- Lateral movement
+- Privilege escalation
+- Domain dominance
 
 ---
 
-## 🧰 Extras
-- Cheatsheets
-- Enumeration notes
-- Privilege escalation references
+## 🧰 Supporting Material
+- Cheatsheets for enumeration and privilege escalation
+- Reusable writeup templates
+- Personal notes and diagrams
 
-> Writeups are authored in Notion and published here for version control and sharing.
+> This repository is actively maintained and updated as skills progress.

@@ -1,0 +1,31 @@
+name: Sync Writeups
+
+on:
+  push:
+    paths:
+      - "**/*.md"
+
+jobs:
+  format-and-commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Ensure line endings & formatting
+        run: |
+          find . -name "*.md" -exec sed -i 's/[ \t]*$//' {} \;
+          echo "Markdown formatting checked."
+
+      - name: Commit changes if needed
+        run: |
+          if [[ -n "$(git status --porcelain)" ]]; then
+            git config user.name "github-actions"
+            git config user.email "github-actions@github.com"
+            git add .
+            git commit -m "chore: format markdown writeups"
+            git push
+          else
+            echo "No changes to commit."
+          fi
