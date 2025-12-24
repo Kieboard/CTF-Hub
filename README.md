@@ -28,7 +28,7 @@ CTFs, labs, Active Directory environments, and personal notes.
 
 ---
 
-🧠 Workflow
+## 🧠 Workflow
 - Writeups authored in Notion
 - Exported as Markdown
 - Versioned and published on GitHub
