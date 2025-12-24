@@ -26,4 +26,9 @@ CTFs, labs, Active Directory environments, and personal notes.
 - Enumeration notes
 - Privilege escalation references
 
-> Writeups are authored in Notion and published here for version control and sharing.
+---
+
+🧠 Workflow
+- Writeups authored in Notion
+- Exported as Markdown
+- Versioned and published on GitHub
