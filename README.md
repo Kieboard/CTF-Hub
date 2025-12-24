@@ -34,5 +34,10 @@ Dedicated environments focused on:
 - Cheatsheets for enumeration and privilege escalation
 - Reusable writeup templates
 - Personal notes and diagrams
+  
+---
 
-> This repository is actively maintained and updated as skills progress.
+## 🧠 Workflow
+- Writeups authored in Notion
+- Exported as Markdown
+- Versioned and published on GitHub
