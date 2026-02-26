@@ -487,22 +487,63 @@ def markdown_to_notion_blocks(markdown: str) -> list:
     return blocks
 
 
-def write_back_to_notion(page_id: str, formatted_content: str):
-    """Replace page content with the formatted writeup."""
+def write_back_to_notion(page_id: str, formatted_content: str, original_notes: str):
+    """
+    Write formatted writeup to Notion while preserving original notes.
+    Structure:
+      🤖 Formatted writeup (Claude's version)
+      ─── divider ───
+      📝 Original Notes (Kieran's raw notes, untouched)
+    """
     print("   → Clearing old Notion content...")
     clear_page_content(page_id)
     time.sleep(1)
 
     print("   → Writing formatted writeup to Notion...")
-    blocks = markdown_to_notion_blocks(formatted_content)
+
+    # Build formatted writeup blocks
+    formatted_blocks = markdown_to_notion_blocks(formatted_content)
+
+    # Build the "original notes" section header + content
+    separator_blocks = [
+        {"object": "block", "type": "divider", "divider": {}},
+        {
+            "object": "block",
+            "type": "callout",
+            "callout": {
+                "rich_text": [{"type": "text", "text": {"content": "📝 Original Notes — Your raw notes as written"}}],
+                "icon":      {"type": "emoji", "emoji": "📝"},
+                "color":     "yellow_background"
+            }
+        },
+        {"object": "block", "type": "divider", "divider": {}},
+    ]
+
+    # Convert original notes back to basic paragraph blocks
+    original_blocks = []
+    for line in original_notes.split("\n"):
+        if not line.strip():
+            continue
+        # Preserve code blocks from original
+        if line.startswith("```"):
+            continue  # skip fences, handled below
+        original_blocks.append({
+            "object": "block",
+            "type": "paragraph",
+            "paragraph": {
+                "rich_text": [{"type": "text", "text": {"content": line[:2000]}}]
+            }
+        })
+
+    all_blocks = formatted_blocks + separator_blocks + original_blocks
 
     # Notion API limit: 100 blocks per request
-    for i in range(0, len(blocks), 100):
-        chunk = blocks[i:i + 100]
+    for i in range(0, len(all_blocks), 100):
+        chunk = all_blocks[i:i + 100]
         notion.blocks.children.append(block_id=page_id, children=chunk)
         time.sleep(0.5)
 
-    print("   ✅ Notion page updated")
+    print("   ✅ Notion page updated (formatted writeup + original notes preserved)")
 
 
 def mark_as_published(page_id: str):
@@ -593,7 +634,7 @@ def process_page(page: dict):
     print(f"   ✅ Writeup saved: {output_file}")
 
     # 7. Write formatted content back to Notion
-    write_back_to_notion(meta["page_id"], formatted)
+    write_back_to_notion(meta["page_id"], formatted, raw_notes)
 
     # 8. Commit + push to GitHub
     git_commit_push(meta["room_name"], meta["platform"])
