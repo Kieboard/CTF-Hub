@@ -1,0 +1,54 @@
+name: CTF Auto Publisher
+
+on:
+  schedule:
+    # Runs every 30 minutes
+    - cron: '*/30 * * * *'
+
+  # Also lets you trigger it manually from GitHub Actions tab
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout CTF-Hub
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install anthropic notion-client requests
+
+      - name: Configure Git
+        run: |
+          git config user.name "CTF Publisher Bot"
+          git config user.email "github-actions@github.com"
+
+      - name: Run CTF Auto Publisher
+        env:
+          NOTION_TOKEN:        ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID:  ${{ secrets.NOTION_DATABASE_ID }}
+          ANTHROPIC_API_KEY:   ${{ secrets.ANTHROPIC_API_KEY }}
+          CTFHUB_REPO_PATH:    ${{ github.workspace }}
+        run: python scripts/ctf_auto.py
+
+      - name: Push any new writeups
+        run: |
+          if [[ -n "$(git status --porcelain)" ]]; then
+            git add .
+            git commit -m "chore: auto-publish CTF writeups"
+            git push
+          else
+            echo "No new writeups to push"
+          fi
