@@ -19,7 +19,6 @@ import re
 import sys
 import time
 import shutil
-import hashlib
 import requests
 import subprocess
 from pathlib import Path
@@ -35,8 +34,8 @@ NOTION_DATABASE_ID = os.environ["NOTION_DATABASE_ID"]
 ANTHROPIC_API_KEY  = os.environ["ANTHROPIC_API_KEY"]
 CTFHUB_REPO_PATH   = os.environ.get("CTFHUB_REPO_PATH", ".")
 
-notion  = Client(auth=NOTION_TOKEN)
-claude  = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
+notion = Client(auth=NOTION_TOKEN)
+claude = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
 
 # ─────────────────────────────────────────────
 # PLATFORM / DIFFICULTY MAPPINGS
@@ -87,45 +86,58 @@ def get_page_properties(page: dict) -> dict:
     """Extract all useful properties from a Notion page."""
     props = page.get("properties", {})
     meta = {
-        "page_id":   page["id"],
-        "room_name": "",
-        "platform":  "",
+        "page_id":    page["id"],
+        "room_name":  "",
+        "platform":   "",
         "difficulty": "",
-        "url":       "",
-        "tags":      [],
-        "date":      datetime.now().strftime("%B %d, %Y"),
+        "url":        "",
+        "tags":       [],
+        "date":       datetime.now().strftime("%B %d, %Y"),
     }
 
-    # Room name (title property)
-    title_prop = props.get("Name") or props.get("Title") or props.get("Room") or {}
-    title_list = title_prop.get("title", [])
-    if title_list:
-        meta["room_name"] = title_list[0].get("plain_text", "Unknown")
+    # Room name (title property — try common names)
+    for title_key in ("Name", "Title", "Room", "Task"):
+        title_prop = props.get(title_key, {})
+        title_list = title_prop.get("title", [])
+        if title_list:
+            meta["room_name"] = title_list[0].get("plain_text", "Unknown")
+            break
 
     # Platform
     platform_prop = props.get("Platform", {})
-    if platform_prop.get("type") == "select" and platform_prop.get("select"):
+    ptype = platform_prop.get("type", "")
+    if ptype == "select" and platform_prop.get("select"):
         meta["platform"] = platform_prop["select"]["name"]
-    elif platform_prop.get("type") == "multi_select":
+    elif ptype == "multi_select":
         opts = platform_prop.get("multi_select", [])
         if opts:
             meta["platform"] = opts[0]["name"]
+    elif ptype == "rich_text":
+        texts = platform_prop.get("rich_text", [])
+        if texts:
+            meta["platform"] = texts[0].get("plain_text", "")
 
     # Difficulty
     diff_prop = props.get("Difficulty", {})
-    if diff_prop.get("type") == "select" and diff_prop.get("select"):
+    dtype = diff_prop.get("type", "")
+    if dtype == "select" and diff_prop.get("select"):
         meta["difficulty"] = diff_prop["select"]["name"]
+    elif dtype == "rich_text":
+        texts = diff_prop.get("rich_text", [])
+        if texts:
+            meta["difficulty"] = texts[0].get("plain_text", "")
 
     # URL
     url_prop = props.get("URL", {})
-    if url_prop.get("type") == "url":
+    utype = url_prop.get("type", "")
+    if utype == "url":
         meta["url"] = url_prop.get("url") or ""
-    elif url_prop.get("type") == "rich_text":
+    elif utype == "rich_text":
         texts = url_prop.get("rich_text", [])
         if texts:
             meta["url"] = texts[0].get("plain_text", "")
 
-    # Tags (multi-select)
+    # Tags
     tags_prop = props.get("Tags", {})
     if tags_prop.get("type") == "multi_select":
         meta["tags"] = [t["name"] for t in tags_prop.get("multi_select", [])]
@@ -133,7 +145,7 @@ def get_page_properties(page: dict) -> dict:
     return meta
 
 
-def extract_blocks_as_text(page_id: str) -> tuple[str, list]:
+def extract_blocks_as_text(page_id: str):
     """
     Read all blocks from a Notion page.
     Returns (plain_text, image_urls_list)
@@ -143,12 +155,16 @@ def extract_blocks_as_text(page_id: str) -> tuple[str, list]:
     cursor      = None
 
     while True:
-        kwargs = {"block_id": page_id, "page_size": 100}
         if cursor:
-            kwargs["start_cursor"] = cursor
+            response = notion.blocks.children.list(
+                block_id=page_id, page_size=100, start_cursor=cursor
+            )
+        else:
+            response = notion.blocks.children.list(
+                block_id=page_id, page_size=100
+            )
 
-        response = notion.blocks.children.list(**kwargs)
-        blocks   = response.get("results", [])
+        blocks = response.get("results", [])
 
         for block in blocks:
             btype = block.get("type", "")
@@ -230,14 +246,11 @@ def fetch_room_description(url: str) -> str:
             return ""
 
         text = resp.text
-
-        # Extract meaningful text — strip HTML tags
+        # Strip HTML
         clean = re.sub(r'<script[^>]*>.*?</script>', '', text, flags=re.DOTALL)
-        clean = re.sub(r'<style[^>]*>.*?</style>', '', clean, flags=re.DOTALL)
+        clean = re.sub(r'<style[^>]*>.*?</style>',  '', clean, flags=re.DOTALL)
         clean = re.sub(r'<[^>]+>', ' ', clean)
         clean = re.sub(r'\s+', ' ', clean).strip()
-
-        # Return first 3000 chars — enough for room description
         return clean[:3000]
 
     except Exception as e:
@@ -293,11 +306,14 @@ OUTPUT: Pure markdown only. No preamble. No explanation. Start directly with the
 def format_with_claude(raw_notes: str, room_info: str, meta: dict, saved_screenshots: list) -> str:
     """Send notes + room info to Claude, get back formatted writeup."""
 
-    # Build metadata block
-    url_line = f'    <b>URL:</b> <a href="{meta["url"]}">{meta["room_name"]}</a><br>\n' if meta["url"] else ""
+    url_line = (
+        f'    <b>URL:</b> <a href="{meta["url"]}">{meta["room_name"]}</a><br>\n'
+        if meta["url"] else ""
+    )
     all_tags = list(dict.fromkeys(
-        [f"#{meta['platform'].lower().replace(' ','')}", f"#{meta['difficulty'].lower()}"] +
-        [f"#{t.lower().replace(' ','-')}" for t in meta["tags"]]
+        [f"#{meta['platform'].lower().replace(' ', '')}",
+         f"#{meta['difficulty'].lower()}"] +
+        [f"#{t.lower().replace(' ', '-')}" for t in meta["tags"]]
     ))
     tags_str = " ".join(all_tags)
 
@@ -364,11 +380,15 @@ def clear_page_content(page_id: str):
     """Delete all existing blocks from the page."""
     cursor = None
     while True:
-        kwargs = {"block_id": page_id, "page_size": 100}
         if cursor:
-            kwargs["start_cursor"] = cursor
-        response = notion.blocks.children.list(**kwargs)
-        blocks   = response.get("results", [])
+            response = notion.blocks.children.list(
+                block_id=page_id, page_size=100, start_cursor=cursor
+            )
+        else:
+            response = notion.blocks.children.list(
+                block_id=page_id, page_size=100
+            )
+        blocks = response.get("results", [])
         for block in blocks:
             try:
                 notion.blocks.delete(block_id=block["id"])
@@ -391,7 +411,7 @@ def markdown_to_notion_blocks(markdown: str) -> list:
 
         # Code blocks
         if line.startswith("```"):
-            lang    = line[3:].strip()
+            lang       = line[3:].strip()
             code_lines = []
             i += 1
             while i < len(lines) and not lines[i].startswith("```"):
@@ -406,7 +426,6 @@ def markdown_to_notion_blocks(markdown: str) -> list:
                 }
             })
 
-        # Headings
         elif line.startswith("### "):
             blocks.append({"object": "block", "type": "heading_3",
                 "heading_3": {"rich_text": [{"type": "text", "text": {"content": line[4:]}}]}})
@@ -419,27 +438,22 @@ def markdown_to_notion_blocks(markdown: str) -> list:
             blocks.append({"object": "block", "type": "heading_1",
                 "heading_1": {"rich_text": [{"type": "text", "text": {"content": line[2:]}}]}})
 
-        # Bullet points
         elif line.startswith("- ") or line.startswith("* "):
             blocks.append({"object": "block", "type": "bulleted_list_item",
                 "bulleted_list_item": {"rich_text": [{"type": "text", "text": {"content": line[2:]}}]}})
 
-        # Numbered list
         elif re.match(r'^\d+\. ', line):
             content = re.sub(r'^\d+\. ', '', line)
             blocks.append({"object": "block", "type": "numbered_list_item",
                 "numbered_list_item": {"rich_text": [{"type": "text", "text": {"content": content}}]}})
 
-        # Divider
         elif line.strip() == "---":
             blocks.append({"object": "block", "type": "divider", "divider": {}})
 
-        # Quote
         elif line.startswith("> "):
             blocks.append({"object": "block", "type": "quote",
                 "quote": {"rich_text": [{"type": "text", "text": {"content": line[2:]}}]}})
 
-        # Image references — add as paragraph with italic text
         elif line.startswith("!["):
             match = re.match(r'!\[([^\]]*)\]\(([^\)]+)\)', line)
             if match:
@@ -447,30 +461,26 @@ def markdown_to_notion_blocks(markdown: str) -> list:
                 filename = match.group(2)
                 blocks.append({"object": "block", "type": "paragraph",
                     "paragraph": {"rich_text": [{"type": "text",
-                        "text": {"content": f"📸 {alt_text} ({filename})"},
+                        "text":        {"content": f"📸 {alt_text} ({filename})"},
                         "annotations": {"italic": True, "color": "gray"}}]}})
 
-        # HTML metadata block — wrap in callout
-        elif line.strip().startswith("<p align"):
-            # Collect entire HTML block
-            html_lines = [line]
-            while i + 1 < len(lines) and not lines[i+1].strip().startswith("#"):
-                i += 1
-                html_lines.append(lines[i])
-                if lines[i].strip() == "---":
-                    break
-            # Put metadata in a callout
+        elif line.strip().startswith("<p align") or line.strip().startswith("<sub>"):
+            # Render metadata as a callout block
             blocks.append({"object": "block", "type": "callout",
                 "callout": {
                     "rich_text": [{"type": "text", "text": {"content": "Writeup auto-generated by CTF Publisher ✅"}}],
-                    "icon": {"type": "emoji", "emoji": "🤖"},
-                    "color": "gray_background"
+                    "icon":      {"type": "emoji", "emoji": "🤖"},
+                    "color":     "gray_background"
                 }})
+            # Skip until end of HTML block
+            while i < len(lines) and not lines[i].strip() == "---":
+                i += 1
 
-        # Regular paragraph
         elif line.strip():
+            # Truncate long lines to avoid Notion's 2000 char limit per block
+            content = line[:2000]
             blocks.append({"object": "block", "type": "paragraph",
-                "paragraph": {"rich_text": [{"type": "text", "text": {"content": line}}]}})
+                "paragraph": {"rich_text": [{"type": "text", "text": {"content": content}}]}})
 
         i += 1
 
@@ -488,7 +498,7 @@ def write_back_to_notion(page_id: str, formatted_content: str):
 
     # Notion API limit: 100 blocks per request
     for i in range(0, len(blocks), 100):
-        chunk = blocks[i:i+100]
+        chunk = blocks[i:i + 100]
         notion.blocks.children.append(block_id=page_id, children=chunk)
         time.sleep(0.5)
 
@@ -510,8 +520,12 @@ def mark_as_published(page_id: str):
 
 def get_destination_folder(meta: dict) -> Path:
     """Build CTF-Hub/Platform/Difficulty/RoomName/"""
-    platform   = PLATFORM_FOLDERS.get(meta["platform"].lower().replace(" ", ""), meta["platform"])
-    difficulty = DIFFICULTY_FOLDERS.get(meta["difficulty"].lower(), meta["difficulty"])
+    platform   = PLATFORM_FOLDERS.get(
+        meta["platform"].lower().replace(" ", ""), meta["platform"]
+    )
+    difficulty = DIFFICULTY_FOLDERS.get(
+        meta["difficulty"].lower(), meta["difficulty"]
+    )
     room_clean = re.sub(r'[^\w\-]', '', meta["room_name"].replace(" ", "-"))
     return Path(CTFHUB_REPO_PATH) / platform / difficulty / room_clean
 
@@ -520,22 +534,23 @@ def git_commit_push(room_name: str, platform: str):
     """Stage all changes, commit, and push."""
     print("   → Committing to GitHub...")
     try:
-        subprocess.run(["git", "add", "."],
-            cwd=CTFHUB_REPO_PATH, check=True, capture_output=True)
-
+        subprocess.run(
+            ["git", "add", "."],
+            cwd=CTFHUB_REPO_PATH, check=True, capture_output=True
+        )
         commit_msg = f"writeup: Add {platform} - {room_name}"
         result = subprocess.run(
             ["git", "commit", "-m", commit_msg],
-            cwd=CTFHUB_REPO_PATH, capture_output=True, text=True)
-
+            cwd=CTFHUB_REPO_PATH, capture_output=True, text=True
+        )
         if "nothing to commit" in result.stdout:
             print("   ℹ️  Nothing new to commit")
             return
-
-        subprocess.run(["git", "push"],
-            cwd=CTFHUB_REPO_PATH, check=True, capture_output=True)
+        subprocess.run(
+            ["git", "push"],
+            cwd=CTFHUB_REPO_PATH, check=True, capture_output=True
+        )
         print(f"   ✅ Pushed: {commit_msg}")
-
     except subprocess.CalledProcessError as e:
         print(f"   ⚠️  Git error: {e.stderr}")
 
