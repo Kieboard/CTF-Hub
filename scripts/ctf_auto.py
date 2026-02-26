@@ -96,7 +96,7 @@ def get_page_properties(page: dict) -> dict:
     }
 
     # Room name (title property — try common names)
-    for title_key in ("Name", "Title", "Room", "Task"):
+    for title_key in ("Note Title", "Name", "Title", "Room", "Task"):
         title_prop = props.get(title_key, {})
         title_list = title_prop.get("title", [])
         if title_list:
