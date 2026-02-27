@@ -772,6 +772,99 @@ def git_commit_push(room_name: str, platform: str):
 # MAIN PIPELINE
 # ─────────────────────────────────────────────
 
+
+# ─────────────────────────────────────────────
+# README STATS AUTO-UPDATE
+# ─────────────────────────────────────────────
+
+def update_main_readme_stats():
+    """Scan all platform/difficulty folders and update the stats table in the main README."""
+    readme_path = Path(CTFHUB_REPO_PATH) / "README.md"
+    if not readme_path.exists():
+        print("   ⚠️  Main README not found, skipping stats update")
+        return
+
+    # Platforms and difficulties to scan
+    platforms = {
+        "TryHackMe": "🔴",
+        "HackTheBox": "🟢",
+        "VulnHub": "🟣",
+        "PwnedLabs": "🔵",
+        "OffSec": "🟠",
+        "ProvingGrounds": "🟠",
+        "pwn.college": "🎓",
+        "PicoCTF": "🏴",
+        "RootMe": "⚫",
+        "CTFtime": "🏁",
+        "SANSHolidayHack": "🎄",
+    }
+    difficulties = ["Easy", "Medium", "Hard", "Insane"]
+
+    # Count writeups per platform per difficulty
+    stats = {}
+    total_easy = total_medium = total_hard = total_insane = 0
+
+    for platform, emoji in platforms.items():
+        platform_dir = Path(CTFHUB_REPO_PATH) / platform
+        if not platform_dir.exists():
+            continue
+
+        counts = {"Easy": 0, "Medium": 0, "Hard": 0, "Insane": 0}
+        for difficulty in difficulties:
+            diff_dir = platform_dir / difficulty
+            if not diff_dir.exists():
+                continue
+            # Count room folders that contain a .md writeup
+            for room_dir in diff_dir.iterdir():
+                if room_dir.is_dir():
+                    md_files = list(room_dir.glob("*.md"))
+                    if md_files:
+                        counts[difficulty] += 1
+
+        total = sum(counts.values())
+        if total > 0:
+            stats[platform] = {"emoji": emoji, "counts": counts, "total": total}
+            total_easy   += counts["Easy"]
+            total_medium += counts["Medium"]
+            total_hard   += counts["Hard"]
+            total_insane += counts["Insane"]
+
+    grand_total = total_easy + total_medium + total_hard + total_insane
+
+    # Build new table
+    rows = []
+    for platform, data in stats.items():
+        c = data["counts"]
+        easy   = c["Easy"]   or "—"
+        medium = c["Medium"] or "—"
+        hard   = c["Hard"]   or "—"
+        total  = data["total"]
+        rows.append(f"| {data['emoji']} {platform} | {easy} | {medium} | {hard} | {total} |")
+
+    # Add totals row
+    rows.append(f"| **Total** | **{total_easy}** | **{total_medium}** | **{total_hard}** | **{grand_total}** |")
+
+    new_table = """| Platform | Easy | Medium | Hard | Total |
+|----------|------|--------|------|-------|
+""" + "\n".join(rows)
+
+    # Replace existing table in README
+    content = readme_path.read_text(encoding="utf-8")
+
+    import re
+    # Match the stats table block
+    pattern = r"(\| Platform \| Easy \| Medium \| Hard \| Total \|.*?)(\n---|$)"
+    match = re.search(pattern, content, re.DOTALL)
+    if match:
+        content = content[:match.start()] + new_table + "\n" + content[match.end():]
+    else:
+        print("   ⚠️  Could not find stats table in README to update")
+        return
+
+    readme_path.write_text(content, encoding="utf-8")
+    print(f"   ✅ Stats updated: {grand_total} total writeup(s)")
+
+
 def process_page(page: dict):
     meta = get_page_properties(page)
     print(f"\n{'='*50}")
@@ -825,7 +918,8 @@ def process_page(page: dict):
     if icon_filename and meta.get("icon_url"):
         set_notion_page_icon(meta["page_id"], meta["icon_url"])
 
-    # 11. Commit + push to GitHub
+    # 11. Update main README stats then commit + push
+    update_main_readme_stats()
     git_commit_push(meta["room_name"], meta["platform"])
 
     # 12. Mark as published
