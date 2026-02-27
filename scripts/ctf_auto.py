@@ -508,8 +508,8 @@ def ensure_difficulty_readme(diff_dir: Path, platform: str, difficulty: str):
 
 ## 📋 Writeups
 
-| | Room | Tags | Date |
-|--|------|------|------|
+| Icon | Room | Tags | Date |
+|------|------|------|------|
 | *Auto-populated as writeups are added* | | | |
 
 ---
@@ -811,22 +811,9 @@ def process_page(page: dict):
     except Exception as e:
         print(f"   ⚠️  Notion write-back failed: {e}")
 
-    # 10. Set Notion page icon if we got one from the platform
-    if icon_filename and meta["url"]:
-        try:
-            headers   = {"User-Agent": "Mozilla/5.0"}
-            resp      = requests.get(meta["url"], headers=headers, timeout=10)
-            og_match  = re.search(r'<meta[^>]+property=["\']og:image["\'][^>]+content=["\']([^"\']+)["\']', resp.text)
-            if not og_match:
-                og_match = re.search(r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+property=["\']og:image["\']', resp.text)
-            if not og_match:
-                s3_match = re.search(r'https://tryhackme-images\.s3\.amazonaws\.com/room-icons/[^\s"\']+', resp.text)
-                if s3_match:
-                    set_notion_page_icon(meta["page_id"], s3_match.group(0))
-            else:
-                set_notion_page_icon(meta["page_id"], og_match.group(1))
-        except Exception as e:
-            print(f"   ⚠️  Could not set Notion icon: {e}")
+    # 10. Set Notion page icon using the Icon URL from Notion property
+    if icon_filename and meta.get("icon_url"):
+        set_notion_page_icon(meta["page_id"], meta["icon_url"])
 
     # 11. Commit + push to GitHub
     git_commit_push(meta["room_name"], meta["platform"])
