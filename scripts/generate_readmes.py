@@ -133,9 +133,9 @@ def difficulty_readme(platform: str, difficulty: str, config: dict) -> str:
 
 ## 📋 Writeups
 
-| Room | Tags | Date |
-|------|------|------|
-| *Auto-populated as writeups are added* | | |
+| Icon | Room | Tags | Date |
+|------|------|------|------|
+| *Auto-populated as writeups are added* | | | |
 
 ---
 
