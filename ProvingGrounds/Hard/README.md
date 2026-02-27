@@ -1,6 +1,6 @@
-# 🟡 TryHackMe — Medium
+# 🔴 ProvingGrounds — Hard
 
-Intermediate rooms requiring chained exploits, deeper enumeration, and creative thinking.
+Advanced rooms involving complex attack chains, custom exploits, and deep technical knowledge.
 
 ---
 

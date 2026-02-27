@@ -1,4 +1,4 @@
-# 🟡 TryHackMe — Medium
+# 🟡 PicoCTF — Medium
 
 Intermediate rooms requiring chained exploits, deeper enumeration, and creative thinking.
 
