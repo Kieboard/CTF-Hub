@@ -6,9 +6,9 @@ Advanced rooms involving complex attack chains, custom exploits, and deep techni
 
 ## 📋 Writeups
 
-| Room | Tags | Date |
-|------|------|------|
-| *Auto-populated as writeups are added* | | |
+| Icon | Room | Tags | Date |
+|------|------|------|------|
+| *Auto-populated as writeups are added* | | | |
 
 ---
 

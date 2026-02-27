@@ -6,9 +6,9 @@ Intermediate rooms requiring chained exploits, deeper enumeration, and creative 
 
 ## 📋 Writeups
 
-| Room | Tags | Date |
-|------|------|------|
-| *Auto-populated as writeups are added* | | |
+| Icon | Room | Tags | Date |
+|------|------|------|------|
+| *Auto-populated as writeups are added* | | | |
 
 ---
 
