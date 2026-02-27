@@ -41,15 +41,28 @@ claude = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
 # PLATFORM / DIFFICULTY MAPPINGS
 # ─────────────────────────────────────────────
 PLATFORM_FOLDERS = {
-    "tryhackme":  "TryHackMe",
-    "thm":        "TryHackMe",
-    "hackthebox": "HackTheBox",
-    "htb":        "HackTheBox",
-    "vulnhub":    "VulnHub",
-    "pwnedlabs":  "PwnedLabs",
-    "picoctf":    "PicoCTF",
-    "rootme":     "RootMe",
-    "root-me":    "RootMe",
+    "tryhackme":       "TryHackMe",
+    "thm":             "TryHackMe",
+    "hackthebox":      "HackTheBox",
+    "htb":             "HackTheBox",
+    "vulnhub":         "VulnHub",
+    "pwnedlabs":       "PwnedLabs",
+    "picoctf":         "PicoCTF",
+    "rootme":          "RootMe",
+    "root-me":         "RootMe",
+    "offsec":          "OffSec",
+    "offensivesecurity": "OffSec",
+    "provinggrounds":  "ProvingGrounds",
+    "proving grounds": "ProvingGrounds",
+    "pg play":         "ProvingGrounds",
+    "pg practice":     "ProvingGrounds",
+    "pwn.college":     "pwn.college",
+    "pwncollege":      "pwn.college",
+    "ctftime":         "CTFtime",
+    "ctf":             "CTFtime",
+    "sansholidayhack": "SANSHolidayHack",
+    "sans holiday hack": "SANSHolidayHack",
+    "holidayhack":     "SANSHolidayHack",
 }
 
 DIFFICULTY_FOLDERS = {
@@ -575,15 +588,24 @@ def mark_as_published(page_id: str):
 # ─────────────────────────────────────────────
 
 def get_destination_folder(meta: dict) -> Path:
-    """Build CTF-Hub/Platform/Difficulty/RoomName/"""
+    """Build CTF-Hub/Platform/Difficulty/RoomName/ and ensure READMEs exist."""
     platform   = PLATFORM_FOLDERS.get(
         meta["platform"].lower().replace(" ", ""), meta["platform"]
     )
     difficulty = DIFFICULTY_FOLDERS.get(
         meta["difficulty"].lower(), meta["difficulty"]
     )
-    room_clean = re.sub(r'[^\w\-]', '', meta["room_name"].replace(" ", "-"))
-    return Path(CTFHUB_REPO_PATH) / platform / difficulty / room_clean
+    room_clean   = re.sub(r'[^\w\-]', '', meta["room_name"].replace(" ", "-"))
+    platform_dir = Path(CTFHUB_REPO_PATH) / platform
+    diff_dir     = platform_dir / difficulty
+
+    # Auto-create READMEs for new platform/difficulty folders
+    platform_dir.mkdir(parents=True, exist_ok=True)
+    ensure_platform_readme(platform_dir, platform)
+    diff_dir.mkdir(parents=True, exist_ok=True)
+    ensure_difficulty_readme(diff_dir, platform, difficulty)
+
+    return diff_dir / room_clean
 
 
 def git_commit_push(room_name: str, platform: str):
@@ -694,3 +716,75 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+# ─────────────────────────────────────────────
+# AUTO README GENERATION
+# ─────────────────────────────────────────────
+
+PLATFORM_INFO = {
+    "TryHackMe":       {"emoji": "🔴", "desc": "TryHackMe rooms organised by difficulty."},
+    "HackTheBox":      {"emoji": "🟢", "desc": "HackTheBox machine and challenge writeups."},
+    "VulnHub":         {"emoji": "🟣", "desc": "VulnHub vulnerable machine writeups."},
+    "PwnedLabs":       {"emoji": "🔵", "desc": "PwnedLabs cloud and AD challenge writeups."},
+    "PicoCTF":         {"emoji": "🏴", "desc": "PicoCTF challenge writeups."},
+    "RootMe":          {"emoji": "⚫", "desc": "Root-Me challenge writeups."},
+    "OffSec":          {"emoji": "🟠", "desc": "OffSec Proving Grounds Play and Practice machines. OSCP-relevant content."},
+    "ProvingGrounds":  {"emoji": "🟠", "desc": "OffSec Proving Grounds machines. Direct OSCP preparation and practice."},
+    "pwn.college":     {"emoji": "🎓", "desc": "pwn.college challenge writeups. Focused on binary exploitation and system security."},
+    "CTFtime":         {"emoji": "🏁", "desc": "General CTF competition writeups from various events listed on CTFtime."},
+    "SANSHolidayHack": {"emoji": "🎄", "desc": "SANS Holiday Hack Challenge writeups. Annual CTF with real-world scenarios."},
+}
+
+DIFF_EMOJI = {"Easy": "🟢", "Medium": "🟡", "Hard": "🔴", "Insane": "💀"}
+DIFF_DESC  = {
+    "Easy":   "Beginner-friendly rooms focusing on core methodology and common vulnerabilities.",
+    "Medium": "Intermediate rooms requiring chained exploits and deeper enumeration.",
+    "Hard":   "Advanced rooms involving complex attack chains and deep technical knowledge.",
+    "Insane": "Expert-level machines requiring advanced exploitation techniques.",
+}
+
+
+def ensure_platform_readme(platform_dir: Path, platform: str):
+    """Create platform README if it doesn't exist."""
+    readme = platform_dir / "README.md"
+    if readme.exists():
+        return
+    info  = PLATFORM_INFO.get(platform, {"emoji": "📁", "desc": f"{platform} writeups."})
+    content = f"""# {info['emoji']} {platform}
+
+{info['desc']}
+
+---
+
+> Writeups authored in Notion, auto-published via CTF Publisher.
+"""
+    readme.write_text(content, encoding="utf-8")
+    print(f"   ✅ Created {platform}/README.md")
+
+
+def ensure_difficulty_readme(diff_dir: Path, platform: str, difficulty: str):
+    """Create difficulty README if it doesn't exist."""
+    readme = diff_dir / "README.md"
+    if readme.exists():
+        return
+    emoji = DIFF_EMOJI.get(difficulty, "📁")
+    desc  = DIFF_DESC.get(difficulty, f"{difficulty} difficulty writeups.")
+    content = f"""# {emoji} {platform} — {difficulty}
+
+{desc}
+
+---
+
+## 📋 Writeups
+
+| Room | Tags | Date |
+|------|------|------|
+| *Auto-populated as writeups are added* | | |
+
+---
+
+> Writeups authored in Notion, auto-published via CTF Publisher.
+"""
+    readme.write_text(content, encoding="utf-8")
+    print(f"   ✅ Created {platform}/{difficulty}/README.md")
