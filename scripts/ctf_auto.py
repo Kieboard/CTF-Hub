@@ -1,17 +1,6 @@
 """
 CTF Auto Publisher — Full Pipeline
 Kieran Rorrison — CTF-Hub
-
-Triggered by: GitHub Actions (every 30 mins)
-Flow:
-  1. Query Notion for pages where Completed=True and Published=False
-  2. Read rough notes from the Notion page
-  3. Fetch room info from the THM/HTB URL
-  4. Send both to Claude → get professional writeup
-  5. Update the Notion page with formatted writeup
-  6. Download screenshots from Notion
-  7. Commit + push to GitHub
-  8. Mark page as Published=True in Notion
 """
 
 import os
@@ -27,7 +16,7 @@ from notion_client import Client
 import anthropic
 
 # ─────────────────────────────────────────────
-# CONFIG — loaded from environment / GitHub Secrets
+# CONFIG
 # ─────────────────────────────────────────────
 NOTION_TOKEN       = os.environ["NOTION_TOKEN"]
 NOTION_DATABASE_ID = os.environ["NOTION_DATABASE_ID"]
@@ -38,31 +27,31 @@ notion = Client(auth=NOTION_TOKEN)
 claude = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
 
 # ─────────────────────────────────────────────
-# PLATFORM / DIFFICULTY MAPPINGS
+# MAPPINGS
 # ─────────────────────────────────────────────
 PLATFORM_FOLDERS = {
-    "tryhackme":       "TryHackMe",
-    "thm":             "TryHackMe",
-    "hackthebox":      "HackTheBox",
-    "htb":             "HackTheBox",
-    "vulnhub":         "VulnHub",
-    "pwnedlabs":       "PwnedLabs",
-    "picoctf":         "PicoCTF",
-    "rootme":          "RootMe",
-    "root-me":         "RootMe",
-    "offsec":          "OffSec",
+    "tryhackme":         "TryHackMe",
+    "thm":               "TryHackMe",
+    "hackthebox":        "HackTheBox",
+    "htb":               "HackTheBox",
+    "vulnhub":           "VulnHub",
+    "pwnedlabs":         "PwnedLabs",
+    "picoctf":           "PicoCTF",
+    "rootme":            "RootMe",
+    "root-me":           "RootMe",
+    "offsec":            "OffSec",
     "offensivesecurity": "OffSec",
-    "provinggrounds":  "ProvingGrounds",
-    "proving grounds": "ProvingGrounds",
-    "pg play":         "ProvingGrounds",
-    "pg practice":     "ProvingGrounds",
-    "pwn.college":     "pwn.college",
-    "pwncollege":      "pwn.college",
-    "ctftime":         "CTFtime",
-    "ctf":             "CTFtime",
-    "sansholidayhack": "SANSHolidayHack",
+    "provinggrounds":    "ProvingGrounds",
+    "proving grounds":   "ProvingGrounds",
+    "pg play":           "ProvingGrounds",
+    "pg practice":       "ProvingGrounds",
+    "pwn.college":       "pwn.college",
+    "pwncollege":        "pwn.college",
+    "ctftime":           "CTFtime",
+    "ctf":               "CTFtime",
+    "sansholidayhack":   "SANSHolidayHack",
     "sans holiday hack": "SANSHolidayHack",
-    "holidayhack":     "SANSHolidayHack",
+    "holidayhack":       "SANSHolidayHack",
 }
 
 DIFFICULTY_FOLDERS = {
@@ -72,7 +61,8 @@ DIFFICULTY_FOLDERS = {
     "insane": "Insane",
 }
 
-# Notion's full list of accepted code block languages
+IMAGE_EXTENSIONS = {".png", ".jpg", ".jpeg", ".gif", ".webp"}
+
 NOTION_CODE_LANGUAGES = {
     "abap","abc","agda","arduino","ascii art","assembly","bash","basic","bnf",
     "c","c#","c++","clojure","coffeescript","coq","css","dart","dhall","diff",
@@ -87,14 +77,33 @@ NOTION_CODE_LANGUAGES = {
     "vhdl","visual basic","webassembly","xml","yaml","java/c/c++/c#"
 }
 
-IMAGE_EXTENSIONS = {".png", ".jpg", ".jpeg", ".gif", ".webp"}
+PLATFORM_INFO = {
+    "TryHackMe":       {"emoji": "🔴", "desc": "TryHackMe rooms organised by difficulty."},
+    "HackTheBox":      {"emoji": "🟢", "desc": "HackTheBox machine and challenge writeups."},
+    "VulnHub":         {"emoji": "🟣", "desc": "VulnHub vulnerable machine writeups."},
+    "PwnedLabs":       {"emoji": "🔵", "desc": "PwnedLabs cloud and AD challenge writeups."},
+    "PicoCTF":         {"emoji": "🏴", "desc": "PicoCTF challenge writeups."},
+    "RootMe":          {"emoji": "⚫", "desc": "Root-Me challenge writeups."},
+    "OffSec":          {"emoji": "🟠", "desc": "OffSec Proving Grounds Play and Practice machines. OSCP-relevant content."},
+    "ProvingGrounds":  {"emoji": "🟠", "desc": "OffSec Proving Grounds machines. Direct OSCP preparation and practice."},
+    "pwn.college":     {"emoji": "🎓", "desc": "pwn.college challenge writeups. Binary exploitation and system security."},
+    "CTFtime":         {"emoji": "🏁", "desc": "General CTF competition writeups from various events on CTFtime."},
+    "SANSHolidayHack": {"emoji": "🎄", "desc": "SANS Holiday Hack Challenge writeups. Annual CTF with real-world scenarios."},
+}
+
+DIFF_EMOJI = {"Easy": "🟢", "Medium": "🟡", "Hard": "🔴", "Insane": "💀"}
+DIFF_DESC  = {
+    "Easy":   "Beginner-friendly rooms focusing on core methodology and common vulnerabilities.",
+    "Medium": "Intermediate rooms requiring chained exploits and deeper enumeration.",
+    "Hard":   "Advanced rooms involving complex attack chains and deep technical knowledge.",
+    "Insane": "Expert-level machines requiring advanced exploitation techniques.",
+}
 
 # ─────────────────────────────────────────────
 # NOTION HELPERS
 # ─────────────────────────────────────────────
 
 def query_completed_unpublished():
-    """Find all pages where Completed=True and Published=False."""
     print("🔍 Querying Notion for completed unpublished writeups...")
     response = notion.databases.query(
         database_id=NOTION_DATABASE_ID,
@@ -111,7 +120,6 @@ def query_completed_unpublished():
 
 
 def get_page_properties(page: dict) -> dict:
-    """Extract all useful properties from a Notion page."""
     props = page.get("properties", {})
     meta = {
         "page_id":    page["id"],
@@ -123,7 +131,6 @@ def get_page_properties(page: dict) -> dict:
         "date":       datetime.now().strftime("%B %d, %Y"),
     }
 
-    # Room name (title property — try common names)
     for title_key in ("Note Title", "Name", "Title", "Room", "Task"):
         title_prop = props.get(title_key, {})
         title_list = title_prop.get("title", [])
@@ -131,7 +138,6 @@ def get_page_properties(page: dict) -> dict:
             meta["room_name"] = title_list[0].get("plain_text", "Unknown")
             break
 
-    # Platform
     platform_prop = props.get("Platform", {})
     ptype = platform_prop.get("type", "")
     if ptype == "select" and platform_prop.get("select"):
@@ -140,32 +146,19 @@ def get_page_properties(page: dict) -> dict:
         opts = platform_prop.get("multi_select", [])
         if opts:
             meta["platform"] = opts[0]["name"]
-    elif ptype == "rich_text":
-        texts = platform_prop.get("rich_text", [])
-        if texts:
-            meta["platform"] = texts[0].get("plain_text", "")
 
-    # Difficulty
     diff_prop = props.get("Difficulty", {})
-    dtype = diff_prop.get("type", "")
-    if dtype == "select" and diff_prop.get("select"):
+    if diff_prop.get("type") == "select" and diff_prop.get("select"):
         meta["difficulty"] = diff_prop["select"]["name"]
-    elif dtype == "rich_text":
-        texts = diff_prop.get("rich_text", [])
-        if texts:
-            meta["difficulty"] = texts[0].get("plain_text", "")
 
-    # URL
     url_prop = props.get("URL", {})
-    utype = url_prop.get("type", "")
-    if utype == "url":
+    if url_prop.get("type") == "url":
         meta["url"] = url_prop.get("url") or ""
-    elif utype == "rich_text":
+    elif url_prop.get("type") == "rich_text":
         texts = url_prop.get("rich_text", [])
         if texts:
             meta["url"] = texts[0].get("plain_text", "")
 
-    # Tags
     tags_prop = props.get("Tags", {})
     if tags_prop.get("type") == "multi_select":
         meta["tags"] = [t["name"] for t in tags_prop.get("multi_select", [])]
@@ -174,23 +167,15 @@ def get_page_properties(page: dict) -> dict:
 
 
 def extract_blocks_as_text(page_id: str):
-    """
-    Read all blocks from a Notion page.
-    Returns (plain_text, image_urls_list)
-    """
     blocks_text = []
     image_urls  = []
     cursor      = None
 
     while True:
         if cursor:
-            response = notion.blocks.children.list(
-                block_id=page_id, page_size=100, start_cursor=cursor
-            )
+            response = notion.blocks.children.list(block_id=page_id, page_size=100, start_cursor=cursor)
         else:
-            response = notion.blocks.children.list(
-                block_id=page_id, page_size=100
-            )
+            response = notion.blocks.children.list(block_id=page_id, page_size=100)
 
         blocks = response.get("results", [])
 
@@ -242,7 +227,6 @@ def extract_blocks_as_text(page_id: str):
                     img_url = img["external"]["url"]
                 else:
                     img_url = None
-
                 if img_url:
                     image_urls.append(img_url)
                     idx = len(image_urls)
@@ -259,35 +243,87 @@ def extract_blocks_as_text(page_id: str):
 
 
 def fetch_room_description(url: str) -> str:
-    """Fetch the room/challenge description from THM or HTB page."""
     if not url:
         return ""
-
     print(f"   → Fetching room info from: {url}")
     try:
-        headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
-        }
+        headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
         resp = requests.get(url, headers=headers, timeout=10)
         if resp.status_code != 200:
-            print(f"   ⚠️  Could not fetch room page (status {resp.status_code})")
             return ""
-
-        text = resp.text
-        # Strip HTML
+        text  = resp.text
         clean = re.sub(r'<script[^>]*>.*?</script>', '', text, flags=re.DOTALL)
         clean = re.sub(r'<style[^>]*>.*?</style>',  '', clean, flags=re.DOTALL)
         clean = re.sub(r'<[^>]+>', ' ', clean)
         clean = re.sub(r'\s+', ' ', clean).strip()
         return clean[:3000]
-
     except Exception as e:
         print(f"   ⚠️  Could not fetch room page: {e}")
         return ""
 
 
+def fetch_room_icon(url: str, dest_folder: Path, room_name: str) -> str:
+    """
+    Scrape the room icon from the platform page using og:image meta tag.
+    Saves as RoomName.png. Returns filename if saved, else empty string.
+    """
+    if not url:
+        return ""
+    print(f"   → Fetching room icon from: {url}")
+    try:
+        headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
+        resp = requests.get(url, headers=headers, timeout=10)
+        if resp.status_code != 200:
+            print(f"   ⚠️  Could not fetch page for icon (status {resp.status_code})")
+            return ""
+
+        # Try og:image first
+        og_match = re.search(r'<meta[^>]+property=["\']og:image["\'][^>]+content=["\']([^"\']+)["\']', resp.text)
+        if not og_match:
+            og_match = re.search(r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+property=["\']og:image["\']', resp.text)
+
+        # TryHackMe S3 room icon fallback pattern
+        if not og_match:
+            s3_match = re.search(r'https://tryhackme-images\.s3\.amazonaws\.com/room-icons/[^\s"\']+', resp.text)
+            if s3_match:
+                icon_url = s3_match.group(0)
+            else:
+                print("   ⚠️  No room icon found on page")
+                return ""
+        else:
+            icon_url = og_match.group(1)
+
+        # Download the icon
+        icon_resp = requests.get(icon_url, headers=headers, timeout=15)
+        if icon_resp.status_code == 200:
+            room_clean = re.sub(r'[^\w\-]', '', room_name.replace(" ", ""))
+            filename   = f"{room_clean}.png"
+            icon_path  = dest_folder / filename
+            icon_path.write_bytes(icon_resp.content)
+            print(f"   ✅ Icon saved: {filename}")
+            return filename
+        else:
+            print(f"   ⚠️  Icon download returned status {icon_resp.status_code}")
+            return ""
+
+    except Exception as e:
+        print(f"   ⚠️  Could not fetch room icon: {e}")
+        return ""
+
+
+def set_notion_page_icon(page_id: str, icon_url: str):
+    """Set the Notion page icon to an external URL."""
+    try:
+        notion.pages.update(
+            page_id=page_id,
+            icon={"type": "external", "external": {"url": icon_url}}
+        )
+        print("   ✅ Notion page icon updated")
+    except Exception as e:
+        print(f"   ⚠️  Could not set Notion icon: {e}")
+
+
 def download_screenshots(image_urls: list, dest_folder: Path) -> list:
-    """Download screenshots from Notion's CDN to local folder."""
     saved = []
     for i, url in enumerate(image_urls, start=1):
         filename = f"screenshot_{i:02d}.png"
@@ -331,9 +367,7 @@ RULES:
 OUTPUT: Pure markdown only. No preamble. No explanation. Start directly with the metadata block."""
 
 
-def format_with_claude(raw_notes: str, room_info: str, meta: dict, saved_screenshots: list) -> str:
-    """Send notes + room info to Claude, get back formatted writeup."""
-
+def format_with_claude(raw_notes: str, room_info: str, meta: dict, saved_screenshots: list, icon_filename: str) -> str:
     url_line = (
         f'    <b>URL:</b> <a href="{meta["url"]}">{meta["room_name"]}</a><br>\n'
         if meta["url"] else ""
@@ -345,12 +379,14 @@ def format_with_claude(raw_notes: str, room_info: str, meta: dict, saved_screens
     ))
     tags_str = " ".join(all_tags)
 
+    icon_line = f'    <b>Icon:</b> <img src="{icon_filename}" width="32"><br>\n' if icon_filename else ""
+
     metadata_block = f"""<p align="right">
   <sub>
     <b>Platform:</b> {meta["platform"]}<br>
     <b>Difficulty:</b> {meta["difficulty"]}<br>
     <b>Status:</b> Completed ✅<br>
-{url_line}    <b>Date:</b> {meta["date"]}<br>
+{url_line}{icon_line}    <b>Date:</b> {meta["date"]}<br>
     <b>Tags:</b> {tags_str}
   </sub>
 </p>
@@ -401,21 +437,183 @@ Return ONLY the formatted markdown. Nothing else."""
 
 
 # ─────────────────────────────────────────────
+# README MANAGEMENT
+# ─────────────────────────────────────────────
+
+def ensure_platform_readme(platform_dir: Path, platform: str):
+    readme = platform_dir / "README.md"
+    if readme.exists():
+        return
+    info    = PLATFORM_INFO.get(platform, {"emoji": "📁", "desc": f"{platform} writeups."})
+    content = f"""# {info['emoji']} {platform}
+
+{info['desc']}
+
+---
+
+> Writeups authored in Notion, auto-published via CTF Publisher.
+"""
+    readme.write_text(content, encoding="utf-8")
+    print(f"   ✅ Created {platform}/README.md")
+
+
+def ensure_difficulty_readme(diff_dir: Path, platform: str, difficulty: str):
+    readme = diff_dir / "README.md"
+    if readme.exists():
+        return
+    emoji   = DIFF_EMOJI.get(difficulty, "📁")
+    desc    = DIFF_DESC.get(difficulty, f"{difficulty} difficulty writeups.")
+    content = f"""# {emoji} {platform} — {difficulty}
+
+{desc}
+
+---
+
+## 📋 Writeups
+
+| | Room | Tags | Date |
+|--|------|------|------|
+| *Auto-populated as writeups are added* | | | |
+
+---
+
+> Writeups authored in Notion, auto-published via CTF Publisher.
+"""
+    readme.write_text(content, encoding="utf-8")
+    print(f"   ✅ Created {platform}/{difficulty}/README.md")
+
+
+def update_difficulty_readme(diff_dir: Path, platform: str, difficulty: str, meta: dict, icon_filename: str):
+    """Add a row for this writeup to the difficulty README table."""
+    readme = diff_dir / "README.md"
+    if not readme.exists():
+        ensure_difficulty_readme(diff_dir, platform, difficulty)
+
+    content    = readme.read_text(encoding="utf-8")
+    room_clean = re.sub(r'[^\w\-]', '', meta["room_name"].replace(" ", "-"))
+
+    # Skip if already has a row for this room
+    if f"]({room_clean}/" in content:
+        print(f"   ℹ️  {meta['room_name']} already in README table")
+        return
+
+    # Icon cell — use saved icon if available
+    if icon_filename:
+        icon_cell = f'<img src="{room_clean}/{icon_filename}" width="32" alt="{meta["room_name"]}">'
+    else:
+        icon_cell = ""
+
+    # Tags cell — cap at 4 for readability
+    auto_tags = [
+        f"`#{meta['platform'].lower().replace(' ', '')}`",
+        f"`#{meta['difficulty'].lower()}`"
+    ]
+    extra_tags = [f"`#{t.lower().replace(' ', '-')}`" for t in meta["tags"]]
+    all_tags   = list(dict.fromkeys(auto_tags + extra_tags))[:4]
+    tags_cell  = " ".join(all_tags)
+
+    room_link = f"[{meta['room_name']}]({room_clean}/{room_clean}.md)"
+    new_row   = f"| {icon_cell} | {room_link} | {tags_cell} | {meta['date']} |"
+
+    # Replace placeholder or append
+    placeholder = "| *Auto-populated as writeups are added* | | | |"
+    if placeholder in content:
+        content = content.replace(placeholder, new_row)
+    else:
+        lines        = content.split("\n")
+        last_row_idx = -1
+        for i, line in enumerate(lines):
+            if line.startswith("| ") and "---" not in line:
+                last_row_idx = i
+        if last_row_idx >= 0:
+            lines.insert(last_row_idx + 1, new_row)
+            content = "\n".join(lines)
+        else:
+            content += f"\n{new_row}\n"
+
+    readme.write_text(content, encoding="utf-8")
+    print(f"   ✅ Added {meta['room_name']} to {platform}/{difficulty}/README.md")
+
+
+# ─────────────────────────────────────────────
 # NOTION WRITE-BACK
 # ─────────────────────────────────────────────
 
+def markdown_to_notion_blocks(markdown: str) -> list:
+    blocks = []
+    lines  = markdown.split("\n")
+    i      = 0
+
+    while i < len(lines):
+        line = lines[i]
+
+        if line.startswith("```"):
+            lang       = line[3:].strip()
+            code_lines = []
+            i += 1
+            while i < len(lines) and not lines[i].startswith("```"):
+                code_lines.append(lines[i])
+                i += 1
+            blocks.append({
+                "object": "block", "type": "code",
+                "code": {
+                    "rich_text": [{"type": "text", "text": {"content": "\n".join(code_lines)}}],
+                    "language":  lang if lang in NOTION_CODE_LANGUAGES else "plain text"
+                }
+            })
+        elif line.startswith("### "):
+            blocks.append({"object": "block", "type": "heading_3",
+                "heading_3": {"rich_text": [{"type": "text", "text": {"content": line[4:]}}]}})
+        elif line.startswith("## "):
+            blocks.append({"object": "block", "type": "heading_2",
+                "heading_2": {"rich_text": [{"type": "text", "text": {"content": line[3:]}}]}})
+        elif line.startswith("# "):
+            blocks.append({"object": "block", "type": "heading_1",
+                "heading_1": {"rich_text": [{"type": "text", "text": {"content": line[2:]}}]}})
+        elif line.startswith("- ") or line.startswith("* "):
+            blocks.append({"object": "block", "type": "bulleted_list_item",
+                "bulleted_list_item": {"rich_text": [{"type": "text", "text": {"content": line[2:]}}]}})
+        elif re.match(r'^\d+\. ', line):
+            content = re.sub(r'^\d+\. ', '', line)
+            blocks.append({"object": "block", "type": "numbered_list_item",
+                "numbered_list_item": {"rich_text": [{"type": "text", "text": {"content": content}}]}})
+        elif line.strip() == "---":
+            blocks.append({"object": "block", "type": "divider", "divider": {}})
+        elif line.startswith("> "):
+            blocks.append({"object": "block", "type": "quote",
+                "quote": {"rich_text": [{"type": "text", "text": {"content": line[2:]}}]}})
+        elif line.startswith("!["):
+            match = re.match(r'!\[([^\]]*)\]\(([^\)]+)\)', line)
+            if match:
+                blocks.append({"object": "block", "type": "paragraph",
+                    "paragraph": {"rich_text": [{"type": "text",
+                        "text": {"content": f"📸 {match.group(1)} ({match.group(2)})"},
+                        "annotations": {"italic": True, "color": "gray"}}]}})
+        elif line.strip().startswith("<p align") or line.strip().startswith("<sub>"):
+            blocks.append({"object": "block", "type": "callout",
+                "callout": {
+                    "rich_text": [{"type": "text", "text": {"content": "Writeup auto-generated by CTF Publisher ✅"}}],
+                    "icon":      {"type": "emoji", "emoji": "🤖"},
+                    "color":     "gray_background"
+                }})
+            while i < len(lines) and lines[i].strip() != "---":
+                i += 1
+        elif line.strip():
+            blocks.append({"object": "block", "type": "paragraph",
+                "paragraph": {"rich_text": [{"type": "text", "text": {"content": line[:2000]}}]}})
+
+        i += 1
+
+    return blocks
+
+
 def clear_page_content(page_id: str):
-    """Delete all existing blocks from the page."""
     cursor = None
     while True:
         if cursor:
-            response = notion.blocks.children.list(
-                block_id=page_id, page_size=100, start_cursor=cursor
-            )
+            response = notion.blocks.children.list(block_id=page_id, page_size=100, start_cursor=cursor)
         else:
-            response = notion.blocks.children.list(
-                block_id=page_id, page_size=100
-            )
+            response = notion.blocks.children.list(block_id=page_id, page_size=100)
         blocks = response.get("results", [])
         for block in blocks:
             try:
@@ -428,116 +626,18 @@ def clear_page_content(page_id: str):
         time.sleep(0.3)
 
 
-def markdown_to_notion_blocks(markdown: str) -> list:
-    """Convert markdown text back into Notion block objects."""
-    blocks = []
-    lines  = markdown.split("\n")
-    i      = 0
-
-    while i < len(lines):
-        line = lines[i]
-
-        # Code blocks
-        if line.startswith("```"):
-            lang       = line[3:].strip()
-            code_lines = []
-            i += 1
-            while i < len(lines) and not lines[i].startswith("```"):
-                code_lines.append(lines[i])
-                i += 1
-            blocks.append({
-                "object": "block",
-                "type": "code",
-                "code": {
-                    "rich_text": [{"type": "text", "text": {"content": "\n".join(code_lines)}}],
-                    "language": lang if lang in NOTION_CODE_LANGUAGES else "plain text"
-                }
-            })
-
-        elif line.startswith("### "):
-            blocks.append({"object": "block", "type": "heading_3",
-                "heading_3": {"rich_text": [{"type": "text", "text": {"content": line[4:]}}]}})
-
-        elif line.startswith("## "):
-            blocks.append({"object": "block", "type": "heading_2",
-                "heading_2": {"rich_text": [{"type": "text", "text": {"content": line[3:]}}]}})
-
-        elif line.startswith("# "):
-            blocks.append({"object": "block", "type": "heading_1",
-                "heading_1": {"rich_text": [{"type": "text", "text": {"content": line[2:]}}]}})
-
-        elif line.startswith("- ") or line.startswith("* "):
-            blocks.append({"object": "block", "type": "bulleted_list_item",
-                "bulleted_list_item": {"rich_text": [{"type": "text", "text": {"content": line[2:]}}]}})
-
-        elif re.match(r'^\d+\. ', line):
-            content = re.sub(r'^\d+\. ', '', line)
-            blocks.append({"object": "block", "type": "numbered_list_item",
-                "numbered_list_item": {"rich_text": [{"type": "text", "text": {"content": content}}]}})
-
-        elif line.strip() == "---":
-            blocks.append({"object": "block", "type": "divider", "divider": {}})
-
-        elif line.startswith("> "):
-            blocks.append({"object": "block", "type": "quote",
-                "quote": {"rich_text": [{"type": "text", "text": {"content": line[2:]}}]}})
-
-        elif line.startswith("!["):
-            match = re.match(r'!\[([^\]]*)\]\(([^\)]+)\)', line)
-            if match:
-                alt_text = match.group(1)
-                filename = match.group(2)
-                blocks.append({"object": "block", "type": "paragraph",
-                    "paragraph": {"rich_text": [{"type": "text",
-                        "text":        {"content": f"📸 {alt_text} ({filename})"},
-                        "annotations": {"italic": True, "color": "gray"}}]}})
-
-        elif line.strip().startswith("<p align") or line.strip().startswith("<sub>"):
-            # Render metadata as a callout block
-            blocks.append({"object": "block", "type": "callout",
-                "callout": {
-                    "rich_text": [{"type": "text", "text": {"content": "Writeup auto-generated by CTF Publisher ✅"}}],
-                    "icon":      {"type": "emoji", "emoji": "🤖"},
-                    "color":     "gray_background"
-                }})
-            # Skip until end of HTML block
-            while i < len(lines) and not lines[i].strip() == "---":
-                i += 1
-
-        elif line.strip():
-            # Truncate long lines to avoid Notion's 2000 char limit per block
-            content = line[:2000]
-            blocks.append({"object": "block", "type": "paragraph",
-                "paragraph": {"rich_text": [{"type": "text", "text": {"content": content}}]}})
-
-        i += 1
-
-    return blocks
-
-
 def write_back_to_notion(page_id: str, formatted_content: str, original_notes: str):
-    """
-    Write formatted writeup to Notion while preserving original notes.
-    Structure:
-      🤖 Formatted writeup (Claude's version)
-      ─── divider ───
-      📝 Original Notes (Kieran's raw notes, untouched)
-    """
     print("   → Clearing old Notion content...")
     clear_page_content(page_id)
     time.sleep(1)
 
     print("   → Writing formatted writeup to Notion...")
-
-    # Build formatted writeup blocks
     formatted_blocks = markdown_to_notion_blocks(formatted_content)
 
-    # Build the "original notes" section header + content
     separator_blocks = [
         {"object": "block", "type": "divider", "divider": {}},
         {
-            "object": "block",
-            "type": "callout",
+            "object": "block", "type": "callout",
             "callout": {
                 "rich_text": [{"type": "text", "text": {"content": "📝 Original Notes — Your raw notes as written"}}],
                 "icon":      {"type": "emoji", "emoji": "📝"},
@@ -547,25 +647,16 @@ def write_back_to_notion(page_id: str, formatted_content: str, original_notes: s
         {"object": "block", "type": "divider", "divider": {}},
     ]
 
-    # Convert original notes back to basic paragraph blocks
     original_blocks = []
     for line in original_notes.split("\n"):
         if not line.strip():
             continue
-        # Preserve code blocks from original
-        if line.startswith("```"):
-            continue  # skip fences, handled below
         original_blocks.append({
-            "object": "block",
-            "type": "paragraph",
-            "paragraph": {
-                "rich_text": [{"type": "text", "text": {"content": line[:2000]}}]
-            }
+            "object": "block", "type": "paragraph",
+            "paragraph": {"rich_text": [{"type": "text", "text": {"content": line[:2000]}}]}
         })
 
     all_blocks = formatted_blocks + separator_blocks + original_blocks
-
-    # Notion API limit: 100 blocks per request
     for i in range(0, len(all_blocks), 100):
         chunk = all_blocks[i:i + 100]
         notion.blocks.children.append(block_id=page_id, children=chunk)
@@ -575,7 +666,6 @@ def write_back_to_notion(page_id: str, formatted_content: str, original_notes: s
 
 
 def mark_as_published(page_id: str):
-    """Set Published=True on the Notion page."""
     notion.pages.update(
         page_id=page_id,
         properties={"Published": {"checkbox": True}}
@@ -588,18 +678,13 @@ def mark_as_published(page_id: str):
 # ─────────────────────────────────────────────
 
 def get_destination_folder(meta: dict) -> Path:
-    """Build CTF-Hub/Platform/Difficulty/RoomName/ and ensure READMEs exist."""
-    platform   = PLATFORM_FOLDERS.get(
-        meta["platform"].lower().replace(" ", ""), meta["platform"]
-    )
-    difficulty = DIFFICULTY_FOLDERS.get(
-        meta["difficulty"].lower(), meta["difficulty"]
-    )
-    room_clean   = re.sub(r'[^\w\-]', '', meta["room_name"].replace(" ", "-"))
+    platform   = PLATFORM_FOLDERS.get(meta["platform"].lower().replace(" ", ""), meta["platform"])
+    difficulty = DIFFICULTY_FOLDERS.get(meta["difficulty"].lower(), meta["difficulty"])
+    room_clean = re.sub(r'[^\w\-]', '', meta["room_name"].replace(" ", "-"))
+
     platform_dir = Path(CTFHUB_REPO_PATH) / platform
     diff_dir     = platform_dir / difficulty
 
-    # Auto-create READMEs for new platform/difficulty folders
     platform_dir.mkdir(parents=True, exist_ok=True)
     ensure_platform_readme(platform_dir, platform)
     diff_dir.mkdir(parents=True, exist_ok=True)
@@ -609,13 +694,9 @@ def get_destination_folder(meta: dict) -> Path:
 
 
 def git_commit_push(room_name: str, platform: str):
-    """Stage all changes, commit, and push."""
     print("   → Committing to GitHub...")
     try:
-        subprocess.run(
-            ["git", "add", "."],
-            cwd=CTFHUB_REPO_PATH, check=True, capture_output=True
-        )
+        subprocess.run(["git", "add", "."], cwd=CTFHUB_REPO_PATH, check=True, capture_output=True)
         commit_msg = f"writeup: Add {platform} - {room_name}"
         result = subprocess.run(
             ["git", "commit", "-m", commit_msg],
@@ -624,15 +705,11 @@ def git_commit_push(room_name: str, platform: str):
         if "nothing to commit" in result.stdout:
             print("   ℹ️  Nothing new to commit")
             return
-        # Pull latest remote changes first to avoid rejection
         subprocess.run(
             ["git", "pull", "--rebase", "origin", "main"],
             cwd=CTFHUB_REPO_PATH, check=True, capture_output=True
         )
-        subprocess.run(
-            ["git", "push"],
-            cwd=CTFHUB_REPO_PATH, check=True, capture_output=True
-        )
+        subprocess.run(["git", "push"], cwd=CTFHUB_REPO_PATH, check=True, capture_output=True)
         print(f"   ✅ Pushed: {commit_msg}")
     except subprocess.CalledProcessError as e:
         print(f"   ⚠️  Git error: {e.stderr}")
@@ -648,48 +725,74 @@ def process_page(page: dict):
     print(f"📝 Processing: {meta['room_name']}")
     print(f"   Platform: {meta['platform']} | Difficulty: {meta['difficulty']}")
 
-    # 1. Read rough notes from Notion
+    # 1. Read rough notes
     print("   → Reading notes from Notion...")
     raw_notes, image_urls = extract_blocks_as_text(meta["page_id"])
     print(f"   ✅ Got {len(raw_notes)} chars of notes, {len(image_urls)} image(s)")
 
-    # 2. Fetch room description from URL
-    room_info = fetch_room_description(meta["url"])
-
-    # 3. Create destination folder
+    # 2. Create destination folder
     dest_folder = get_destination_folder(meta)
     dest_folder.mkdir(parents=True, exist_ok=True)
 
-    # 4. Download screenshots
+    platform   = PLATFORM_FOLDERS.get(meta["platform"].lower().replace(" ", ""), meta["platform"])
+    difficulty = DIFFICULTY_FOLDERS.get(meta["difficulty"].lower(), meta["difficulty"])
+    diff_dir   = Path(CTFHUB_REPO_PATH) / platform / difficulty
+
+    # 3. Fetch room icon from platform page
+    icon_filename = fetch_room_icon(meta["url"], dest_folder, meta["room_name"])
+
+    # 4. Fetch room description
+    room_info = fetch_room_description(meta["url"])
+
+    # 5. Download screenshots
     saved_screenshots = []
     if image_urls:
         print(f"   → Downloading {len(image_urls)} screenshot(s)...")
         saved_screenshots = download_screenshots(image_urls, dest_folder)
 
-    # 5. Format with Claude
-    formatted = format_with_claude(raw_notes, room_info, meta, saved_screenshots)
+    # 6. Format with Claude
+    formatted = format_with_claude(raw_notes, room_info, meta, saved_screenshots, icon_filename)
 
-    # 6. Save markdown to GitHub repo
+    # 7. Save markdown to GitHub
     room_clean  = re.sub(r'[^\w\-]', '', meta["room_name"].replace(" ", "-"))
     output_file = dest_folder / f"{room_clean}.md"
     output_file.write_text(formatted, encoding="utf-8")
     print(f"   ✅ Writeup saved: {output_file}")
 
-    # 7. Write formatted content back to Notion
-    # Wrapped separately so a Notion error never blocks GitHub push or Published tick
+    # 8. Update difficulty README table
+    update_difficulty_readme(diff_dir, platform, difficulty, meta, icon_filename)
+
+    # 9. Write formatted content back to Notion
     try:
         write_back_to_notion(meta["page_id"], formatted, raw_notes)
     except Exception as e:
-        print(f"   ⚠️  Notion write-back failed (will still push to GitHub): {e}")
+        print(f"   ⚠️  Notion write-back failed: {e}")
 
-    # 8. Commit + push to GitHub
+    # 10. Set Notion page icon if we got one from the platform
+    if icon_filename and meta["url"]:
+        try:
+            headers   = {"User-Agent": "Mozilla/5.0"}
+            resp      = requests.get(meta["url"], headers=headers, timeout=10)
+            og_match  = re.search(r'<meta[^>]+property=["\']og:image["\'][^>]+content=["\']([^"\']+)["\']', resp.text)
+            if not og_match:
+                og_match = re.search(r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+property=["\']og:image["\']', resp.text)
+            if not og_match:
+                s3_match = re.search(r'https://tryhackme-images\.s3\.amazonaws\.com/room-icons/[^\s"\']+', resp.text)
+                if s3_match:
+                    set_notion_page_icon(meta["page_id"], s3_match.group(0))
+            else:
+                set_notion_page_icon(meta["page_id"], og_match.group(1))
+        except Exception as e:
+            print(f"   ⚠️  Could not set Notion icon: {e}")
+
+    # 11. Commit + push to GitHub
     git_commit_push(meta["room_name"], meta["platform"])
 
-    # 9. Mark as published in Notion — always runs even if write-back had issues
+    # 12. Mark as published
     try:
         mark_as_published(meta["page_id"])
     except Exception as e:
-        print(f"   ⚠️  Could not mark as Published in Notion: {e}")
+        print(f"   ⚠️  Could not mark as Published: {e}")
 
     print(f"🎉 Done: {meta['room_name']}\n")
 
@@ -716,75 +819,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-# ─────────────────────────────────────────────
-# AUTO README GENERATION
-# ─────────────────────────────────────────────
-
-PLATFORM_INFO = {
-    "TryHackMe":       {"emoji": "🔴", "desc": "TryHackMe rooms organised by difficulty."},
-    "HackTheBox":      {"emoji": "🟢", "desc": "HackTheBox machine and challenge writeups."},
-    "VulnHub":         {"emoji": "🟣", "desc": "VulnHub vulnerable machine writeups."},
-    "PwnedLabs":       {"emoji": "🔵", "desc": "PwnedLabs cloud and AD challenge writeups."},
-    "PicoCTF":         {"emoji": "🏴", "desc": "PicoCTF challenge writeups."},
-    "RootMe":          {"emoji": "⚫", "desc": "Root-Me challenge writeups."},
-    "OffSec":          {"emoji": "🟠", "desc": "OffSec Proving Grounds Play and Practice machines. OSCP-relevant content."},
-    "ProvingGrounds":  {"emoji": "🟠", "desc": "OffSec Proving Grounds machines. Direct OSCP preparation and practice."},
-    "pwn.college":     {"emoji": "🎓", "desc": "pwn.college challenge writeups. Focused on binary exploitation and system security."},
-    "CTFtime":         {"emoji": "🏁", "desc": "General CTF competition writeups from various events listed on CTFtime."},
-    "SANSHolidayHack": {"emoji": "🎄", "desc": "SANS Holiday Hack Challenge writeups. Annual CTF with real-world scenarios."},
-}
-
-DIFF_EMOJI = {"Easy": "🟢", "Medium": "🟡", "Hard": "🔴", "Insane": "💀"}
-DIFF_DESC  = {
-    "Easy":   "Beginner-friendly rooms focusing on core methodology and common vulnerabilities.",
-    "Medium": "Intermediate rooms requiring chained exploits and deeper enumeration.",
-    "Hard":   "Advanced rooms involving complex attack chains and deep technical knowledge.",
-    "Insane": "Expert-level machines requiring advanced exploitation techniques.",
-}
-
-
-def ensure_platform_readme(platform_dir: Path, platform: str):
-    """Create platform README if it doesn't exist."""
-    readme = platform_dir / "README.md"
-    if readme.exists():
-        return
-    info  = PLATFORM_INFO.get(platform, {"emoji": "📁", "desc": f"{platform} writeups."})
-    content = f"""# {info['emoji']} {platform}
-
-{info['desc']}
-
----
-
-> Writeups authored in Notion, auto-published via CTF Publisher.
-"""
-    readme.write_text(content, encoding="utf-8")
-    print(f"   ✅ Created {platform}/README.md")
-
-
-def ensure_difficulty_readme(diff_dir: Path, platform: str, difficulty: str):
-    """Create difficulty README if it doesn't exist."""
-    readme = diff_dir / "README.md"
-    if readme.exists():
-        return
-    emoji = DIFF_EMOJI.get(difficulty, "📁")
-    desc  = DIFF_DESC.get(difficulty, f"{difficulty} difficulty writeups.")
-    content = f"""# {emoji} {platform} — {difficulty}
-
-{desc}
-
----
-
-## 📋 Writeups
-
-| Room | Tags | Date |
-|------|------|------|
-| *Auto-populated as writeups are added* | | |
-
----
-
-> Writeups authored in Notion, auto-published via CTF Publisher.
-"""
-    readme.write_text(content, encoding="utf-8")
-    print(f"   ✅ Created {platform}/{difficulty}/README.md")
