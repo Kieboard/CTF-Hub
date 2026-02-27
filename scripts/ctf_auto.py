@@ -529,10 +529,11 @@ def update_difficulty_readme(diff_dir: Path, platform: str, difficulty: str, met
     content    = readme.read_text(encoding="utf-8")
     room_clean = re.sub(r'[^\w\-]', '', meta["room_name"].replace(" ", "-"))
 
-    # Skip if already has a row for this room
+    # If room already has a row, remove it so we can re-add with updated info
     if f"]({room_clean}/" in content:
-        print(f"   ℹ️  {meta['room_name']} already in README table")
-        return
+        lines   = content.split("\n")
+        content = "\n".join(l for l in lines if f"]({room_clean}/" not in l)
+        print(f"   ℹ️  Updating existing {meta['room_name']} row in README table")
 
     # Icon cell — use saved icon if available
     if icon_filename:
