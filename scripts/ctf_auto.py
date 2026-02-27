@@ -127,6 +127,7 @@ def get_page_properties(page: dict) -> dict:
         "platform":   "",
         "difficulty": "",
         "url":        "",
+        "icon_url":   "",
         "tags":       [],
         "date":       datetime.now().strftime("%B %d, %Y"),
     }
@@ -162,6 +163,23 @@ def get_page_properties(page: dict) -> dict:
     tags_prop = props.get("Tags", {})
     if tags_prop.get("type") == "multi_select":
         meta["tags"] = [t["name"] for t in tags_prop.get("multi_select", [])]
+
+    # Icon URL — check "Icon URL" (url type) or "Files" (files type) property
+    for icon_key in ("Icon URL", "Icon", "Files"):
+        icon_prop = props.get(icon_key, {})
+        itype = icon_prop.get("type", "")
+        if itype == "url" and icon_prop.get("url"):
+            meta["icon_url"] = icon_prop["url"]
+            break
+        elif itype == "files":
+            files = icon_prop.get("files", [])
+            if files:
+                f = files[0]
+                if f.get("type") == "external":
+                    meta["icon_url"] = f["external"]["url"]
+                elif f.get("type") == "file":
+                    meta["icon_url"] = f["file"]["url"]
+                break
 
     return meta
 
@@ -262,11 +280,30 @@ def fetch_room_description(url: str) -> str:
         return ""
 
 
-def fetch_room_icon(url: str, dest_folder: Path, room_name: str) -> str:
+def fetch_room_icon(direct_url: str, page_url: str, dest_folder: Path, room_name: str) -> str:
     """
-    Scrape the room icon from the platform page using og:image meta tag.
+    Get the room icon. Tries in order:
+    1. Direct URL from Notion (Files or Icon URL property)
+    2. og:image scrape from the platform page URL
     Saves as RoomName.png. Returns filename if saved, else empty string.
     """
+    room_clean = re.sub(r'[^\w\-]', '', room_name.replace(" ", ""))
+    filename   = f"{room_clean}.png"
+
+    # Try direct URL from Notion first
+    if direct_url:
+        try:
+            print(f"   → Downloading icon from Notion Files property...")
+            resp = requests.get(direct_url, timeout=15)
+            if resp.status_code == 200:
+                icon_path = dest_folder / filename
+                icon_path.write_bytes(resp.content)
+                print(f"   ✅ Icon saved: {filename}")
+                return filename
+        except Exception as e:
+            print(f"   ⚠️  Direct icon download failed: {e}")
+
+    url = page_url
     if not url:
         return ""
     print(f"   → Fetching room icon from: {url}")
@@ -516,9 +553,14 @@ def update_difficulty_readme(diff_dir: Path, platform: str, difficulty: str, met
     new_row   = f"| {icon_cell} | {room_link} | {tags_cell} | {meta['date']} |"
 
     # Replace placeholder or append
-    placeholder = "| *Auto-populated as writeups are added* | | | |"
-    if placeholder in content:
-        content = content.replace(placeholder, new_row)
+    # Match either 3-cell or 4-cell placeholder variants
+    for placeholder in [
+        "| *Auto-populated as writeups are added* | | | |",
+        "| *Auto-populated as writeups are added* | | |",
+    ]:
+        if placeholder in content:
+            content = content.replace(placeholder, new_row)
+            break
     else:
         lines        = content.split("\n")
         last_row_idx = -1
@@ -738,8 +780,8 @@ def process_page(page: dict):
     difficulty = DIFFICULTY_FOLDERS.get(meta["difficulty"].lower(), meta["difficulty"])
     diff_dir   = Path(CTFHUB_REPO_PATH) / platform / difficulty
 
-    # 3. Fetch room icon from platform page
-    icon_filename = fetch_room_icon(meta["url"], dest_folder, meta["room_name"])
+    # 3. Fetch room icon — from Notion Files property or platform page
+    icon_filename = fetch_room_icon(meta.get("icon_url", ""), meta["url"], dest_folder, meta["room_name"])
 
     # 4. Fetch room description
     room_info = fetch_room_description(meta["url"])
