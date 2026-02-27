@@ -1,4 +1,4 @@
-# 🟡 TryHackMe — Medium
+# 🟡 PwnedLabs — Medium
 
 Intermediate rooms requiring chained exploits, deeper enumeration, and creative thinking.
 
