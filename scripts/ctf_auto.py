@@ -59,6 +59,21 @@ DIFFICULTY_FOLDERS = {
     "insane": "Insane",
 }
 
+# Notion's full list of accepted code block languages
+NOTION_CODE_LANGUAGES = {
+    "abap","abc","agda","arduino","ascii art","assembly","bash","basic","bnf",
+    "c","c#","c++","clojure","coffeescript","coq","css","dart","dhall","diff",
+    "docker","ebnf","elixir","elm","erlang","f#","flow","fortran","gherkin",
+    "glsl","go","graphql","groovy","haskell","hcl","html","idris","java",
+    "javascript","json","julia","kotlin","latex","less","lisp","livescript",
+    "llvm ir","lua","makefile","markdown","markup","matlab","mathematica",
+    "mermaid","nix","notion formula","objective-c","ocaml","pascal","perl",
+    "php","plain text","powershell","prolog","protobuf","purescript","python",
+    "r","racket","reason","ruby","rust","sass","scala","scheme","scss","shell",
+    "smalltalk","solidity","sql","swift","toml","typescript","vb.net","verilog",
+    "vhdl","visual basic","webassembly","xml","yaml","java/c/c++/c#"
+}
+
 IMAGE_EXTENSIONS = {".png", ".jpg", ".jpeg", ".gif", ".webp"}
 
 # ─────────────────────────────────────────────
@@ -422,7 +437,7 @@ def markdown_to_notion_blocks(markdown: str) -> list:
                 "type": "code",
                 "code": {
                     "rich_text": [{"type": "text", "text": {"content": "\n".join(code_lines)}}],
-                    "language": lang if lang else "plain text"
+                    "language": lang if lang in NOTION_CODE_LANGUAGES else "plain text"
                 }
             })
 
@@ -634,13 +649,20 @@ def process_page(page: dict):
     print(f"   ✅ Writeup saved: {output_file}")
 
     # 7. Write formatted content back to Notion
-    write_back_to_notion(meta["page_id"], formatted, raw_notes)
+    # Wrapped separately so a Notion error never blocks GitHub push or Published tick
+    try:
+        write_back_to_notion(meta["page_id"], formatted, raw_notes)
+    except Exception as e:
+        print(f"   ⚠️  Notion write-back failed (will still push to GitHub): {e}")
 
     # 8. Commit + push to GitHub
     git_commit_push(meta["room_name"], meta["platform"])
 
-    # 9. Mark as published in Notion
-    mark_as_published(meta["page_id"])
+    # 9. Mark as published in Notion — always runs even if write-back had issues
+    try:
+        mark_as_published(meta["page_id"])
+    except Exception as e:
+        print(f"   ⚠️  Could not mark as Published in Notion: {e}")
 
     print(f"🎉 Done: {meta['room_name']}\n")
 
