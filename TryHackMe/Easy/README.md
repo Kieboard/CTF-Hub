@@ -9,6 +9,7 @@ Beginner-friendly rooms. Focus on core methodology, enumeration fundamentals, an
 | Room | Tags | Date |
 |------|------|------|
 | *Auto-populated as writeups are added* | | |
+|  | [CupidBot](CupidBot/CupidBot.md) | `#tryhackme` `#easy` `#thm` | February 27, 2026 |
 
 ---
 
