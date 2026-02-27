@@ -651,22 +651,32 @@ def markdown_to_notion_blocks(markdown: str) -> list:
 
 
 def clear_page_content(page_id: str):
-    cursor = None
-    while True:
-        if cursor:
-            response = notion.blocks.children.list(block_id=page_id, page_size=100, start_cursor=cursor)
-        else:
-            response = notion.blocks.children.list(block_id=page_id, page_size=100)
-        blocks = response.get("results", [])
-        for block in blocks:
-            try:
-                notion.blocks.delete(block_id=block["id"])
-            except Exception:
-                pass
-        if not response.get("has_more"):
-            break
-        cursor = response.get("next_cursor")
-        time.sleep(0.3)
+    """Delete all blocks on the page with retry to ensure full clearance."""
+    for attempt in range(3):  # retry up to 3 times to handle large pages
+        cursor = None
+        deleted = 0
+        while True:
+            if cursor:
+                response = notion.blocks.children.list(block_id=page_id, page_size=100, start_cursor=cursor)
+            else:
+                response = notion.blocks.children.list(block_id=page_id, page_size=100)
+            blocks = response.get("results", [])
+            if not blocks:
+                break
+            for block in blocks:
+                try:
+                    notion.blocks.delete(block_id=block["id"])
+                    deleted += 1
+                    time.sleep(0.1)
+                except Exception:
+                    pass
+            if not response.get("has_more"):
+                break
+            cursor = response.get("next_cursor")
+            time.sleep(0.3)
+        if deleted == 0:
+            break  # nothing left to delete
+        time.sleep(1)  # wait before checking again
 
 
 def write_back_to_notion(page_id: str, formatted_content: str, original_notes: str):
