@@ -602,6 +602,11 @@ def git_commit_push(room_name: str, platform: str):
         if "nothing to commit" in result.stdout:
             print("   ℹ️  Nothing new to commit")
             return
+        # Pull latest remote changes first to avoid rejection
+        subprocess.run(
+            ["git", "pull", "--rebase", "origin", "main"],
+            cwd=CTFHUB_REPO_PATH, check=True, capture_output=True
+        )
         subprocess.run(
             ["git", "push"],
             cwd=CTFHUB_REPO_PATH, check=True, capture_output=True
