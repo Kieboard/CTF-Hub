@@ -6,9 +6,9 @@ Beginner-friendly rooms. Focus on core methodology, enumeration fundamentals, an
 
 ## 📋 Writeups
 
-| Room | Tags | Date |
-|------|------|------|
-| *Auto-populated as writeups are added* | | |
+| Icon | Room | Tags | Date |
+|------|------|------|------|
+| *Auto-populated as writeups are added* | | | |
 
 ---
 

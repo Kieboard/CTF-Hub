@@ -6,9 +6,9 @@ Expert-level machines requiring advanced exploitation techniques and deep system
 
 ## 📋 Writeups
 
-| Room | Tags | Date |
-|------|------|------|
-| *Auto-populated as writeups are added* | | |
+| Icon | Room | Tags | Date |
+|------|------|------|------|
+| *Auto-populated as writeups are added* | | | |
 
 ---
 
