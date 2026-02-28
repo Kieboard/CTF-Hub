@@ -22,6 +22,7 @@ NOTION_TOKEN       = os.environ["NOTION_TOKEN"]
 NOTION_DATABASE_ID = os.environ["NOTION_DATABASE_ID"]
 ANTHROPIC_API_KEY  = os.environ["ANTHROPIC_API_KEY"]
 CTFHUB_REPO_PATH   = os.environ.get("CTFHUB_REPO_PATH", ".")
+WRITEUPS_PATH      = Path(CTFHUB_REPO_PATH) / "writeups"
 
 notion = Client(auth=NOTION_TOKEN)
 claude = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
@@ -735,7 +736,7 @@ def get_destination_folder(meta: dict) -> Path:
     difficulty = DIFFICULTY_FOLDERS.get(meta["difficulty"].lower(), meta["difficulty"])
     room_clean = re.sub(r'[^\w\-]', '', meta["room_name"].replace(" ", "-"))
 
-    platform_dir = Path(CTFHUB_REPO_PATH) / platform
+    platform_dir = WRITEUPS_PATH / platform
     diff_dir     = platform_dir / difficulty
 
     platform_dir.mkdir(parents=True, exist_ok=True)
@@ -805,7 +806,7 @@ def update_main_readme_stats():
     total_easy = total_medium = total_hard = total_insane = 0
 
     for platform, emoji in platforms.items():
-        platform_dir = Path(CTFHUB_REPO_PATH) / platform
+        platform_dir = WRITEUPS_PATH / platform
         if not platform_dir.exists():
             continue
 
@@ -882,7 +883,7 @@ def process_page(page: dict):
 
     platform   = PLATFORM_FOLDERS.get(meta["platform"].lower().replace(" ", ""), meta["platform"])
     difficulty = DIFFICULTY_FOLDERS.get(meta["difficulty"].lower(), meta["difficulty"])
-    diff_dir   = Path(CTFHUB_REPO_PATH) / platform / difficulty
+    diff_dir   = WRITEUPS_PATH / platform / difficulty
 
     # 3. Fetch room icon — from Notion Files property or platform page
     icon_filename = fetch_room_icon(meta.get("icon_url", ""), meta["url"], dest_folder, meta["room_name"])

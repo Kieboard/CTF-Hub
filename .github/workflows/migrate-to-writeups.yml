@@ -1,0 +1,45 @@
+name: Migrate to writeups folder
+
+on:
+  workflow_dispatch:
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout CTF-Hub
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure Git
+        run: |
+          git config user.name "CTF Publisher Bot"
+          git config user.email "github-actions@github.com"
+
+      - name: Create writeups folder and move platforms
+        run: |
+          mkdir -p writeups
+
+          for folder in TryHackMe HackTheBox VulnHub PwnedLabs OffSec ProvingGrounds pwn.college PicoCTF RootMe CTFtime SANSHolidayHack; do
+            if [ -d "$folder" ]; then
+              git mv "$folder" "writeups/$folder"
+              echo "Moved $folder → writeups/$folder"
+            fi
+          done
+
+          # Move Templates if it exists at root
+          if [ -d "Templates" ]; then
+            git mv "Templates" "writeups/Templates"
+            echo "Moved Templates → writeups/Templates"
+          fi
+
+      - name: Commit and push
+        run: |
+          git add .
+          git commit -m "refactor: move all platform folders into writeups/"
+          git push
