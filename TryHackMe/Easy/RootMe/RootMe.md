@@ -82,7 +82,9 @@ With the shell uploaded, I started a Netcat listener:
 nc -lvnp 9001
 ```
 
-I then navigated to `10.10.110.118/uploads`, clicked the uploaded shell, and caught the connection. To stabilise the shell I spawned a proper TTY using Python:
+I then navigated to `10.10.110.118/uploads`, clicked the uploaded shell, and caught the connection — we had a shell.
+
+To stabilise it I spawned a proper TTY using Python:
 
 ```bash
 which python
