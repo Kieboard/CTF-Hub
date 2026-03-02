@@ -16,31 +16,6 @@ All writeups are authored in Notion and auto-published here via a custom CI/CD p
 | **Total** | **2** | **0** | **0** | **2** |
 
 
-## 📂 Platforms
-
-### 🔴 [TryHackMe](./writeups/TryHackMe/)
-Hands-on labs focused on fundamentals, methodology, and attack flow. Organised by difficulty for consistent progression.
-
-### 🟢 [HackTheBox](./writeups/HackTheBox/)
-Machine and challenge writeups covering real-world attack scenarios and advanced exploitation.
-
-### 🟣 [VulnHub](./writeups/VulnHub/)
-Offline vulnerable machine writeups for lab-based practice and methodology building.
-
-### 🔵 [PwnedLabs](./writeups/PwnedLabs/)
-Cloud and Active Directory focused challenges. Relevant to enterprise environments and red team operations.
-
-### 🟠 [OffSec / Proving Grounds](./writeups/ProvingGrounds/)
-OSCP-relevant machine writeups. Direct preparation for the PWK course and exam.
-
-### 🎓 [pwn.college](./writeups/pwn.college/)
-Binary exploitation and system security challenges. Lower-level skills development.
-
-### 🏁 [CTFtime](./writeups/CTFtime/)
-Writeups from open CTF competitions.
-
----
-
 ## 🧰 Supporting Material
 
 - [`Templates/`](./writeups/Templates/) — Reusable writeup templates
