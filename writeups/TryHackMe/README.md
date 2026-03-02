@@ -14,4 +14,13 @@ TryHackMe rooms organised by difficulty. Focused on fundamentals, methodology, a
 
 ---
 
+
+## 🖥️ Machines
+
+| Icon | Room | Difficulty | Tags | Date |
+|------|------|------------|------|------|
+| <img src="Easy/CupidBot/CupidBot.png" width="32" alt="CupidBot"> | [CupidBot](Easy/CupidBot/CupidBot.md) | `Easy` | `#machine` `#prompt-injection` `#ai-security` `#web` | Mar 02, 2026 |
+
+---
+
 > Writeups authored in Notion, auto-published via CTF Publisher.
