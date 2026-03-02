@@ -62,6 +62,16 @@ DIFFICULTY_FOLDERS = {
     "insane": "Insane",
 }
 
+# Type sections for platform READMEs
+TYPE_SECTIONS = {
+    "Machine":    {"emoji": "🖥️",  "header": "Machines"},
+    "Sherlock":   {"emoji": "🔵",  "header": "Sherlocks"},
+    "Challenge":  {"emoji": "🏴",  "header": "Challenges"},
+    "Walkthrough":{"emoji": "📖",  "header": "Walkthroughs"},
+    "CTF":        {"emoji": "🏁",  "header": "CTF Events"},
+    "Dojo":       {"emoji": "🎓",  "header": "Dojos"},
+}
+
 IMAGE_EXTENSIONS = {".png", ".jpg", ".jpeg", ".gif", ".webp"}
 
 NOTION_CODE_LANGUAGES = {
@@ -94,7 +104,7 @@ PLATFORM_INFO = {
 
 DIFF_EMOJI = {"Easy": "🟢", "Medium": "🟡", "Hard": "🔴", "Insane": "💀"}
 DIFF_DESC  = {
-    "Easy":   "Beginner-friendly rooms focusing on core methodology and common vulnerabilities.",
+    "Easy":   "Beginner-friendly rooms. Focus on core methodology, enumeration fundamentals, and common vulnerabilities.",
     "Medium": "Intermediate rooms requiring chained exploits and deeper enumeration.",
     "Hard":   "Advanced rooms involving complex attack chains and deep technical knowledge.",
     "Insane": "Expert-level machines requiring advanced exploitation techniques.",
@@ -130,7 +140,8 @@ def get_page_properties(page: dict) -> dict:
         "url":        "",
         "icon_url":   "",
         "tags":       [],
-        "date":       datetime.now().strftime("%B %d, %Y"),
+        "room_type":  "",
+        "date":       datetime.now().strftime("%b %d, %Y"),
     }
 
     for title_key in ("Note Title", "Name", "Title", "Room", "Task"):
@@ -164,6 +175,13 @@ def get_page_properties(page: dict) -> dict:
     tags_prop = props.get("Tags", {})
     if tags_prop.get("type") == "multi_select":
         meta["tags"] = [t["name"] for t in tags_prop.get("multi_select", [])]
+
+    # Category property — auto-set by pipeline, or read if already exists
+    for cat_key in ("Category", "Type"):
+        cat_prop = props.get(cat_key, {})
+        if cat_prop.get("type") == "select" and cat_prop.get("select"):
+            meta["room_type"] = cat_prop["select"]["name"]
+            break
 
     # Icon URL — check "Icon URL" (url type) or "Files" (files type) property
     for icon_key in ("Icon URL", "Icon", "Files"):
@@ -282,16 +300,9 @@ def fetch_room_description(url: str) -> str:
 
 
 def fetch_room_icon(direct_url: str, page_url: str, dest_folder: Path, room_name: str) -> str:
-    """
-    Get the room icon. Tries in order:
-    1. Direct URL from Notion (Files or Icon URL property)
-    2. og:image scrape from the platform page URL
-    Saves as RoomName.png. Returns filename if saved, else empty string.
-    """
     room_clean = re.sub(r'[^\w\-]', '', room_name.replace(" ", ""))
     filename   = f"{room_clean}.png"
 
-    # Try direct URL from Notion first
     if direct_url:
         try:
             print(f"   → Downloading icon from Notion Files property...")
@@ -312,37 +323,28 @@ def fetch_room_icon(direct_url: str, page_url: str, dest_folder: Path, room_name
         headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
         resp = requests.get(url, headers=headers, timeout=10)
         if resp.status_code != 200:
-            print(f"   ⚠️  Could not fetch page for icon (status {resp.status_code})")
             return ""
 
-        # Try og:image first
         og_match = re.search(r'<meta[^>]+property=["\']og:image["\'][^>]+content=["\']([^"\']+)["\']', resp.text)
         if not og_match:
             og_match = re.search(r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+property=["\']og:image["\']', resp.text)
 
-        # TryHackMe S3 room icon fallback pattern
         if not og_match:
             s3_match = re.search(r'https://tryhackme-images\.s3\.amazonaws\.com/room-icons/[^\s"\']+', resp.text)
             if s3_match:
                 icon_url = s3_match.group(0)
             else:
-                print("   ⚠️  No room icon found on page")
                 return ""
         else:
             icon_url = og_match.group(1)
 
-        # Download the icon
         icon_resp = requests.get(icon_url, headers=headers, timeout=15)
         if icon_resp.status_code == 200:
-            room_clean = re.sub(r'[^\w\-]', '', room_name.replace(" ", ""))
-            filename   = f"{room_clean}.png"
-            icon_path  = dest_folder / filename
+            icon_path = dest_folder / filename
             icon_path.write_bytes(icon_resp.content)
             print(f"   ✅ Icon saved: {filename}")
             return filename
-        else:
-            print(f"   ⚠️  Icon download returned status {icon_resp.status_code}")
-            return ""
+        return ""
 
     except Exception as e:
         print(f"   ⚠️  Could not fetch room icon: {e}")
@@ -350,7 +352,6 @@ def fetch_room_icon(direct_url: str, page_url: str, dest_folder: Path, room_name
 
 
 def set_notion_page_icon(page_id: str, icon_url: str):
-    """Set the Notion page icon to an external URL."""
     try:
         notion.pages.update(
             page_id=page_id,
@@ -373,8 +374,6 @@ def download_screenshots(image_urls: list, dest_folder: Path) -> list:
                 dest.write_bytes(resp.content)
                 saved.append(filename)
                 print(f"   ✅ {filename}")
-            else:
-                print(f"   ⚠️  Screenshot {i} returned status {resp.status_code}")
         except Exception as e:
             print(f"   ⚠️  Could not download screenshot {i}: {e}")
     return saved
@@ -474,6 +473,38 @@ Return ONLY the formatted markdown. Nothing else."""
     return message.content[0].text
 
 
+def suggest_topic_tags(raw_notes: str, room_info: str, room_name: str) -> list:
+    """Ask Claude to suggest 2-3 concise topic tags based on the room content."""
+    prompt = f"""You are tagging a CTF room for a portfolio. Based on the room name, description and notes below, suggest exactly 2-3 short topic tags that describe what the room is about technically.
+
+Rules:
+- Tags must be lowercase, no spaces (use hyphens), no # symbol
+- Be specific and technical e.g. prompt-injection, sqli, privilege-escalation, buffer-overflow, file-upload, lfi, rce, active-directory, web, forensics, crypto, osint, reversing, steganography, dfir, malware
+- Do NOT include platform names (tryhackme, htb) or difficulty (easy, medium, hard)
+- Do NOT include type names (machine, sherlock, challenge, walkthrough, ctf, dojo)
+- Return ONLY a comma separated list of tags, nothing else. Example: prompt-injection,ai-security,web
+
+Room: {room_name}
+Description: {room_info[:500] if room_info else "Not available"}
+Notes summary: {raw_notes[:500]}"""
+
+    try:
+        message = claude.messages.create(
+            model="claude-sonnet-4-6",
+            max_tokens=50,
+            messages=[{"role": "user", "content": prompt}]
+        )
+        raw = message.content[0].text.strip().lower()
+        tags = [t.strip().replace(" ", "-") for t in raw.split(",") if t.strip()]
+        tags = [re.sub(r"[^a-z0-9\-]", "", t) for t in tags]
+        tags = [t for t in tags if t][:3]
+        print(f"   ✅ Topic tags: {tags}")
+        return tags
+    except Exception as e:
+        print(f"   ⚠️  Could not generate topic tags: {e}")
+        return []
+
+
 # ─────────────────────────────────────────────
 # README MANAGEMENT
 # ─────────────────────────────────────────────
@@ -521,7 +552,76 @@ def ensure_difficulty_readme(diff_dir: Path, platform: str, difficulty: str):
     print(f"   ✅ Created {platform}/{difficulty}/README.md")
 
 
-def update_difficulty_readme(diff_dir: Path, platform: str, difficulty: str, meta: dict, icon_filename: str):
+def update_platform_readme(platform_dir: Path, platform: str, meta: dict, icon_filename: str, topic_tags: list):
+    """Update the platform README with type-based sections."""
+    readme = platform_dir / "README.md"
+    info   = PLATFORM_INFO.get(platform, {"emoji": "📁", "desc": f"{platform} writeups."})
+
+    # Load existing content or start fresh
+    content = readme.read_text(encoding="utf-8") if readme.exists() else ""
+
+    room_type  = meta.get("room_type", "") or "Other"
+    section    = TYPE_SECTIONS.get(room_type, {"emoji": "📁", "header": room_type or "Other"})
+    section_header = f"## {section['emoji']} {section['header']}"
+    table_header   = "| Icon | Room | Difficulty | Tags | Date |\n|------|------|------------|------|------|"
+
+    # Build the row
+    room_clean = re.sub(r'[^\w\-]', '', meta["room_name"].replace(" ", "-"))
+    diff_dir   = DIFFICULTY_FOLDERS.get(meta["difficulty"].lower(), meta["difficulty"])
+    room_link  = f"[{meta['room_name']}]({diff_dir}/{room_clean}/{room_clean}.md)"
+
+    if icon_filename:
+        icon_cell = f'<img src="{diff_dir}/{room_clean}/{icon_filename}" width="32" alt="{meta["room_name"]}">'
+    else:
+        icon_cell = ""
+
+    # Tags: type tag first, then AI topic tags, then user tags
+    redundant = {"thm", "htb", "tryhackme", "hackthebox", "easy", "medium", "hard", "insane"}
+    type_tag   = [f"`#{room_type.lower()}`"] if room_type else []
+    ai_tags    = [f"`#{t}`" for t in topic_tags]
+    user_tags  = [f"`#{t.lower().replace(' ', '-')}`" for t in meta["tags"]
+                  if t.lower().replace(" ", "") not in redundant]
+    all_tags   = list(dict.fromkeys(type_tag + ai_tags + user_tags))[:5]
+    tags_cell  = " ".join(all_tags)
+
+    diff_badge = f"`{meta['difficulty']}`"
+    new_row    = f"| {icon_cell} | {room_link} | {diff_badge} | {tags_cell} | {meta['date']} |"
+
+    # If room already exists in the file, remove the old row
+    if f"]({diff_dir}/{room_clean}/" in content:
+        lines   = content.split("\n")
+        content = "\n".join(l for l in lines if f"]({diff_dir}/{room_clean}/" not in l)
+
+    # Check if the section already exists
+    if section_header in content:
+        # Find the section and append the row after the last row in its table
+        lines        = content.split("\n")
+        section_idx  = next(i for i, l in enumerate(lines) if l.strip() == section_header)
+        last_row_idx = section_idx
+        for i in range(section_idx + 1, len(lines)):
+            if lines[i].startswith("| ") and "---" not in lines[i]:
+                last_row_idx = i
+            elif lines[i].startswith("## ") and i > section_idx + 1:
+                break  # hit next section
+        lines.insert(last_row_idx + 1, new_row)
+        content = "\n".join(lines)
+    else:
+        # Add a new section at the end
+        new_section = f"\n{section_header}\n\n{table_header}\n{new_row}\n"
+        # Insert before the footer quote if it exists
+        if "> Writeups authored" in content:
+            content = content.replace(
+                "> Writeups authored in Notion, auto-published via CTF Publisher.",
+                new_section + "\n---\n\n> Writeups authored in Notion, auto-published via CTF Publisher."
+            )
+        else:
+            content = content.rstrip() + new_section
+
+    readme.write_text(content, encoding="utf-8")
+    print(f"   ✅ Updated {platform}/README.md — added to {section['header']} section")
+
+
+def update_difficulty_readme(diff_dir: Path, platform: str, difficulty: str, meta: dict, icon_filename: str, topic_tags: list = None):
     """Add a row for this writeup to the difficulty README table."""
     readme = diff_dir / "README.md"
     if not readme.exists():
@@ -530,32 +630,33 @@ def update_difficulty_readme(diff_dir: Path, platform: str, difficulty: str, met
     content    = readme.read_text(encoding="utf-8")
     room_clean = re.sub(r'[^\w\-]', '', meta["room_name"].replace(" ", "-"))
 
-    # If room already has a row, remove it so we can re-add with updated info
     if f"]({room_clean}/" in content:
         lines   = content.split("\n")
         content = "\n".join(l for l in lines if f"]({room_clean}/" not in l)
         print(f"   ℹ️  Updating existing {meta['room_name']} row in README table")
 
-    # Icon cell — use saved icon if available
     if icon_filename:
         icon_cell = f'<img src="{room_clean}/{icon_filename}" width="32" alt="{meta["room_name"]}">'
     else:
         icon_cell = ""
 
-    # Tags cell — cap at 4 for readability
-    auto_tags = [
+    # Tags: type first, then AI topic tags, then user tags
+    redundant  = {"thm", "htb", "tryhackme", "hackthebox", "easy", "medium", "hard", "insane"}
+    room_type  = meta.get("room_type", "")
+    type_tag   = [f"`#{room_type.lower()}`"] if room_type else []
+    auto_tags  = [
         f"`#{meta['platform'].lower().replace(' ', '')}`",
         f"`#{meta['difficulty'].lower()}`"
     ]
-    extra_tags = [f"`#{t.lower().replace(' ', '-')}`" for t in meta["tags"]]
-    all_tags   = list(dict.fromkeys(auto_tags + extra_tags))[:4]
+    ai_tags    = [f"`#{t}`" for t in (topic_tags or [])]
+    user_tags  = [f"`#{t.lower().replace(' ', '-')}`" for t in meta["tags"]
+                  if t.lower().replace(" ", "") not in redundant]
+    all_tags   = list(dict.fromkeys(auto_tags + type_tag + ai_tags + user_tags))[:6]
     tags_cell  = " ".join(all_tags)
 
     room_link = f"[{meta['room_name']}]({room_clean}/{room_clean}.md)"
     new_row   = f"| {icon_cell} | {room_link} | {tags_cell} | {meta['date']} |"
 
-    # Replace placeholder or append
-    # Match either 3-cell or 4-cell placeholder variants
     for placeholder in [
         "| *Auto-populated as writeups are added* | | | |",
         "| *Auto-populated as writeups are added* | | |",
@@ -653,8 +754,8 @@ def markdown_to_notion_blocks(markdown: str) -> list:
 
 def clear_page_content(page_id: str):
     """Delete all blocks on the page with retry to ensure full clearance."""
-    for attempt in range(3):  # retry up to 3 times to handle large pages
-        cursor = None
+    for attempt in range(3):
+        cursor  = None
         deleted = 0
         while True:
             if cursor:
@@ -676,8 +777,8 @@ def clear_page_content(page_id: str):
             cursor = response.get("next_cursor")
             time.sleep(0.3)
         if deleted == 0:
-            break  # nothing left to delete
-        time.sleep(1)  # wait before checking again
+            break
+        time.sleep(1)
 
 
 def write_back_to_notion(page_id: str, formatted_content: str, original_notes: str):
@@ -770,11 +871,6 @@ def git_commit_push(room_name: str, platform: str):
 
 
 # ─────────────────────────────────────────────
-# MAIN PIPELINE
-# ─────────────────────────────────────────────
-
-
-# ─────────────────────────────────────────────
 # README STATS AUTO-UPDATE
 # ─────────────────────────────────────────────
 
@@ -785,23 +881,14 @@ def update_main_readme_stats():
         print("   ⚠️  Main README not found, skipping stats update")
         return
 
-    # Platforms and difficulties to scan
-    platforms = {
-        "TryHackMe": "🔴",
-        "HackTheBox": "🟢",
-        "VulnHub": "🟣",
-        "PwnedLabs": "🔵",
-        "OffSec": "🟠",
-        "ProvingGrounds": "🟠",
-        "pwn.college": "🎓",
-        "PicoCTF": "🏴",
-        "RootMe": "⚫",
-        "CTFtime": "🏁",
-        "SANSHolidayHack": "🎄",
+    platforms  = {
+        "TryHackMe": "🔴", "HackTheBox": "🟢", "VulnHub": "🟣",
+        "PwnedLabs": "🔵", "OffSec": "🟠", "ProvingGrounds": "🟠",
+        "pwn.college": "🎓", "PicoCTF": "🏴", "RootMe": "⚫",
+        "CTFtime": "🏁", "SANSHolidayHack": "🎄",
     }
     difficulties = ["Easy", "Medium", "Hard", "Insane"]
 
-    # Count writeups per platform per difficulty
     stats = {}
     total_easy = total_medium = total_hard = total_insane = 0
 
@@ -809,19 +896,14 @@ def update_main_readme_stats():
         platform_dir = WRITEUPS_PATH / platform
         if not platform_dir.exists():
             continue
-
         counts = {"Easy": 0, "Medium": 0, "Hard": 0, "Insane": 0}
         for difficulty in difficulties:
             diff_dir = platform_dir / difficulty
             if not diff_dir.exists():
                 continue
-            # Count room folders that contain a .md writeup
             for room_dir in diff_dir.iterdir():
-                if room_dir.is_dir():
-                    md_files = list(room_dir.glob("*.md"))
-                    if md_files:
-                        counts[difficulty] += 1
-
+                if room_dir.is_dir() and list(room_dir.glob("*.md")):
+                    counts[difficulty] += 1
         total = sum(counts.values())
         if total > 0:
             stats[platform] = {"emoji": emoji, "counts": counts, "total": total}
@@ -832,45 +914,102 @@ def update_main_readme_stats():
 
     grand_total = total_easy + total_medium + total_hard + total_insane
 
-    # Build new table
     rows = []
     for platform, data in stats.items():
         c = data["counts"]
-        easy   = c["Easy"]   or "—"
-        medium = c["Medium"] or "—"
-        hard   = c["Hard"]   or "—"
-        total  = data["total"]
-        rows.append(f"| {data['emoji']} {platform} | {easy} | {medium} | {hard} | {total} |")
-
-    # Add totals row
+        rows.append(f"| {data['emoji']} {platform} | {c['Easy'] or '—'} | {c['Medium'] or '—'} | {c['Hard'] or '—'} | {data['total']} |")
     rows.append(f"| **Total** | **{total_easy}** | **{total_medium}** | **{total_hard}** | **{grand_total}** |")
 
-    new_table = """| Platform | Easy | Medium | Hard | Total |
-|----------|------|--------|------|-------|
-""" + "\n".join(rows)
+    new_table = "| Platform | Easy | Medium | Hard | Total |\n|----------|------|--------|------|-------|\n" + "\n".join(rows)
 
-    # Replace existing table in README
     content = readme_path.read_text(encoding="utf-8")
-
-    import re
-    # Match the stats table block
     pattern = r"(\| Platform \| Easy \| Medium \| Hard \| Total \|.*?)(\n---|$)"
-    match = re.search(pattern, content, re.DOTALL)
+    match   = re.search(pattern, content, re.DOTALL)
     if match:
         content = content[:match.start()] + new_table + "\n" + content[match.end():]
+        readme_path.write_text(content, encoding="utf-8")
+        print(f"   ✅ Stats updated: {grand_total} total writeup(s)")
     else:
         print("   ⚠️  Could not find stats table in README to update")
-        return
 
-    readme_path.write_text(content, encoding="utf-8")
-    print(f"   ✅ Stats updated: {grand_total} total writeup(s)")
+
+# ─────────────────────────────────────────────
+# MAIN PIPELINE
+# ─────────────────────────────────────────────
+
+
+def auto_categorise(platform: str, room_info: str, room_name: str) -> str:
+    """Ask Claude to determine the category based on platform and room description."""
+    # Platform-based defaults for platforms that only have one type
+    platform_defaults = {
+        "VulnHub":         "Machine",
+        "ProvingGrounds":  "Machine",
+        "OffSec":          "Machine",
+        "pwn.college":     "Dojo",
+        "PicoCTF":         "Challenge",
+        "RootMe":          "Challenge",
+        "CTFtime":         "CTF",
+        "SANSHolidayHack": "CTF",
+        "PwnedLabs":       "Lab",
+    }
+    if platform in platform_defaults:
+        return platform_defaults[platform]
+
+    prompt = f"""You are categorising a CTF room for a portfolio tracker.
+
+Based on the platform, room name and description below, pick exactly ONE category from this list:
+- Machine (a full virtual machine to root/own — typical HTB/THM box)
+- Sherlock (a blue team/DFIR investigation challenge — HTB Sherlocks)
+- Challenge (a single standalone challenge — web, crypto, pwn, forensics, misc etc)
+- Walkthrough (a guided learning room with tasks and theory — typical THM walkthrough)
+- CTF (a competition-style event with multiple challenges)
+- Lab (a cloud or AD lab environment)
+- Dojo (a structured learning dojo — pwn.college style)
+
+Platform: {platform}
+Room: {room_name}
+Description: {room_info[:800] if room_info else "Not available"}
+
+Reply with ONLY the single category word from the list above. Nothing else."""
+
+    try:
+        message = claude.messages.create(
+            model="claude-sonnet-4-6",
+            max_tokens=10,
+            messages=[{"role": "user", "content": prompt}]
+        )
+        category = message.content[0].text.strip()
+        valid = {"Machine", "Sherlock", "Challenge", "Walkthrough", "CTF", "Lab", "Dojo"}
+        if category in valid:
+            print(f"   ✅ Auto-category: {category}")
+            return category
+        else:
+            print(f"   ⚠️  Unexpected category '{category}', defaulting to Challenge")
+            return "Challenge"
+    except Exception as e:
+        print(f"   ⚠️  Could not auto-categorise: {e}")
+        return "Challenge"
+
+
+def write_category_to_notion(page_id: str, category: str):
+    """Write the auto-detected category back to the Notion Category property."""
+    try:
+        notion.pages.update(
+            page_id=page_id,
+            properties={
+                "Category": {"select": {"name": category}}
+            }
+        )
+        print(f"   ✅ Notion Category set to: {category}")
+    except Exception as e:
+        print(f"   ⚠️  Could not set Notion Category: {e}")
 
 
 def process_page(page: dict):
     meta = get_page_properties(page)
     print(f"\n{'='*50}")
     print(f"📝 Processing: {meta['room_name']}")
-    print(f"   Platform: {meta['platform']} | Difficulty: {meta['difficulty']}")
+    print(f"   Platform: {meta['platform']} | Difficulty: {meta['difficulty']} | Type: {meta['room_type'] or 'Not set'}")
 
     # 1. Read rough notes
     print("   → Reading notes from Notion...")
@@ -884,8 +1023,9 @@ def process_page(page: dict):
     platform   = PLATFORM_FOLDERS.get(meta["platform"].lower().replace(" ", ""), meta["platform"])
     difficulty = DIFFICULTY_FOLDERS.get(meta["difficulty"].lower(), meta["difficulty"])
     diff_dir   = WRITEUPS_PATH / platform / difficulty
+    platform_dir = WRITEUPS_PATH / platform
 
-    # 3. Fetch room icon — from Notion Files property or platform page
+    # 3. Fetch room icon
     icon_filename = fetch_room_icon(meta.get("icon_url", ""), meta["url"], dest_folder, meta["room_name"])
 
     # 4. Fetch room description
@@ -897,33 +1037,46 @@ def process_page(page: dict):
         print(f"   → Downloading {len(image_urls)} screenshot(s)...")
         saved_screenshots = download_screenshots(image_urls, dest_folder)
 
-    # 6. Format with Claude
+    # 6. Auto-categorise if not already set
+    if not meta.get("room_type"):
+        meta["room_type"] = auto_categorise(platform, room_info, meta["room_name"])
+        write_category_to_notion(meta["page_id"], meta["room_type"])
+    else:
+        print(f"   ℹ️  Category already set: {meta['room_type']}")
+
+    # 6b. Generate topic tags
+    topic_tags = suggest_topic_tags(raw_notes, room_info, meta["room_name"])
+
+    # 7. Format with Claude
     formatted = format_with_claude(raw_notes, room_info, meta, saved_screenshots, icon_filename)
 
-    # 7. Save markdown to GitHub
+    # 8. Save markdown to GitHub
     room_clean  = re.sub(r'[^\w\-]', '', meta["room_name"].replace(" ", "-"))
     output_file = dest_folder / f"{room_clean}.md"
     output_file.write_text(formatted, encoding="utf-8")
     print(f"   ✅ Writeup saved: {output_file}")
 
-    # 8. Update difficulty README table
-    update_difficulty_readme(diff_dir, platform, difficulty, meta, icon_filename)
+    # 9. Update difficulty README table
+    update_difficulty_readme(diff_dir, platform, difficulty, meta, icon_filename, topic_tags)
 
-    # 9. Write formatted content back to Notion
+    # 10. Update platform README with type section
+    update_platform_readme(platform_dir, platform, meta, icon_filename, topic_tags)
+
+    # 11. Write formatted content back to Notion
     try:
         write_back_to_notion(meta["page_id"], formatted, raw_notes)
     except Exception as e:
         print(f"   ⚠️  Notion write-back failed: {e}")
 
-    # 10. Set Notion page icon using the Icon URL from Notion property
+    # 12. Set Notion page icon
     if icon_filename and meta.get("icon_url"):
         set_notion_page_icon(meta["page_id"], meta["icon_url"])
 
-    # 11. Update main README stats then commit + push
+    # 13. Update main README stats then commit + push
     update_main_readme_stats()
     git_commit_push(meta["room_name"], meta["platform"])
 
-    # 12. Mark as published
+    # 14. Mark as published
     try:
         mark_as_published(meta["page_id"])
     except Exception as e:
