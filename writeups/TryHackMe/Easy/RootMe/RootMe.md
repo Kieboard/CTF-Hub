@@ -5,7 +5,7 @@
     <b>Status:</b> Completed ✅<br>
     <b>URL:</b> <a href="https://tryhackme.com/room/rrootme">RootMe</a><br>
     <b>Icon:</b> <img src="RootMe.png" width="32"><br>
-    <b>Date:</b> Mar 02, 2026<br>
+    <b>Date:</b> Mar 03, 2026<br>
     <b>Tags:</b> #tryhackme #easy #thm
   </sub>
 </p>
