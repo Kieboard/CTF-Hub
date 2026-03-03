@@ -24,7 +24,7 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: pip install notion-client anthropic requests
+        run: pip install notion-client==2.2.1 anthropic requests
 
       - name: Configure Git
         run: |
