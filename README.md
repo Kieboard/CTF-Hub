@@ -16,13 +16,6 @@ All writeups are authored in Notion and auto-published here via a custom CI/CD p
 | **Total** | **2** | **0** | **0** | **2** |
 
 
-## 🧰 Supporting Material
-
-- [`Templates/`](./writeups/Templates/) — Reusable writeup templates
-- [`Cheatsheets/`](./Cheatsheets/) — Enumeration, privesc, and tool reference sheets *(in progress)*
-
----
-
 ## ⚙️ Workflow
 
 Writeups are created in Notion using a structured template. Once marked complete, a GitHub Actions workflow fires automatically:
