@@ -753,38 +753,46 @@ def markdown_to_notion_blocks(markdown: str) -> list:
 
 
 def clear_page_content(page_id: str):
-    """Delete all blocks on the page with retry to ensure full clearance."""
-    for attempt in range(3):
-        cursor  = None
-        deleted = 0
+    """Delete all blocks and verify the page is empty before returning."""
+    print("   → Clearing Notion page content...")
+    
+    for attempt in range(5):
+        # Fetch all current blocks
+        all_blocks = []
+        cursor = None
         while True:
             if cursor:
                 response = notion.blocks.children.list(block_id=page_id, page_size=100, start_cursor=cursor)
             else:
                 response = notion.blocks.children.list(block_id=page_id, page_size=100)
             blocks = response.get("results", [])
-            if not blocks:
-                break
-            for block in blocks:
-                try:
-                    notion.blocks.delete(block_id=block["id"])
-                    deleted += 1
-                    time.sleep(0.1)
-                except Exception:
-                    pass
+            all_blocks.extend(blocks)
             if not response.get("has_more"):
                 break
             cursor = response.get("next_cursor")
-            time.sleep(0.3)
-        if deleted == 0:
-            break
-        time.sleep(1)
+
+        if not all_blocks:
+            print(f"   ✅ Page cleared ({attempt} pass(es))")
+            return
+
+        # Delete everything found
+        for block in all_blocks:
+            try:
+                notion.blocks.delete(block_id=block["id"])
+                time.sleep(0.15)
+            except Exception:
+                pass
+
+        # Wait for Notion to process deletions before verifying
+        time.sleep(2)
+
+    print("   ⚠️  Could not fully clear page after 5 attempts — proceeding anyway")
 
 
 def write_back_to_notion(page_id: str, formatted_content: str, original_notes: str):
     print("   → Clearing old Notion content...")
     clear_page_content(page_id)
-    time.sleep(1)
+    time.sleep(3)  # Extra buffer after clear before writing
 
     print("   → Writing formatted writeup to Notion...")
     formatted_blocks = markdown_to_notion_blocks(formatted_content)
@@ -1085,6 +1093,23 @@ def process_page(page: dict):
     print(f"🎉 Done: {meta['room_name']}\n")
 
 
+LAST_PUBLISHED_FILE = Path(CTFHUB_REPO_PATH) / "scripts" / ".last_published"
+
+
+def already_published_today() -> bool:
+    """Check if we already published a writeup today."""
+    if not LAST_PUBLISHED_FILE.exists():
+        return False
+    last = LAST_PUBLISHED_FILE.read_text(encoding="utf-8").strip()
+    return last == datetime.now().strftime("%Y-%m-%d")
+
+
+
+def mark_published_today():
+    """Record today as the last publish date."""
+    LAST_PUBLISHED_FILE.write_text(datetime.now().strftime("%Y-%m-%d"), encoding="utf-8")
+
+
 def main():
     print("\n🚀 CTF Auto Publisher starting...")
     pages = query_completed_unpublished()
@@ -1093,14 +1118,25 @@ def main():
         print("✅ Nothing to process — all caught up!")
         return
 
-    for page in pages:
-        try:
-            process_page(page)
-        except Exception as e:
-            print(f"❌ Error processing page: {e}")
-            import traceback
-            traceback.print_exc()
-            continue
+    if already_published_today():
+        print(f"📅 Already published a writeup today — {len(pages)} writeup(s) queued for tomorrow onwards")
+        return
+
+    if len(pages) > 1:
+        print(f"   📬 {len(pages)} writeups queued — publishing 1 today, rest will drip out one per day")
+
+    # Only process the first page
+    page = pages[0]
+    try:
+        process_page(page)
+        mark_published_today()
+    except Exception as e:
+        print(f"❌ Error processing page: {e}")
+        import traceback
+        traceback.print_exc()
+
+    if len(pages) > 1:
+        print(f"\n📅 {len(pages) - 1} writeup(s) remaining — next one publishes tomorrow")
 
     print("\n✅ All done!")
 
