@@ -1,0 +1,30 @@
+name: Sync writeups to GitBook branch
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'writeups/**'
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Merge main into gitbook branch
+        run: |
+          git checkout gitbook
+          git merge main --strategy-option=ours -m "sync: merge writeups from main" --allow-unrelated-histories || true
+          git push origin gitbook
