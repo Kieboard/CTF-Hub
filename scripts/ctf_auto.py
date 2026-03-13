@@ -430,14 +430,12 @@ def format_with_claude(raw_notes: str, room_info: str, meta: dict, saved_screens
     ))
     tags_str = " ".join(all_tags)
 
-    icon_line = f'    <b>Icon:</b> <img src="{icon_filename}" width="32"><br>\n' if icon_filename else ""
-
     metadata_block = f"""<p align="right">
   <sub>
     <b>Platform:</b> {meta["platform"]}<br>
     <b>Difficulty:</b> {meta["difficulty"]}<br>
 {os_line}    <b>Status:</b> Completed ✅<br>
-{url_line}{icon_line}    <b>Date:</b> {meta["date"]}<br>
+{url_line}    <b>Date:</b> {meta["date"]}<br>
     <b>Tags:</b> {tags_str}
   </sub>
 </p>
