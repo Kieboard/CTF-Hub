@@ -1,27 +1,26 @@
-# 🔴 TryHackMe
+# TryHackMe
 
 TryHackMe rooms organised by difficulty. Focused on fundamentals, methodology, and attack flow.
 
----
+***
 
 ## 📂 Difficulty
 
-| Level | Folder |
-|-------|--------|
-| 🟢 Easy | [`Easy/`](./Easy/) |
-| 🟡 Medium | [`Medium/`](./Medium/) |
-| 🔴 Hard | [`Hard/`](./Hard/) |
+| Level     | Folder               |
+| --------- | -------------------- |
+| 🟢 Easy   | [`Easy/`](Easy/)     |
+| 🟡 Medium | [`Medium/`](Medium/) |
+| 🔴 Hard   | [`Hard/`](Hard/)     |
 
----
-
+***
 
 ## 🖥️ Machines
 
-| Icon | Room | Difficulty | Tags | Date |
-|------|------|------------|------|------|
-| <img src="Easy/CupidBot/CupidBot.png" width="32" alt="CupidBot"> | [CupidBot](Easy/CupidBot/CupidBot.md) | `Easy` | `#machine` `#prompt-injection` `#ai-security` `#web` | Mar 03, 2026 |
-| <img src="Easy/RootMe/RootMe.png" width="32" alt="RootMe"> | [RootMe](Easy/RootMe/RootMe.md) | `Easy` | `#machine` `#file-upload` `#suid` `#privilege-escalation` | Mar 03, 2026 |
+| Icon                                            | Room                                  | Difficulty | Tags                                                      | Date         |
+| ----------------------------------------------- | ------------------------------------- | ---------- | --------------------------------------------------------- | ------------ |
+| ![CupidBot](../../.gitbook/assets/CupidBot.png) | [CupidBot](Easy/CupidBot/CupidBot.md) | `Easy`     | `#machine` `#prompt-injection` `#ai-security` `#web`      | Mar 03, 2026 |
+| ![RootMe](../../.gitbook/assets/RootMe.png)     | [RootMe](Easy/RootMe/RootMe.md)       | `Easy`     | `#machine` `#file-upload` `#suid` `#privilege-escalation` | Mar 03, 2026 |
 
----
+***
 
 > Writeups authored in Notion, auto-published via CTF Publisher.
