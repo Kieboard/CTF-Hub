@@ -126,3 +126,8 @@ The `-p` flag preserves elevated privileges, giving a full root shell.
 | [pentestmonkey/php-reverse-shell](https://github.com/pentestmonkey/php-reverse-shell) | PHP reverse shell payload |
 | `netcat` | Listener for catching reverse shell |
 | [GTFOBins - Python](https://gtfobins.github.io/gtfobins/python/) | SUID Python privilege escalation reference |
+-e 
+
+---
+
+![](https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExaDdhdmt6N2dhazFqbTdsdmk0ZThkdTBrYjBoOGdobWF2NzRmbXBjeCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/8kDPdrfdBUP8k/giphy.gif)
