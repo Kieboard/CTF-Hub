@@ -1338,7 +1338,8 @@ def process_page(page: dict):
     # 10. Save markdown to GitHub
     room_clean  = re.sub(r'[^\w\-]', '', meta["room_name"].replace(" ", "-"))
     output_file = dest_folder / f"{room_clean}.md"
-    output_file.write_text(formatted, encoding="utf-8")
+    gif_footer = "\n\n---\n\n![](https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExaDdhdmt6N2dhazFqbTdsdmk0ZThkdTBrYjBoOGdobWF2NzRmbXBjeCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/8kDPdrfdBUP8k/giphy.gif)\n"
+    output_file.write_text(formatted + gif_footer, encoding="utf-8")
     print(f"   ✅ Writeup saved: {output_file}")
 
     # 11. Update difficulty README table
