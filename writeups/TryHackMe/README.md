@@ -1,15 +1,25 @@
-# TryHackMe — Easy
+# TryHackMe
 
-Beginner-friendly rooms. Focus on core methodology, enumeration fundamentals, and common vulnerabilities.
+TryHackMe rooms organised by difficulty. Focused on fundamentals, methodology, and attack flow.
 
 ---
 
-## Writeups
+## Difficulty
 
-| Icon | Room | Tags | Date |
-|------|------|------|------|
-| <img src="Other/CupidBot/CupidBot.png" width="32" alt="CupidBot"> | [CupidBot](Other/CupidBot/CupidBot.md) | `#tryhackme` `#easy` `#machine` `#prompt-injection` `#ai-security` `#web` | Mar 03, 2026 |
-| <img src="Linux/RootMe/RootMe.png" width="32" alt="RootMe"> | [RootMe](Linux/RootMe/RootMe.md) | `#tryhackme` `#easy` `#machine` `#file-upload` `#suid` `#privilege-escalation` | Mar 03, 2026 |
+| Level | Folder |
+|-------|--------|
+| 🟢 Easy | [Easy/](Easy/README.md) |
+| 🟡 Medium | [Medium/](Medium/README.md) |
+| 🔴 Hard | [Hard/](Hard/README.md) |
+
+---
+
+## Machines
+
+| Room | Difficulty | Tags | Date |
+|------|-----------|------|------|
+| [CupidBot](Easy/Other/CupidBot/CupidBot.md) | Easy | `#machine` `#prompt-injection` `#ai-security` `#web` | Mar 03, 2026 |
+| [RootMe](Easy/Linux/RootMe/RootMe.md) | Easy | `#machine` `#file-upload` `#suid` `#privilege-escalation` | Mar 03, 2026 |
 
 ---
 
