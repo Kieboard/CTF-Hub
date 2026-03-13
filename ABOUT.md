@@ -1,94 +1,38 @@
-# ⚙️ About This Repo
+# 👤 About
 
-## How It Works
+## Who am I
 
-Every writeup in this repo is authored in Notion and published automatically via a custom CI/CD pipeline. Here's what happens under the hood:
+I'm Kieran — an IT professional transitioning into offensive security. I work in IT support with a strong background in networking, Active Directory, Azure, and M365, and I'm currently working toward a BSc in Cyber Security and CompTIA Security+.
 
-### The Pipeline
-
-```
-Notion (notes + metadata)
-        ↓
-  GitHub Actions (trigger: every 30 mins or manual)
-        ↓
-  Python script (ctf_auto.py)
-        ↓
-  ┌─────────────────────────────────────┐
-  │ 1. Query Notion API                 │
-  │    → Find Completed + Unpublished   │
-  │ 2. Extract notes and metadata       │
-  │ 3. Fetch room icon from platform    │
-  │ 4. Scrape room description          │
-  │ 5. Send to Claude AI for formatting │
-  │ 6. Save markdown + icon to GitHub   │
-  │ 7. Update difficulty README table   │
-  │ 8. Update main README stats         │
-  │ 9. Write formatted writeup → Notion │
-  │ 10. Set Notion page icon            │
-  │ 11. Tick Published checkbox         │
-  └─────────────────────────────────────┘
-        ↓
-  Git commit + push → Live on GitHub
-```
-
-### Tech Stack
-
-| Component | Purpose |
-|-----------|---------|
-| **Notion API** | Source of truth for notes and metadata |
-| **GitHub Actions** | Scheduled CI/CD runner (every 30 mins) |
-| **Python** | Core automation script |
-| **Claude AI (Anthropic)** | Formats rough notes into professional writeups |
-| **GitHub** | Version control and public portfolio |
-
-### Notion Database Schema
-
-Each room entry in Notion requires:
-
-| Property | Type | Description |
-|----------|------|-------------|
-| Note Title | Title | Room name |
-| Platform | Select | TryHackMe, HackTheBox, etc. |
-| Difficulty | Select | Easy, Medium, Hard, Insane |
-| URL | URL | Link to the room |
-| Icon URL | URL | Room icon image URL |
-| Tags | Multi-select | e.g. #web, #sqli, #privesc |
-| Completed | Checkbox | Triggers the pipeline when ticked |
-| Published | Checkbox | Auto-ticked after publish |
-
-### Folder Structure
-
-```
-CTF-Hub/
-├── writeups/
-│   ├── TryHackMe/
-│   │   ├── README.md
-│   │   ├── Easy/
-│   │   │   ├── README.md          ← auto-updated table
-│   │   │   └── RoomName/
-│   │   │       ├── RoomName.md    ← formatted writeup
-│   │   │       ├── RoomName.png   ← room icon
-│   │   │       └── screenshot_01.png
-│   │   ├── Medium/
-│   │   └── Hard/
-│   └── HackTheBox/
-│       └── ...
-├── Cheatsheets/
-├── Templates/
-├── scripts/
-│   ├── ctf_auto.py        ← main pipeline script
-│   └── generate_readmes.py
-└── .github/workflows/
-    └── ctf-publisher.yml  ← GitHub Actions workflow
-```
-
-### Cost
-
-- GitHub Actions: free (public repo)
-- Notion API: free
-- Claude API: ~£0.01–0.02 per writeup
-- Scheduled runs with nothing to process: £0
+This site is where I document everything I learn through hands-on practice — CTFs, labs, and machines across TryHackMe, HackTheBox, and beyond.
 
 ---
 
-*Built by [Kieboard](https://github.com/Kieboard)*
+## Background
+
+- 🎓 BSc Cyber Security — The Open University *(in progress)*
+- 🏅 CompTIA Security+ *(in progress)*
+- 🖧 HNC Computing Tech Support
+- 🌐 HND Networking
+- 💼 IT Service Desk — enterprise environment, ITIL 4
+
+---
+
+## Focus Areas
+
+| Area | Detail |
+|------|--------|
+| Offensive Security | Web exploitation, privilege escalation, AD attacks |
+| Cloud Security | Azure, AWS misconfigurations, identity attacks |
+| Blue Team | Incident response, DFIR fundamentals, SIEM |
+| Automation | Python pipelines, GitHub Actions, API integrations |
+
+---
+
+## This Site
+
+All writeups are written in Notion as rough notes during a box, then auto-formatted and published via a custom Python pipeline that uses the Claude API for formatting and category detection. Source code lives in the [CTF-Hub repo](https://github.com/Kieboard/CTF-Hub).
+
+---
+
+*Built with GitBook. Auto-published via CTF-Hub pipeline.*
