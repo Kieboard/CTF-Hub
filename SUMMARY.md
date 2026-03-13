@@ -6,6 +6,8 @@
 
 ---
 
+## Writeups
+
 * [Platforms](platforms.md)
   * [TryHackMe](writeups/TryHackMe/README.md)
     * [Easy](writeups/TryHackMe/Easy/README.md)
@@ -78,8 +80,6 @@
 ---
 
 ## Extras
-
-### Cheatsheets
 
 * [Cheatsheets](writeups/Cheatsheets/README.md)
   * [Enumeration](writeups/Cheatsheets/Enumeration.md)
