@@ -1,47 +1,39 @@
-# 👾 Kieboard — CTF Hub
+# Kieboard
 
-> A living archive of CTF writeups, machine walkthroughs, and offensive security notes.
-> Documenting the grind from IT support to information security — one flag at a time.
-
----
-
-## 📊 Progress
-
-| Platform | Easy | Medium | Hard | Total |
-|----------|------|--------|------|-------|
-| 🔴 TryHackMe | — | — | — | — |
-| 💀 HackTheBox | — | — | — | — |
-| 🕸️ RootMe | — | — | — | — |
-| 🚩 PicoCTF | — | — | — | — |
-| ☁️ PwnedLabs | — | — | — | — |
-| 🎓 pwn.college | — | — | — | — |
-| 🖥️ VulnHub | — | — | — | — |
-| ⚔️ OffSec | — | — | — | — |
-| 🧪 Proving Grounds | — | — | — | — |
-| **Total** | **0** | **0** | **0** | **0** |
-
-> Stats update automatically with each published writeup.
+**Learn. Hack. Document. Repeat.**
 
 ---
 
-## 🔗 Find Me
+I'm Kie — an IT professional working my way into offensive security. I spend my spare time breaking into machines, chasing flags, and writing down everything I learn along the way.
 
-| | |
-|---|---|
-| 🔴 TryHackMe | [tryhackme.com/p/Kieboard](https://tryhackme.com/p/Kieboard) |
-| 💀 HackTheBox | [app.hackthebox.com/profile/Kieboard](https://app.hackthebox.com/profile/Kieboard) |
-| 🐙 GitHub | [github.com/Kieboard](https://github.com/Kieboard) |
-| 🌐 Portfolio | [kieboard.me](https://kieboard.me) |
+This isn't a polished portfolio of perfect writeups. It's my working notes — every recon step, every rabbit hole, every "why did that work" moment documented as it happens. Not just *what* I did, but *why* it worked.
 
 ---
 
-## 🗂️ What's in here
+## What's Here
 
-**Platforms** — writeups organised by platform, difficulty, and OS. Each writeup includes recon methodology, exploitation steps, privilege escalation where applicable, and key takeaways.
+Writeups across TryHackMe, HackTheBox, and a range of other platforms — organised by difficulty and OS. Each one covers methodology, exploitation, and key takeaways from the box.
 
-**CTF Tournaments** — competition writeups from CTFtime events and the annual SANS Holiday Hack Challenge.
+Also a growing set of cheatsheets built from real machines — commands and techniques I actually reach for rather than stuff copied from a wiki.
 
-**Cheatsheets** — reference notes built up from real boxes. Enumeration commands, common exploits, tool syntax.
+---
+
+## Certifications & Study
+
+- BSc Cyber Security — The Open University *(in progress)*
+- CompTIA Security+ *(in progress)*
+- TryHackMe — Advent of Cyber 2024 ✅
+- HND Networking
+- HNC Computing Tech Support
+
+---
+
+## Find Me
+
+- TryHackMe — [tryhackme.com/p/Kieboard](https://tryhackme.com/p/Kieboard)
+- HackTheBox — [app.hackthebox.com/profile/Kieboard](https://app.hackthebox.com/profile/Kieboard)
+- GitHub — [github.com/Kieboard](https://github.com/Kieboard)
+- Portfolio — [kieboard.me](https://kieboard.me)
 
 ---
 

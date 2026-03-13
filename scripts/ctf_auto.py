@@ -1011,6 +1011,104 @@ def get_destination_folder(meta: dict) -> Path:
         return diff_dir / room_clean
 
 
+def update_gitbook_summary(meta: dict):
+    """Checkout gitbook branch, add the room to SUMMARY.md, commit and push, return to main."""
+    platform   = PLATFORM_FOLDERS.get(meta["platform"].lower().replace(" ", ""), meta["platform"])
+    difficulty = DIFFICULTY_FOLDERS.get(meta["difficulty"].lower(), meta["difficulty"])
+    room_clean = re.sub(r'[^\w\-]', '', meta["room_name"].replace(" ", "-"))
+    os_name    = meta.get("os", "")
+
+    # Build the writeup path and SUMMARY indent level
+    if platform in OS_SPLIT_PLATFORMS and os_name and os_name != "Other":
+        writeup_path = f"writeups/{platform}/{difficulty}/{os_name}/{room_clean}/{room_clean}.md"
+        # Find the OS line and indent one level deeper
+        parent_line  = f"    * [{os_name}](writeups/{platform}/{difficulty}/{os_name}/README.md)"
+        new_entry    = f"      * [{meta['room_name']}]({writeup_path})"
+    elif platform in OS_SPLIT_PLATFORMS and os_name == "Other":
+        writeup_path = f"writeups/{platform}/{difficulty}/Other/{room_clean}/{room_clean}.md"
+        parent_line  = f"    * [Other](writeups/{platform}/{difficulty}/Other/README.md)"
+        new_entry    = f"      * [{meta['room_name']}]({writeup_path})"
+    else:
+        writeup_path = f"writeups/{platform}/{difficulty}/{room_clean}/{room_clean}.md"
+        parent_line  = f"  * [{difficulty}](writeups/{platform}/{difficulty}/README.md)"
+        new_entry    = f"    * [{meta['room_name']}]({writeup_path})"
+
+    print("   → Updating SUMMARY.md on gitbook branch...")
+    try:
+        # Stash any uncommitted changes on main first
+        subprocess.run(["git", "stash"], cwd=CTFHUB_REPO_PATH, capture_output=True)
+
+        # Switch to gitbook branch
+        subprocess.run(
+            ["git", "checkout", "gitbook"],
+            cwd=CTFHUB_REPO_PATH, check=True, capture_output=True
+        )
+
+        summary_path = Path(CTFHUB_REPO_PATH) / "SUMMARY.md"
+        if not summary_path.exists():
+            print("   ⚠️  SUMMARY.md not found on gitbook branch — skipping")
+            subprocess.run(["git", "checkout", "main"], cwd=CTFHUB_REPO_PATH, capture_output=True)
+            subprocess.run(["git", "stash", "pop"], cwd=CTFHUB_REPO_PATH, capture_output=True)
+            return
+
+        content = summary_path.read_text(encoding="utf-8")
+
+        # Don't add if already there
+        if writeup_path in content:
+            print(f"   ℹ️  {meta['room_name']} already in SUMMARY.md")
+            subprocess.run(["git", "checkout", "main"], cwd=CTFHUB_REPO_PATH, capture_output=True)
+            subprocess.run(["git", "stash", "pop"], cwd=CTFHUB_REPO_PATH, capture_output=True)
+            return
+
+        # Insert the new room entry after the parent line
+        if parent_line in content:
+            lines     = content.split("\n")
+            insert_at = -1
+            for i, line in enumerate(lines):
+                if line.rstrip() == parent_line:
+                    # Find the last child entry under this parent before next same-or-higher indent
+                    indent = len(new_entry) - len(new_entry.lstrip())
+                    for j in range(i + 1, len(lines)):
+                        stripped = lines[j]
+                        if not stripped.strip():
+                            continue
+                        line_indent = len(stripped) - len(stripped.lstrip())
+                        if line_indent >= indent:
+                            insert_at = j
+                        else:
+                            break
+                    if insert_at == -1:
+                        insert_at = i  # insert right after parent if no children yet
+                    break
+
+            if insert_at >= 0:
+                lines.insert(insert_at + 1, new_entry)
+                content = "\n".join(lines)
+                summary_path.write_text(content, encoding="utf-8")
+                print(f"   ✅ Added {meta['room_name']} to SUMMARY.md")
+            else:
+                print(f"   ⚠️  Could not find insert position for {meta['room_name']}")
+        else:
+            print(f"   ⚠️  Parent line not found in SUMMARY.md: {parent_line}")
+
+        # Commit and push to gitbook
+        subprocess.run(["git", "add", "SUMMARY.md"], cwd=CTFHUB_REPO_PATH, check=True, capture_output=True)
+        result = subprocess.run(
+            ["git", "commit", "-m", f"summary: Add {platform} - {meta['room_name']}"],
+            cwd=CTFHUB_REPO_PATH, capture_output=True, text=True
+        )
+        if "nothing to commit" not in result.stdout:
+            subprocess.run(["git", "push", "origin", "gitbook"], cwd=CTFHUB_REPO_PATH, check=True, capture_output=True)
+            print("   ✅ SUMMARY.md pushed to gitbook branch")
+
+    except subprocess.CalledProcessError as e:
+        print(f"   ⚠️  SUMMARY update error: {e.stderr}")
+    finally:
+        # Always return to main and restore stash
+        subprocess.run(["git", "checkout", "main"], cwd=CTFHUB_REPO_PATH, capture_output=True)
+        subprocess.run(["git", "stash", "pop"], cwd=CTFHUB_REPO_PATH, capture_output=True)
+
+
 def git_commit_push(room_name: str, platform: str):
     print("   → Committing to GitHub...")
     try:
@@ -1269,7 +1367,10 @@ def process_page(page: dict):
     update_main_readme_stats()
     git_commit_push(meta["room_name"], meta["platform"])
 
-    # 17. Mark as published
+    # 17. Update SUMMARY.md on gitbook branch
+    update_gitbook_summary(meta)
+
+    # 18. Mark as published
     try:
         mark_as_published(meta["page_id"])
     except Exception as e:
