@@ -20,7 +20,7 @@ TryHackMe rooms organised by difficulty. Focused on fundamentals, methodology, a
 | Icon | Room | Difficulty | Tags | Date |
 |------|------|------------|------|------|
 | <img src="Easy/CupidBot/CupidBot.png" width="32" alt="CupidBot"> | [CupidBot](Easy/CupidBot/CupidBot.md) | `Easy` | `#machine` `#prompt-injection` `#ai-security` `#web` | Mar 03, 2026 |
-| <img src="Easy/RootMe/RootMe.png" width="32" alt="RootMe"> | [RootMe](Easy/RootMe/RootMe.md) | `Easy` | `#machine` `#file-upload` `#suid` `#privilege-escalation` | Mar 03, 2026 |
+| <img src="Easy/Linux/RootMe/RootMe.png" width="32" alt="RootMe"> | [RootMe](Easy/Linux/RootMe/RootMe.md) | `Easy` | `#machine` `#file-upload` `#lfi` `#privilege-escalation` | Mar 13, 2026 |
 
 ---
 

@@ -8,7 +8,7 @@ Easy difficulty Linux machines.
 
 | Icon | Room | Tags | Date |
 |------|------|------|------|
-| *Auto-populated as writeups are added* | | | |
+| <img src="RootMe/RootMe.png" width="32" alt="RootMe"> | [RootMe](RootMe/RootMe.md) | `#machine` `#file-upload` `#lfi` `#privilege-escalation` | Mar 13, 2026 |
 
 ---
 
