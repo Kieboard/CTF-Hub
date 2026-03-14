@@ -4,8 +4,6 @@
 
 * [Welcome](README.md)
 
----
-
 ## Writeups
 
 * [Platforms](platforms.md)
@@ -13,33 +11,33 @@
     * [Easy](writeups/TryHackMe/Easy/README.md)
       * [Linux](writeups/TryHackMe/Easy/Linux/README.md)
         * [RootMe](writeups/TryHackMe/Easy/Linux/RootMe/RootMe.md)
-      * [Windows](writeups/TryHackMe/Easy/Windows/README.md)
+      * [Windows](writeups/platforms/tryhackme/easy/windows.md)
       * [Other](writeups/TryHackMe/Easy/Other/README.md)
         * [CupidBot](writeups/TryHackMe/Easy/Other/CupidBot/CupidBot.md)
     * [Medium](writeups/TryHackMe/Medium/README.md)
-      * [Linux](writeups/TryHackMe/Medium/Linux/README.md)
-      * [Windows](writeups/TryHackMe/Medium/Windows/README.md)
-      * [Other](writeups/TryHackMe/Medium/Other/README.md)
+      * [Linux](writeups/platforms/tryhackme/medium/linux.md)
+      * [Windows](writeups/platforms/tryhackme/medium/windows.md)
+      * [Other](writeups/platforms/tryhackme/medium/other.md)
     * [Hard](writeups/TryHackMe/Hard/README.md)
-      * [Linux](writeups/TryHackMe/Hard/Linux/README.md)
-      * [Windows](writeups/TryHackMe/Hard/Windows/README.md)
-      * [Other](writeups/TryHackMe/Hard/Other/README.md)
+      * [Linux](writeups/platforms/tryhackme/hard/linux.md)
+      * [Windows](writeups/platforms/tryhackme/hard/windows.md)
+      * [Other](writeups/platforms/tryhackme/hard/other.md)
   * [HackTheBox](writeups/HackTheBox/README.md)
-    * [Machines](writeups/HackTheBox/Machines/README.md)
-      * [Easy](writeups/HackTheBox/Machines/Easy/README.md)
-        * [Linux](writeups/HackTheBox/Machines/Easy/Linux/README.md)
-        * [Windows](writeups/HackTheBox/Machines/Easy/Windows/README.md)
-      * [Medium](writeups/HackTheBox/Machines/Medium/README.md)
-        * [Linux](writeups/HackTheBox/Machines/Medium/Linux/README.md)
-        * [Windows](writeups/HackTheBox/Machines/Medium/Windows/README.md)
-      * [Hard](writeups/HackTheBox/Machines/Hard/README.md)
-        * [Linux](writeups/HackTheBox/Machines/Hard/Linux/README.md)
-        * [Windows](writeups/HackTheBox/Machines/Hard/Windows/README.md)
-      * [Insane](writeups/HackTheBox/Machines/Insane/README.md)
-        * [Linux](writeups/HackTheBox/Machines/Insane/Linux/README.md)
-        * [Windows](writeups/HackTheBox/Machines/Insane/Windows/README.md)
-    * [Sherlocks](writeups/HackTheBox/Sherlocks/README.md)
-    * [Challenges](writeups/HackTheBox/Challenges/README.md)
+    * [Machines](writeups/platforms/hackthebox/machines/README.md)
+      * [Easy](writeups/platforms/hackthebox/machines/easy/README.md)
+        * [Linux](writeups/platforms/hackthebox/machines/easy/linux.md)
+        * [Windows](writeups/platforms/hackthebox/machines/easy/windows.md)
+      * [Medium](writeups/platforms/hackthebox/machines/medium/README.md)
+        * [Linux](writeups/platforms/hackthebox/machines/medium/linux.md)
+        * [Windows](writeups/platforms/hackthebox/machines/medium/windows.md)
+      * [Hard](writeups/platforms/hackthebox/machines/hard/README.md)
+        * [Linux](writeups/platforms/hackthebox/machines/hard/linux.md)
+        * [Windows](writeups/platforms/hackthebox/machines/hard/windows.md)
+      * [Insane](writeups/platforms/hackthebox/machines/insane/README.md)
+        * [Linux](writeups/platforms/hackthebox/machines/insane/linux.md)
+        * [Windows](writeups/platforms/hackthebox/machines/insane/windows.md)
+    * [Sherlocks](writeups/platforms/hackthebox/sherlocks.md)
+    * [Challenges](writeups/platforms/hackthebox/challenges.md)
   * [RootMe](writeups/RootMe/README.md)
     * [Easy](writeups/RootMe/Easy/README.md)
     * [Medium](writeups/RootMe/Medium/README.md)
@@ -68,14 +66,13 @@
     * [Easy](writeups/ProvingGrounds/Easy/README.md)
     * [Medium](writeups/ProvingGrounds/Medium/README.md)
     * [Hard](writeups/ProvingGrounds/Hard/README.md)
-<<<<<<< Updated upstream
-=======
   * [LetsDefend](writeups/LetsDefend/README.md)
-    * [Beginner](writeups/LetsDefend/Beginner/README.md)
-    * [Easy](writeups/LetsDefend/Easy/README.md)
-    * [Medium](writeups/LetsDefend/Medium/README.md)
-    * [Hard](writeups/LetsDefend/Hard/README.md)
->>>>>>> Stashed changes
+    * [Beginner](writeups/platforms/letsdefend/beginner.md)
+    * [Easy](writeups/platforms/letsdefend/easy.md)
+    * [Medium](writeups/platforms/letsdefend/medium.md)
+    * [Hard](writeups/platforms/letsdefend/hard.md)
+
+***
 
 * [CTF Tournaments](tournaments.md)
   * [CTFtime](writeups/CTFtime/README.md)
@@ -86,8 +83,6 @@
     * [Easy](writeups/SANSHolidayHack/Easy/README.md)
     * [Medium](writeups/SANSHolidayHack/Medium/README.md)
     * [Hard](writeups/SANSHolidayHack/Hard/README.md)
-
----
 
 ## Extras
 
