@@ -165,13 +165,6 @@ find / -perm -u=s -type f 2>/dev/null
 | [pentestmonkey/php-reverse-shell](https://github.com/pentestmonkey/php-reverse-shell) | PHP reverse shell payload |
 | `netcat` | Reverse shell listener |
 | [GTFOBins - Python](https://gtfobins.github.io/gtfobins/python/) | SUID Python privilege escalation reference |
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
--e 
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 
 ---
 
