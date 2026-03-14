@@ -418,6 +418,13 @@ CODE BLOCKS:
 - Never put commands inline in prose — always block
 - Add a brief line of context BEFORE each code block explaining what it does
 - Add a brief **Result:** or **Output:** note AFTER key code blocks explaining what came back
+- IMPORTANT: All bash/shell commands must include a terminal prompt prefix in this format:
+  - TryHackMe rooms: kie@kiepc:~/THM/{RoomName}$
+  - HackTheBox rooms: kie@kiepc:~/HTB/{RoomName}$
+  - LetsDefend rooms: kie@kiepc:~/LetsDefend/{RoomName}$
+  - Other platforms: kie@kiepc:~/{Platform}/{RoomName}$
+  Example: kie@kiepc:~/THM/RootMe$ nmap -sV 10.10.110.118
+  Do NOT add the prompt to code that is output/results — only to commands being run.
 
 STRUCTURE RULES:
 - Keep Kieran's voice — don't make it sound corporate or AI-generated
