@@ -15,6 +15,7 @@ from datetime import datetime
 from notion_client import Client
 import anthropic
 
+
 # ─────────────────────────────────────────────
 # CONFIG
 # ─────────────────────────────────────────────
@@ -393,23 +394,35 @@ def download_screenshots(image_urls: list, dest_folder: Path) -> list:
 # CLAUDE FORMATTING
 # ─────────────────────────────────────────────
 
-SYSTEM_PROMPT = """You are a cybersecurity writeup formatter for a professional CTF portfolio.
+SYSTEM_PROMPT = """You are a cybersecurity writeup formatter for a professional CTF/HTB portfolio.
 
 You receive:
 1. Raw rough notes from the hacker (Kieran)
 2. Room description scraped from the CTF platform
 
-Combine both to produce a clean, structured, professional writeup.
+Combine both to produce a clean, narrative-driven, professional writeup in the style of top HTB writeup authors.
 
-RULES:
+WRITING STYLE:
+- Write like you are talking someone through the box — narrative, not a checklist
+- Keep Kieran's voice — direct, technical, no fluff
+- Use past tense ("I ran", "This revealed", "I found")
+- Explain WHY things worked, not just WHAT you ran
+- Highlight key discoveries with bold labels e.g. **Key Finding:** or **Critical Discovery:**
+- Short punchy sentences. No waffle.
+
+CODE BLOCKS:
+- Every single command must be in a fenced code block with the correct language tag (```bash, ```python, ```xml etc)
+- Never put commands inline in prose — always block
+- Add a brief line of context BEFORE each code block explaining what it does
+- Add a brief **Result:** or **Output:** note AFTER key code blocks explaining what came back
+
+STRUCTURE RULES:
 - Keep Kieran's voice — don't make it sound corporate or AI-generated
-- Show thinking and methodology — explain WHY things worked
-- Use past tense ("I ran nmap", "I found", "This revealed")
-- Code blocks must use proper fencing with language tags (```bash, ```python etc)
 - Preserve ALL image references exactly as given (e.g. ![Screenshot 1](screenshot_01.png))
 - Don't invent flags, IPs, or details not in the notes
-- Don't pad with fluff — be concise and precise
 - If a section has no content, omit it entirely
+- The Attack Chain Summary should be a numbered list of concise one-liners covering the full path
+- Detection Strategies should have two subsections: Offensive Indicators and Defensive Mitigations
 
 OUTPUT: Pure markdown only. No preamble. No explanation. Start directly with the metadata block."""
 
@@ -451,7 +464,7 @@ def format_with_claude(raw_notes: str, room_info: str, meta: dict, saved_screens
 Use this metadata block exactly at the top:
 {metadata_block}
 
-Then use this structure:
+Then use this structure — keep sections in this order, omit any section with no content:
 # {meta["room_name"]}
 ## 🧠 Overview
 ## 🎯 Objectives
@@ -460,6 +473,11 @@ Then use this structure:
 ## 🔐 Privilege Escalation (omit if not applicable)
 ## 🏁 Flags / Proof
 ## 🧩 Key Takeaways
+## ⛓️ Attack Chain Summary
+(numbered list, one line per step, full attack path from recon to root)
+## 🔎 Detection Strategies
+### Offensive Indicators
+### Defensive Mitigations
 ## 🛠️ Tools & References
 
 ---
