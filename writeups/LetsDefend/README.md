@@ -8,10 +8,10 @@ Blue team SOC challenges covering threat hunting, log analysis, malware analysis
 
 | Level | Folder |
 |-------|--------|
-| 🟢 Beginner | [Beginner/](Beginner/README.md) |
-| 🟡 Easy | [Easy/](Easy/README.md) |
-| 🟠 Medium | [Medium/](Medium/README.md) |
-| 🔴 Hard | [Hard/](Hard/README.md) |
+| Beginner | [Beginner/](Beginner/README.md) |
+| Easy | [Easy/](Easy/README.md) |
+| Medium | [Medium/](Medium/README.md) |
+| Hard | [Hard/](Hard/README.md) |
 
 ---
 

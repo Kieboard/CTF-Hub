@@ -4,16 +4,6 @@ TryHackMe rooms organised by difficulty. Focused on fundamentals, methodology, a
 
 ---
 
-## Difficulty
-
-| Level | Folder |
-|-------|--------|
-| 🟢 Easy | [Easy/](Easy/README.md) |
-| 🟡 Medium | [Medium/](Medium/README.md) |
-| 🔴 Hard | [Hard/](Hard/README.md) |
-
----
-
 ## Machines
 
 | Room | Difficulty | Tags | Date |
