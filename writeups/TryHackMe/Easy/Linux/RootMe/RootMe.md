@@ -166,7 +166,10 @@ find / -perm -u=s -type f 2>/dev/null
 | `netcat` | Reverse shell listener |
 | [GTFOBins - Python](https://gtfobins.github.io/gtfobins/python/) | SUID Python privilege escalation reference |
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 -e 
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 

@@ -15,3 +15,7 @@ Writeups organised by platform, difficulty, and OS. Each writeup covers recon me
 | [VulnHub](writeups/VulnHub/README.md) | Offline vulnerable VMs | Easy / Medium / Hard |
 | [OffSec](writeups/OffSec/README.md) | OffSec labs | Easy / Medium / Hard |
 | [Proving Grounds](writeups/ProvingGrounds/README.md) | OffSec proving grounds | Easy / Medium / Hard |
+<<<<<<< Updated upstream
+=======
+| [LetsDefend](writeups/LetsDefend/README.md) | Blue team challenges & SOC labs | Easy / Medium / Hard |
+>>>>>>> Stashed changes

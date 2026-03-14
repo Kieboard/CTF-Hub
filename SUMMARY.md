@@ -68,6 +68,14 @@
     * [Easy](writeups/ProvingGrounds/Easy/README.md)
     * [Medium](writeups/ProvingGrounds/Medium/README.md)
     * [Hard](writeups/ProvingGrounds/Hard/README.md)
+<<<<<<< Updated upstream
+=======
+  * [LetsDefend](writeups/LetsDefend/README.md)
+    * [Beginner](writeups/LetsDefend/Beginner/README.md)
+    * [Easy](writeups/LetsDefend/Easy/README.md)
+    * [Medium](writeups/LetsDefend/Medium/README.md)
+    * [Hard](writeups/LetsDefend/Hard/README.md)
+>>>>>>> Stashed changes
 
 * [CTF Tournaments](tournaments.md)
   * [CTFtime](writeups/CTFtime/README.md)
