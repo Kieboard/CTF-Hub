@@ -10,7 +10,6 @@ on:
 jobs:
   sync:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout full history
         uses: actions/checkout@v4
@@ -23,8 +22,17 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Merge main into gitbook branch
+      - name: Sync writeups folder only to gitbook branch
         run: |
+          # Switch to gitbook branch
           git checkout gitbook
-          git merge main --strategy-option=ours -m "sync: merge writeups from main" --allow-unrelated-histories || true
+
+          # Checkout ONLY the writeups folder from main — nothing else
+          git checkout main -- writeups/
+
+          # Stage and commit if there are changes
+          git diff --cached --quiet && echo "No changes to sync" && exit 0
+
+          git add writeups/
+          git commit -m "sync: update writeups from main"
           git push origin gitbook
