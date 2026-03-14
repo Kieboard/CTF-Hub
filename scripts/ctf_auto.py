@@ -53,6 +53,8 @@ PLATFORM_FOLDERS = {
     "ctf":               "CTFtime",
     "sansholidayhack":   "SANSHolidayHack",
     "sans holiday hack": "SANSHolidayHack",
+    "letsdefend":        "LetsDefend",
+    "lets defend":       "LetsDefend",
     "holidayhack":       "SANSHolidayHack",
 }
 
@@ -102,6 +104,7 @@ PLATFORM_INFO = {
     "RootMe":          {"emoji": "⚫", "desc": "Root-Me challenge writeups."},
     "OffSec":          {"emoji": "🟠", "desc": "OffSec Proving Grounds Play and Practice machines. OSCP-relevant content."},
     "ProvingGrounds":  {"emoji": "🟠", "desc": "OffSec Proving Grounds machines. Direct OSCP preparation and practice."},
+    "LetsDefend":      {"emoji": "🛡️", "desc": "Blue team SOC challenges. Threat hunting, log analysis, and incident response.", "difficulties": ["Beginner", "Easy", "Medium", "Hard"]},
     "pwn.college":     {"emoji": "🎓", "desc": "pwn.college challenge writeups. Binary exploitation and system security."},
     "CTFtime":         {"emoji": "🏁", "desc": "General CTF competition writeups from various events on CTFtime."},
     "SANSHolidayHack": {"emoji": "🎄", "desc": "SANS Holiday Hack Challenge writeups. Annual CTF with real-world scenarios."},
@@ -1159,7 +1162,7 @@ def update_main_readme_stats():
 
     platforms  = {
         "TryHackMe": "🔴", "HackTheBox": "🟢", "VulnHub": "🟣",
-        "PwnedLabs": "🔵", "OffSec": "🟠", "ProvingGrounds": "🟠",
+        "PwnedLabs": "🔵", "OffSec": "🟠", "ProvingGrounds": "🟠", "LetsDefend": "🛡️",
         "pwn.college": "🎓", "PicoCTF": "🏴", "RootMe": "⚫",
         "CTFtime": "🏁", "SANSHolidayHack": "🎄",
     }
@@ -1229,6 +1232,7 @@ def auto_categorise(platform: str, room_info: str, room_name: str) -> str:
     platform_defaults = {
         "VulnHub":         "Machine",
         "ProvingGrounds":  "Machine",
+    "LetsDefend":      "Challenge",
         "OffSec":          "Machine",
         "pwn.college":     "Dojo",
         "PicoCTF":         "Challenge",
