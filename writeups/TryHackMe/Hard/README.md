@@ -1,13 +1,23 @@
-# 🔴 TryHackMe — Hard
+# TryHackMe — Hard
 
-Advanced rooms involving complex attack chains, custom exploits, and deep technical knowledge.
+Hard difficulty rooms.
 
 ---
 
-## 📋 Writeups
+## OS
 
-| Icon | Room | Tags | Date |
-|------|------|------|------|
+| Type | Folder |
+|------|--------|
+| 🐧 [Linux](writeups/TryHackMe/Hard/Linux/README.md) | Linux-based machines. |
+| 🪟 [Windows](writeups/TryHackMe/Hard/Windows/README.md) | Windows-based machines. |
+| 💻 [Other](writeups/TryHackMe/Hard/Other/README.md) | Other OS or web-only challenges. |
+
+---
+
+## All Writeups
+
+| Room | OS | Tags | Date |
+|------|----|------|------|
 | *Auto-populated as writeups are added* | | | |
 
 ---

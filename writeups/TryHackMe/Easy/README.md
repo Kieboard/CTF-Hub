@@ -1,15 +1,24 @@
-# 🟢 TryHackMe — Easy
+# TryHackMe — Easy
 
-Beginner-friendly rooms. Focus on core methodology, enumeration fundamentals, and common vulnerabilities.
+Easy difficulty rooms.
 
 ---
 
-## 📋 Writeups
+## OS
 
-| Icon | Room | Tags | Date |
-|------|------|------|------|
-| <img src="CupidBot/CupidBot.png" width="20" alt="CupidBot"> | [CupidBot]Other/CupidBot/CupidBot.md) | `#tryhackme` `#easy` `#machine` `#prompt-injection` `#ai-security` `#web` | Mar 03, 2026 |
-| <img src="Linux/RootMe/RootMe.png" width="20" alt="RootMe"> | [RootMe](Linux/RootMe/RootMe.md) | `#tryhackme` `#easy` `#machine` `#file-upload` `#lfi` `#privilege-escalation` | Mar 13, 2026 |
+| Type | Folder |
+|------|--------|
+| 🐧 [Linux](writeups/TryHackMe/Easy/Linux/README.md) | Linux-based machines. |
+| 🪟 [Windows](writeups/TryHackMe/Easy/Windows/README.md) | Windows-based machines. |
+| 💻 [Other](writeups/TryHackMe/Easy/Other/README.md) | Other OS or web-only challenges. |
+
+---
+
+## All Writeups
+
+| Room | OS | Tags | Date |
+|------|----|------|------|
+| *Auto-populated as writeups are added* | | | |
 
 ---
 

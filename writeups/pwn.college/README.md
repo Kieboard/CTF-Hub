@@ -1,17 +1,27 @@
-# 🎓 pwn.college
+# pwn.college
 
-pwn.college challenge writeups. Focused on binary exploitation, system security, and CTF fundamentals.
+Arizona State University's free binary exploitation and systems security platform. Module-based — each module builds on the last, from basic memory corruption to advanced kernel exploitation. The most rigorous free resource for low-level offensive security.
 
----
-
-## 📂 Difficulty
-
-| Level | Folder |
-|-------|--------|
-| 🟢 Easy | [`Easy/`](./Easy/) |
-| 🟡 Medium | [`Medium/`](./Medium/) |
-| 🔴 Hard | [`Hard/`](./Hard/) |
+> **0 challenges completed · Last updated —**
 
 ---
 
-> Writeups authored in Notion, auto-published via CTF Publisher.
+## Difficulty
+
+| Level | What to expect |
+|-------|----------------|
+| 🟢 [Easy](writeups/pwn.college/Easy/README.md) | Introductory modules — basic concepts, guided progression. |
+| 🟡 [Medium](writeups/pwn.college/Medium/README.md) | Intermediate modules — stack exploitation, ROP chains, shellcoding. |
+| 🔴 [Hard](writeups/pwn.college/Hard/README.md) | Advanced modules — heap exploitation, kernel pwn, format strings. |
+
+---
+
+## All Writeups
+
+| Challenge | Difficulty | Module | Tags | Date |
+|-----------|-----------|--------|------|------|
+| *Auto-populated as writeups are added* | | | | |
+
+---
+
+> Writeups drafted in Notion and auto-published via a custom Python pipeline using the Claude API.
