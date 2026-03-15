@@ -1,6 +1,6 @@
 # HackTheBox — Challenges
 
-Bite-sized single-concept challenges. Web, crypto, forensics, reversing, pwn and more.
+Standalone CTF-style challenges isolating single concepts across web, crypto, forensics, reversing, pwn and more.
 
 ---
 
@@ -8,9 +8,9 @@ Bite-sized single-concept challenges. Web, crypto, forensics, reversing, pwn and
 
 | Level | What to expect |
 |-------|----------------|
-| 🟢 [Easy](Easy/README.md) | Single-concept challenges across all categories. |
-| 🟡 [Medium](Medium/README.md) | Multi-step challenges, intermediate knowledge required. |
-| 🔴 [Hard](Hard/README.md) | No upper limit. Serious technical depth required. |
+| 🟢 [Easy](./Easy/README.md) | Single-concept challenges across web, crypto, forensics, reversing. |
+| 🟡 [Medium](./Medium/README.md) | Multi-step challenges, intermediate knowledge required. |
+| 🔴 [Hard](./Hard/README.md) | No upper limit on difficulty. Serious technical depth required. |
 
 ---
 
@@ -22,4 +22,4 @@ Bite-sized single-concept challenges. Web, crypto, forensics, reversing, pwn and
 
 ---
 
-> Writeups authored in Notion, auto-published via CTF Publisher.
+> Writeups drafted in Notion and auto-published via a custom Python pipeline using the Claude API.

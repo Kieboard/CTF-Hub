@@ -8,8 +8,8 @@ Easy difficulty HTB machines.
 
 | OS | What to expect |
 |----|----------------|
-| 🐧 [Linux](./Linux/) | Linux-based machines. |
-| 🪟 [Windows](./Windows/) | Windows-based machines. |
+| 🐧 [Linux](./Linux/README.md) | Linux-based machines. |
+| 🪟 [Windows](./Windows/README.md) | Windows-based machines. |
 
 ---
 
