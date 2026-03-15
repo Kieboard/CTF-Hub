@@ -1,16 +1,16 @@
 # TryHackMe — Easy
 
-Easy difficulty rooms.
+Easy difficulty TryHackMe rooms.
 
 ---
 
 ## OS
 
-| Type | Folder |
-|------|--------|
-| 🐧 [Linux](writeups/TryHackMe/Easy/Linux/README.md) | Linux-based machines. |
-| 🪟 [Windows](writeups/TryHackMe/Easy/Windows/README.md) | Windows-based machines. |
-| 💻 [Other](writeups/TryHackMe/Easy/Other/README.md) | Other OS or web-only challenges. |
+| OS | What to expect |
+|----|----------------|
+| 🐧 [Linux](./Linux/) | Linux-based machines. |
+| 🪟 [Windows](./Windows/) | Windows-based machines. |
+| 💻 [Other](./Other/) | Other OS or web-only challenges. |
 
 ---
 

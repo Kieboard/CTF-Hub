@@ -10,9 +10,9 @@ Carnegie Mellon University's free beginner-friendly CTF platform. Challenges spa
 
 | Level | What to expect |
 |-------|----------------|
-| 🟢 [Easy](writeups/PicoCTF/Easy/README.md) | Low point challenges (100–200pts). Accessible entry points. |
-| 🟡 [Medium](writeups/PicoCTF/Medium/README.md) | Mid-range (200–400pts). Category-specific knowledge required. |
-| 🔴 [Hard](writeups/PicoCTF/Hard/README.md) | High value (400pts+). Advanced techniques, minimal hints. |
+| 🟢 [Easy](./Easy/) | Low point challenges (100–200pts). Accessible entry points. |
+| 🟡 [Medium](./Medium/) | Mid-range (200–400pts). Category-specific knowledge required. |
+| 🔴 [Hard](./Hard/) | High value (400pts+). Advanced techniques, minimal hints. |
 
 ---
 

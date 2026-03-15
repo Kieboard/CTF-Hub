@@ -1,6 +1,6 @@
 # OffSec
 
-The team behind OSCP, OSEP, and the full OffSec cert suite. Labs mirror real penetration testing engagements — methodical, realistic, unforgiving. The closest thing to the real exam environment if OSCP is the goal.
+OffSec (Offensive Security) labs — the people behind OSCP. Machines mirror real-world enterprise environments and are designed to build the skills needed for professional penetration testing certifications.
 
 > **0 machines completed · Last updated —**
 
@@ -10,17 +10,17 @@ The team behind OSCP, OSEP, and the full OffSec cert suite. Labs mirror real pen
 
 | Level | What to expect |
 |-------|----------------|
-| 🟢 [Easy](writeups/OffSec/Easy/README.md) | Straightforward attack paths, good OSCP warm-up material. |
-| 🟡 [Medium](writeups/OffSec/Medium/README.md) | Complex enumeration, multi-step exploitation. |
-| 🔴 [Hard](writeups/OffSec/Hard/README.md) | Advanced techniques, often requires custom exploitation. |
+| 🟢 [Easy](./Easy/) | Straightforward attack paths, good OSCP warm-up material. |
+| 🟡 [Medium](./Medium/) | Complex enumeration, multi-step exploitation. |
+| 🔴 [Hard](./Hard/) | Advanced techniques, often requires custom exploitation. |
 
 ---
 
 ## All Writeups
 
-| Machine | Difficulty | OS | Tags | Date |
-|---------|-----------|-----|------|------|
-| *Auto-populated as writeups are added* | | | | |
+| Machine | Difficulty | Tags | Date |
+|---------|-----------|------|------|
+| *Auto-populated as writeups are added* | | | |
 
 ---
 

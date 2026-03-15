@@ -1,16 +1,16 @@
 # TryHackMe — Medium
 
-Medium difficulty rooms.
+Medium difficulty TryHackMe rooms.
 
 ---
 
 ## OS
 
-| Type | Folder |
-|------|--------|
-| 🐧 [Linux](writeups/TryHackMe/Medium/Linux/README.md) | Linux-based machines. |
-| 🪟 [Windows](writeups/TryHackMe/Medium/Windows/README.md) | Windows-based machines. |
-| 💻 [Other](writeups/TryHackMe/Medium/Other/README.md) | Other OS or web-only challenges. |
+| OS | What to expect |
+|----|----------------|
+| 🐧 [Linux](./Linux/) | Linux-based machines. |
+| 🪟 [Windows](./Windows/) | Windows-based machines. |
+| 💻 [Other](./Other/) | Other OS or web-only challenges. |
 
 ---
 

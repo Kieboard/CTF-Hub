@@ -1,6 +1,6 @@
 # PwnedLabs
 
-Cloud and Active Directory focused security lab platform. Challenges simulate real enterprise attack scenarios — Azure misconfigurations, AWS privilege escalation, identity-based attacks, and lateral movement through hybrid environments.
+PwnedLabs is a cloud and Active Directory focused security lab platform. Challenges simulate real enterprise attack scenarios — Azure misconfigurations, AWS privilege escalation, identity-based attacks, and lateral movement through hybrid environments.
 
 > **0 labs completed · Last updated —**
 
@@ -10,9 +10,9 @@ Cloud and Active Directory focused security lab platform. Challenges simulate re
 
 | Level | What to expect |
 |-------|----------------|
-| 🟢 [Easy](writeups/PwnedLabs/Easy/README.md) | Straightforward cloud misconfigurations, single-step exploitation. |
-| 🟡 [Medium](writeups/PwnedLabs/Medium/README.md) | Multi-step cloud attack chains, identity abuse, privilege escalation. |
-| 🔴 [Hard](writeups/PwnedLabs/Hard/README.md) | Complex enterprise scenarios, chained cloud and AD attacks. |
+| 🟢 [Easy](./Easy/) | Straightforward cloud misconfigurations, single-step exploitation. |
+| 🟡 [Medium](./Medium/) | Multi-step cloud attack chains, identity abuse, privilege escalation. |
+| 🔴 [Hard](./Hard/) | Complex enterprise scenarios, chained cloud and AD attacks. |
 
 ---
 

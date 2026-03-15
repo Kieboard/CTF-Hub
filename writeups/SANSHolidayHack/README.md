@@ -1,6 +1,6 @@
-# SANS Holiday Hack Challenge
+# SANS Holiday Hack
 
-Annual CTF event run by SANS Institute every December. Story-driven, creative, and technically deep. Challenges span web exploitation, OSINT, hardware hacking, AI/ML attacks, and more — wrapped in a Christmas-themed narrative.
+The SANS Holiday Hack Challenge is an annual CTF event with a unique narrative-driven format. Challenges cover a wide range of offensive and defensive security topics.
 
 > **0 challenges completed · Last updated —**
 
@@ -10,17 +10,17 @@ Annual CTF event run by SANS Institute every December. Story-driven, creative, a
 
 | Level | What to expect |
 |-------|----------------|
-| 🟢 [Easy](writeups/SANSHolidayHack/Easy/README.md) | Accessible entry challenges covering core concepts. |
-| 🟡 [Medium](writeups/SANSHolidayHack/Medium/README.md) | Multi-step challenges requiring solid technical knowledge. |
-| 🔴 [Hard](writeups/SANSHolidayHack/Hard/README.md) | Advanced challenges, creative techniques, deep rabbit holes. |
+| 🟢 [Easy](./Easy/) | Accessible entry challenges covering core concepts. |
+| 🟡 [Medium](./Medium/) | Multi-step challenges requiring solid technical knowledge. |
+| 🔴 [Hard](./Hard/) | Advanced challenges, creative techniques, deep rabbit holes. |
 
 ---
 
 ## All Writeups
 
-| Challenge | Year | Difficulty | Tags | Date |
-|-----------|------|-----------|------|------|
-| *Auto-populated as writeups are added* | | | | |
+| Challenge | Difficulty | Tags | Date |
+|-----------|-----------|------|------|
+| *Auto-populated as writeups are added* | | | |
 
 ---
 

@@ -10,9 +10,9 @@ Arizona State University's free binary exploitation and systems security platfor
 
 | Level | What to expect |
 |-------|----------------|
-| 🟢 [Easy](writeups/pwn.college/Easy/README.md) | Introductory modules — basic concepts, guided progression. |
-| 🟡 [Medium](writeups/pwn.college/Medium/README.md) | Intermediate modules — stack exploitation, ROP chains, shellcoding. |
-| 🔴 [Hard](writeups/pwn.college/Hard/README.md) | Advanced modules — heap exploitation, kernel pwn, format strings. |
+| 🟢 [Easy](./Easy/) | Introductory modules — basic concepts, guided progression. |
+| 🟡 [Medium](./Medium/) | Intermediate modules — stack exploitation, ROP chains, shellcoding. |
+| 🔴 [Hard](./Hard/) | Advanced modules — heap exploitation, kernel pwn, format strings. |
 
 ---
 

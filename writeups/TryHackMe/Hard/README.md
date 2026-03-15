@@ -1,16 +1,16 @@
 # TryHackMe — Hard
 
-Hard difficulty rooms.
+Hard difficulty TryHackMe rooms.
 
 ---
 
 ## OS
 
-| Type | Folder |
-|------|--------|
-| 🐧 [Linux](writeups/TryHackMe/Hard/Linux/README.md) | Linux-based machines. |
-| 🪟 [Windows](writeups/TryHackMe/Hard/Windows/README.md) | Windows-based machines. |
-| 💻 [Other](writeups/TryHackMe/Hard/Other/README.md) | Other OS or web-only challenges. |
+| OS | What to expect |
+|----|----------------|
+| 🐧 [Linux](./Linux/) | Linux-based machines. |
+| 🪟 [Windows](./Windows/) | Windows-based machines. |
+| 💻 [Other](./Other/) | Other OS or web-only challenges. |
 
 ---
 

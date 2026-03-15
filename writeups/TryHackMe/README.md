@@ -10,9 +10,9 @@ TryHackMe is a beginner-to-intermediate offensive security platform built around
 
 | Level | What to expect |
 |-------|----------------|
-| 🟢 [Easy](writeups/TryHackMe/Easy/README.md) | Core methodology, enumeration fundamentals, common vulnerabilities. |
-| 🟡 [Medium](writeups/TryHackMe/Medium/README.md) | Chained exploits, deeper enumeration, lateral thinking required. |
-| 🔴 [Hard](writeups/TryHackMe/Hard/README.md) | Complex attack chains, custom exploits, advanced post-exploitation. |
+| 🟢 [Easy](./Easy/) | Core methodology, enumeration fundamentals, common vulnerabilities. |
+| 🟡 [Medium](./Medium/) | Chained exploits, deeper enumeration, lateral thinking required. |
+| 🔴 [Hard](./Hard/) | Complex attack chains, custom exploits, advanced post-exploitation. |
 
 ---
 
@@ -20,8 +20,8 @@ TryHackMe is a beginner-to-intermediate offensive security platform built around
 
 | Room | Difficulty | OS | Tags | Date |
 |------|-----------|-----|------|------|
-| [CupidBot](writeups/TryHackMe/Easy/Other/CupidBot/CupidBot.md) | 🟢 Easy | Other | `#prompt-injection` `#ai-security` `#web` | Mar 03, 2026 |
-| [RootMe](writeups/TryHackMe/Easy/Linux/RootMe/RootMe.md) | 🟢 Easy | Linux | `#file-upload` `#suid` `#privilege-escalation` | Mar 03, 2026 |
+| [CupidBot](./Easy/Other/CupidBot/CupidBot.md) | 🟢 Easy | Other | `#prompt-injection` `#ai-security` `#web` | Mar 03, 2026 |
+| [RootMe](./Easy/Linux/RootMe/RootMe.md) | 🟢 Easy | Linux | `#file-upload` `#suid` `#privilege-escalation` | Mar 03, 2026 |
 
 ---
 

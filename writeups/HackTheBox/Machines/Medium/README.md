@@ -6,17 +6,17 @@ Medium difficulty HTB machines.
 
 ## OS
 
-| Type | Folder |
-|------|--------|
-| 🐧 [Linux](writeups/HackTheBox/Machines/Medium/Linux/README.md) | Linux-based machines. |
-| 🪟 [Windows](writeups/HackTheBox/Machines/Medium/Windows/README.md) | Windows-based machines. |
+| OS | What to expect |
+|----|----------------|
+| 🐧 [Linux](./Linux/) | Linux-based machines. |
+| 🪟 [Windows](./Windows/) | Windows-based machines. |
 
 ---
 
 ## All Writeups
 
-| Room | OS | Tags | Date |
-|------|-----|------|------|
+| Machine | OS | Tags | Date |
+|---------|----|------|------|
 | *Auto-populated as writeups are added* | | | |
 
 ---

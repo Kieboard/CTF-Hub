@@ -10,26 +10,26 @@ HackTheBox is the industry standard for offensive security labs. Machines simula
 
 | Level | What to expect |
 |-------|----------------|
-| 🟢 [Easy](writeups/HackTheBox/Machines/Easy/README.md) | Single or two-stage exploits, clear attack path, solid fundamentals. |
-| 🟡 [Medium](writeups/HackTheBox/Machines/Medium/README.md) | Chained vulnerabilities, creative pivoting, intermediate enumeration. |
-| 🔴 [Hard](writeups/HackTheBox/Machines/Hard/README.md) | Advanced exploitation, obscure attack paths, custom scripting needed. |
-| 💀 [Insane](writeups/HackTheBox/Machines/Insane/README.md) | Expert-level. Cutting-edge CVEs, complex chains, very few global solves. |
+| 🟢 [Easy](./Machines/Easy/) | Single or two-stage exploits, clear attack path, solid fundamentals. |
+| 🟡 [Medium](./Machines/Medium/) | Chained vulnerabilities, creative pivoting, intermediate enumeration. |
+| 🔴 [Hard](./Machines/Hard/) | Advanced exploitation, obscure attack paths, custom scripting needed. |
+| 💀 [Insane](./Machines/Insane/) | Expert-level. Cutting-edge CVEs, complex chains, very few global solves. |
 
 ## Sherlocks
 
 | Level | What to expect |
 |-------|----------------|
-| 🟢 [Easy](writeups/HackTheBox/Sherlocks/Easy/README.md) | Intermediate DFIR. Multi-step analysis, varied log sources. |
-| 🟡 [Medium](writeups/HackTheBox/Sherlocks/Medium/README.md) | Complex incident response. Advanced malware, multi-vector attacks. |
-| 🔴 [Hard](writeups/HackTheBox/Sherlocks/Hard/README.md) | Advanced DFIR. Deep forensics, sophisticated threat actors. |
+| 🟢 [Easy](./Sherlocks/Easy/) | Intermediate DFIR. Multi-step analysis, varied log sources. |
+| 🟡 [Medium](./Sherlocks/Medium/) | Complex incident response. Advanced malware, multi-vector attacks. |
+| 🔴 [Hard](./Sherlocks/Hard/) | Advanced DFIR. Deep forensics, sophisticated threat actors. |
 
 ## Challenges
 
 | Level | What to expect |
 |-------|----------------|
-| 🟢 [Easy](writeups/HackTheBox/Challenges/Easy/README.md) | Single-concept challenges across web, crypto, forensics, reversing. |
-| 🟡 [Medium](writeups/HackTheBox/Challenges/Medium/README.md) | Multi-step challenges, intermediate knowledge required. |
-| 🔴 [Hard](writeups/HackTheBox/Challenges/Hard/README.md) | No upper limit on difficulty. Serious technical depth required. |
+| 🟢 [Easy](./Challenges/Easy/) | Single-concept challenges across web, crypto, forensics, reversing. |
+| 🟡 [Medium](./Challenges/Medium/) | Multi-step challenges, intermediate knowledge required. |
+| 🔴 [Hard](./Challenges/Hard/) | No upper limit on difficulty. Serious technical depth required. |
 
 ---
 

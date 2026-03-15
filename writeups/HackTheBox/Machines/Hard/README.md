@@ -8,8 +8,8 @@ Hard difficulty HTB machines.
 
 | OS | What to expect |
 |----|----------------|
-| 🐧 [Linux](writeups/HackTheBox/Machines/Hard/Linux/README.md) | Linux-based machines. |
-| 🪟 [Windows](writeups/HackTheBox/Machines/Hard/Windows/README.md) | Windows-based machines. |
+| 🐧 [Linux](./Linux/) | Linux-based machines. |
+| 🪟 [Windows](./Windows/) | Windows-based machines. |
 
 ---
 

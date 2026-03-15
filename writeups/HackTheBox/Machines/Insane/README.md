@@ -8,8 +8,8 @@ Insane difficulty HTB machines.
 
 | OS | What to expect |
 |----|----------------|
-| 🐧 [Linux](writeups/HackTheBox/Machines/Insane/Linux/README.md) | Linux-based machines. |
-| 🪟 [Windows](writeups/HackTheBox/Machines/Insane/Windows/README.md) | Windows-based machines. |
+| 🐧 [Linux](./Linux/) | Linux-based machines. |
+| 🪟 [Windows](./Windows/) | Windows-based machines. |
 
 ---
 
