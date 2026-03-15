@@ -8,9 +8,9 @@ Easy difficulty TryHackMe rooms.
 
 | OS | What to expect |
 |----|----------------|
-| 🐧 [Linux](./Linux/) | Linux-based machines. |
-| 🪟 [Windows](./Windows/) | Windows-based machines. |
-| 💻 [Other](./Other/) | Other OS or web-only challenges. |
+| 🐧 [Linux](./Linux/README.md) | Linux-based machines. |
+| 🪟 [Windows](./Windows/README.md) | Windows-based machines. |
+| 💻 [Other](./Other/README.md) | Other OS or web-only challenges. |
 
 ---
 
