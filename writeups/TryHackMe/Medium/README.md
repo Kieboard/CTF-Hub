@@ -1,13 +1,23 @@
-# 🟡 TryHackMe — Medium
+# TryHackMe — Medium
 
-Intermediate rooms requiring chained exploits, deeper enumeration, and creative thinking.
+Medium difficulty TryHackMe rooms.
 
 ---
 
-## 📋 Writeups
+## OS
 
-| Icon | Room | Tags | Date |
-|------|------|------|------|
+| OS | What to expect |
+|----|----------------|
+| 🐧 [Linux](./Linux/) | Linux-based machines. |
+| 🪟 [Windows](./Windows/) | Windows-based machines. |
+| 💻 [Other](./Other/) | Other OS or web-only challenges. |
+
+---
+
+## All Writeups
+
+| Room | OS | Tags | Date |
+|------|----|------|------|
 | *Auto-populated as writeups are added* | | | |
 
 ---

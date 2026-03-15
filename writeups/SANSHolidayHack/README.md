@@ -1,17 +1,27 @@
-# 🎄 SANSHolidayHack
+# SANS Holiday Hack
 
-SANS Holiday Hack Challenge writeups. Annual CTF featuring real-world scenarios and creative challenges.
+The SANS Holiday Hack Challenge is an annual CTF event with a unique narrative-driven format. Challenges cover a wide range of offensive and defensive security topics.
 
----
-
-## 📂 Difficulty
-
-| Level | Folder |
-|-------|--------|
-| 🟢 Easy | [`Easy/`](./Easy/) |
-| 🟡 Medium | [`Medium/`](./Medium/) |
-| 🔴 Hard | [`Hard/`](./Hard/) |
+> **0 challenges completed · Last updated —**
 
 ---
 
-> Writeups authored in Notion, auto-published via CTF Publisher.
+## Difficulty
+
+| Level | What to expect |
+|-------|----------------|
+| 🟢 [Easy](./Easy/) | Accessible entry challenges covering core concepts. |
+| 🟡 [Medium](./Medium/) | Multi-step challenges requiring solid technical knowledge. |
+| 🔴 [Hard](./Hard/) | Advanced challenges, creative techniques, deep rabbit holes. |
+
+---
+
+## All Writeups
+
+| Challenge | Difficulty | Tags | Date |
+|-----------|-----------|------|------|
+| *Auto-populated as writeups are added* | | | |
+
+---
+
+> Writeups drafted in Notion and auto-published via a custom Python pipeline using the Claude API.
