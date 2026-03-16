@@ -1,15 +1,15 @@
-# Linux
+# TryHackMe — Easy — Linux
 
-Easy difficulty Linux machines.
+Easy difficulty Linux rooms.
 
-***
+---
 
-## 📋 Writeups
+## Writeups
 
-| Icon                                   | Room | Tags | Date |
-| -------------------------------------- | ---- | ---- | ---- |
-| _Auto-populated as writeups are added_ |      |      |      |
+| Icon | Room | Tags | Date |
+|------|------|------|------|
+| *Auto-populated as writeups are added* | | | |
 
-***
+---
 
 > Writeups authored in Notion, auto-published via CTF Publisher.

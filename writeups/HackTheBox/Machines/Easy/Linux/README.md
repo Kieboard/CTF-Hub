@@ -4,12 +4,12 @@ Easy difficulty Linux machines.
 
 ---
 
-## All Writeups
+## Writeups
 
-| Machine | Tags | Date |
-|---------|------|------|
-| *Auto-populated as writeups are added* | | |
+| Icon | Room | Tags | Date |
+|------|------|------|------|
+| *Auto-populated as writeups are added* | | | |
 
 ---
 
-> Writeups drafted in Notion and auto-published via a custom Python pipeline using the Claude API.
+> Writeups authored in Notion, auto-published via CTF Publisher.

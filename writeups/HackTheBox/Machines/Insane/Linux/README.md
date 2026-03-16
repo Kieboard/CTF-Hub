@@ -1,15 +1,15 @@
-# HackTheBox — Machines — Insane — Windows
+# HackTheBox — Machines — Insane — Linux
 
-Insane difficulty Windows machines.
-
----
-
-## All Writeups
-
-| Machine | Tags | Date |
-|---------|------|------|
-| *Auto-populated as writeups are added* | | |
+Insane difficulty Linux machines.
 
 ---
 
-> Writeups drafted in Notion and auto-published via a custom Python pipeline using the Claude API.
+## Writeups
+
+| Icon | Room | Tags | Date |
+|------|------|------|------|
+| *Auto-populated as writeups are added* | | | |
+
+---
+
+> Writeups authored in Notion, auto-published via CTF Publisher.
