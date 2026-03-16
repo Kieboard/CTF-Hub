@@ -1,0 +1,37 @@
+name: Sync writeups to GitBook branch
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'writeups/**'
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Sync writeups folder only to gitbook branch
+        run: |
+          # Switch to gitbook branch
+          git checkout gitbook
+
+          # Copy only the writeups folder from main
+          git checkout main -- writeups/
+
+          # Commit and push if there are changes
+          git add writeups/
+          git diff --cached --quiet || git commit -m "sync: update writeups from main"
+          git push origin gitbook
