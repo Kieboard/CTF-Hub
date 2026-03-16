@@ -10,10 +10,10 @@ LetsDefend is a blue team focused security platform. Challenges simulate real SO
 
 | Level | What to expect |
 |-------|----------------|
-| ⚪ [Beginner](./Beginner/) | Introductory SOC concepts. Clear attack lifecycles, obvious artefacts. |
-| 🟢 [Easy](./Easy/) | Fundamental investigation. Single-tool analysis, clear indicators. |
-| 🟡 [Medium](./Medium/) | Multi-step analysis. Complex log correlation, varied artefact types. |
-| 🔴 [Hard](./Hard/) | Advanced threat hunting. Sophisticated TTPs, minimal indicators. |
+| ⚪ [Beginner](./Beginner/README.md) | Introductory SOC concepts. Clear attack lifecycles, obvious artefacts. |
+| 🟢 [Easy](./Easy/README.md) | Fundamental investigation. Single-tool analysis, clear indicators. |
+| 🟡 [Medium](./Medium/README.md) | Multi-step analysis. Complex log correlation, varied artefact types. |
+| 🔴 [Hard](./Hard/README.md) | Advanced threat hunting. Sophisticated TTPs, minimal indicators. |
 
 ---
 

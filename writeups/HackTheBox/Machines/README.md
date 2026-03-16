@@ -8,19 +8,19 @@ Retired and active HTB machines organised by difficulty.
 
 | Level | What to expect |
 |-------|----------------|
-| 🟢 [Easy](Easy/README.md) | Single or two-stage exploits, clear attack path. |
-| 🟡 [Medium](Medium/README.md) | Chained vulnerabilities, creative pivoting required. |
-| 🔴 [Hard](Hard/README.md) | Advanced exploitation, obscure attack paths. |
-| 💀 [Insane](Insane/README.md) | Expert-level. Cutting-edge CVEs, very few global solves. |
+| 🟢 [Easy](./Easy/README.md) | Single or two-stage exploits, clear attack path, solid fundamentals. |
+| 🟡 [Medium](./Medium/README.md) | Chained vulnerabilities, creative pivoting, intermediate enumeration. |
+| 🔴 [Hard](./Hard/README.md) | Advanced exploitation, obscure attack paths, custom scripting needed. |
+| 💀 [Insane](./Insane/README.md) | Expert-level. Cutting-edge CVEs, complex chains, very few global solves. |
 
 ---
 
 ## All Writeups
 
-| Room | Difficulty | OS | Tags | Date |
-|------|-----------|-----|------|------|
+| Machine | Difficulty | OS | Tags | Date |
+|---------|-----------|-----|------|------|
 | *Auto-populated as writeups are added* | | | | |
 
 ---
 
-> Writeups authored in Notion, auto-published via CTF Publisher.
+> Writeups drafted in Notion and auto-published via a custom Python pipeline using the Claude API.

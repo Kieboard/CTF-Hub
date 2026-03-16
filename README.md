@@ -1,7 +1,7 @@
 # Welcome
 
 > A living archive of CTF writeups, machine walkthroughs, and offensive security notes.
-> Documenting the grind from IT support to information security — one flag at a time.
+> From IT support to information security — one flag at a time.
 
 Not just *what* I did — but *why* it worked. Every recon step, every rabbit hole, every privilege escalation documented as it happens.
 
@@ -10,18 +10,11 @@ Not just *what* I did — but *why* it worked. Every recon step, every rabbit ho
 ## Progress
 
 | Platform | Easy | Medium | Hard | Total |
-|---|---|---|---|---|
-| TryHackMe | — | — | — | — |
+|----------|------|--------|------|-------|
+| TryHackMe | 2 | — | — | 2 |
 | HackTheBox | — | — | — | — |
-| RootMe | — | — | — | — |
-| PicoCTF | — | — | — | — |
-| PwnedLabs | — | — | — | — |
-| pwn.college | — | — | — | — |
-| VulnHub | — | — | — | — |
-| OffSec | — | — | — | — |
-| Proving Grounds | — | — | — | — |
 | LetsDefend | — | — | — | — |
-| **Total** | **0** | **0** | **0** | **0** |
+| **Total** | **2** | **0** | **0** | **2** |
 
 > Stats update automatically with each published writeup.
 
@@ -29,7 +22,7 @@ Not just *what* I did — but *why* it worked. Every recon step, every rabbit ho
 
 ## What's in here
 
-Writeups across TryHackMe, HackTheBox, LetsDefend, and a range of other platforms — organised by difficulty and OS. Each one covers methodology, exploitation, and key takeaways. Also a growing set of cheatsheets built from real machines.
+Writeups across TryHackMe, HackTheBox, and LetsDefend — organised by difficulty and OS. Each one covers methodology, exploitation, and key takeaways. Also a growing set of cheatsheets built from real machines.
 
 ---
 

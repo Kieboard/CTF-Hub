@@ -10,9 +10,9 @@ TryHackMe is a beginner-to-intermediate offensive security platform built around
 
 | Level | What to expect |
 |-------|----------------|
-| 🟢 [Easy](./Easy/) | Core methodology, enumeration fundamentals, common vulnerabilities. |
-| 🟡 [Medium](./Medium/) | Chained exploits, deeper enumeration, lateral thinking required. |
-| 🔴 [Hard](./Hard/) | Complex attack chains, custom exploits, advanced post-exploitation. |
+| 🟢 [Easy](./Easy/README.md) | Core methodology, enumeration fundamentals, common vulnerabilities. |
+| 🟡 [Medium](./Medium/README.md) | Chained exploits, deeper enumeration, lateral thinking required. |
+| 🔴 [Hard](./Hard/README.md) | Complex attack chains, custom exploits, advanced post-exploitation. |
 
 ---
 

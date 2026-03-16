@@ -1,18 +1,9 @@
 # Platforms
 
-Writeups organised by platform, difficulty, and OS. Each writeup covers recon methodology, exploitation steps, privilege escalation where applicable, and key takeaways.
+Writeups organised by platform. Each platform has its own difficulty structure — click in to find writeups by difficulty and OS.
 
----
-
-| Platform | Type | Writeups |
-|----------|------|----------|
-| [TryHackMe](writeups/TryHackMe/README.md) | Guided rooms & machines | Easy / Medium / Hard |
-| [HackTheBox](writeups/HackTheBox/README.md) | Machines, Sherlocks, Challenges | Easy / Medium / Hard / Insane |
-| [RootMe](writeups/RootMe/README.md) | Web & system challenges | Easy / Medium / Hard |
-| [PicoCTF](writeups/PicoCTF/README.md) | CTF challenges | Easy / Medium / Hard |
-| [PwnedLabs](writeups/PwnedLabs/README.md) | Cloud security labs | Easy / Medium / Hard |
-| [pwn.college](writeups/pwn.college/README.md) | Binary exploitation & systems | Easy / Medium / Hard |
-| [VulnHub](writeups/VulnHub/README.md) | Offline vulnerable VMs | Easy / Medium / Hard |
-| [OffSec](writeups/OffSec/README.md) | OffSec labs | Easy / Medium / Hard |
-| [Proving Grounds](writeups/ProvingGrounds/README.md) | OffSec proving grounds | Easy / Medium / Hard |
-| [LetsDefend](writeups/LetsDefend/README.md) | Blue team SOC challenges | Beginner / Easy / Medium / Hard |
+| Platform | Type | Focus |
+|----------|------|-------|
+| [TryHackMe](./writeups/TryHackMe/README.md) | Offensive | Guided rooms, fundamentals, methodology |
+| [HackTheBox](./writeups/HackTheBox/README.md) | Offensive | Machines, Sherlocks, Challenges |
+| [LetsDefend](./writeups/LetsDefend/README.md) | Defensive | SOC analysis, incident response, threat hunting |

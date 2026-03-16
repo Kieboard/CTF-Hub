@@ -1,15 +1,15 @@
 # LetsDefend — Beginner
 
-Beginner difficulty blue team SOC challenges.
+Beginner difficulty LetsDefend labs.
 
 ---
 
-## Writeups
+## All Writeups
 
-| Room | Difficulty | Tags | Date |
-|------|-----------|------|------|
-| *Auto-populated as writeups are added* | | | |
+| Lab | Tags | Date |
+|-----|------|------|
+| *Auto-populated as writeups are added* | | |
 
 ---
 
-> Writeups authored in Notion, auto-published via CTF Publisher.
+> Writeups drafted in Notion and auto-published via a custom Python pipeline using the Claude API.

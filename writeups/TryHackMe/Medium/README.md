@@ -11,6 +11,7 @@ Medium difficulty TryHackMe rooms.
 | 🐧 [Linux](./Linux/README.md) | Linux-based machines. |
 | 🪟 [Windows](./Windows/README.md) | Windows-based machines. |
 | 💻 [Other](./Other/README.md) | Other OS or web-only challenges. |
+
 ---
 
 ## All Writeups
@@ -21,4 +22,4 @@ Medium difficulty TryHackMe rooms.
 
 ---
 
-> Writeups authored in Notion, auto-published via CTF Publisher.
+> Writeups drafted in Notion and auto-published via a custom Python pipeline using the Claude API.

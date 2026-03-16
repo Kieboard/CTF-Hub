@@ -22,4 +22,4 @@ Hard difficulty TryHackMe rooms.
 
 ---
 
-> Writeups authored in Notion, auto-published via CTF Publisher.
+> Writeups drafted in Notion and auto-published via a custom Python pipeline using the Claude API.

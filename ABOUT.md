@@ -1,38 +1,44 @@
-# 👤 About
+# About
 
-## Who am I
+Hey, I'm Kie — an IT Analyst working my way into Information Security.
 
-I'm Kieran — an IT professional transitioning into offensive security. I work in IT support with a strong background in networking, Active Directory, Azure, and M365, and I'm currently working toward a BSc in Cyber Security and CompTIA Security+.
-
-This site is where I document everything I learn through hands-on practice — CTFs, labs, and machines across TryHackMe, HackTheBox, and beyond.
+This site is a living record of my CTF progress — every room, every machine, every flag. Not just the solutions, but the methodology behind them. Why something worked, where I got stuck, and what I learned.
 
 ---
 
 ## Background
 
-- 🎓 BSc Cyber Security — The Open University *(in progress)*
-- 🏅 CompTIA Security+ *(in progress)*
-- 🖧 HNC Computing Tech Support
-- 🌐 HND Networking
-- 💼 IT Service Desk — enterprise environment, ITIL 4
+- 💼 IT Analyst
+- 🎓 BSc Cyber Security — Open University (Cisco-focused)
+- 🛠️ Core skills: Networking, Active Directory, Azure, M365, ITIL 4
+- 🔐 Focus areas: Offensive security, blue team, cloud security
 
 ---
 
-## Focus Areas
+## Certifications
 
-| Area | Detail |
-|------|--------|
-| Offensive Security | Web exploitation, privilege escalation, AD attacks |
-| Cloud Security | Azure, AWS misconfigurations, identity attacks |
-| Blue Team | Incident response, DFIR fundamentals, SIEM |
-| Automation | Python pipelines, GitHub Actions, API integrations |
-
----
-
-## This Site
-
-All writeups are written in Notion as rough notes during a box, then auto-formatted and published via a custom Python pipeline that uses the Claude API for formatting and category detection. Source code lives in the [CTF-Hub repo](https://github.com/Kieboard/CTF-Hub).
+| Certification | Status | Credential |
+|---------------|--------|------------|
+| [ITIL 4 Foundation](https://www.axelos.com/certifications/itil-service-management/itil-4-foundation) | 🔄 In Progress | — |
+| [CompTIA Security+](https://www.comptia.org/certifications/security) | 🔄 In Progress | — |
+| [GitHub Foundations](https://examregistration.github.com/certification/GHF) | 🔄 In Progress | — |
 
 ---
 
-*Built with GitBook. Auto-published via CTF-Hub pipeline.*
+## Platforms
+
+| Platform | Focus |
+|----------|-------|
+| TryHackMe | Fundamentals, methodology, guided rooms |
+| HackTheBox | Real-world machines, DFIR, challenges |
+| LetsDefend | Blue team, SOC analysis, incident response |
+
+---
+
+## Find Me
+
+[TryHackMe](https://tryhackme.com/p/Kieboard) · [HackTheBox](https://app.hackthebox.com/public/users/1030668) · [GitHub](https://github.com/Kieboard) · [Portfolio](https://kieboard.me)
+
+---
+
+*This site is built with GitBook, backed by GitHub, and auto-populated via a custom Python pipeline using the Claude API.*

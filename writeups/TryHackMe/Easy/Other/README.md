@@ -1,15 +1,15 @@
-# Other
+# TryHackMe — Easy — Other
 
-Easy difficulty Other machines.
+Easy difficulty Other rooms.
 
-***
+---
 
-## 📋 Writeups
+## All Writeups
 
-| Icon                                   | Room | Tags | Date |
-| -------------------------------------- | ---- | ---- | ---- |
-| _Auto-populated as writeups are added_ |      |      |      |
+| Room | Tags | Date |
+|------|------|------|
+| *Auto-populated as writeups are added* | | |
 
-***
+---
 
-> Writeups authored in Notion, auto-published via CTF Publisher.
+> Writeups drafted in Notion and auto-published via a custom Python pipeline using the Claude API.
