@@ -1,4 +1,4 @@
-# Sherlocks
+# HackTheBox — Sherlocks
 
 Blue team focused DFIR challenges. Analyse logs, memory dumps, and forensic artefacts to investigate simulated incidents.
 
@@ -8,9 +8,9 @@ Blue team focused DFIR challenges. Analyse logs, memory dumps, and forensic arte
 
 | Level | What to expect |
 |-------|----------------|
-| 🟢 [Easy](Easy/README.md) | Intermediate DFIR. Multi-step analysis, varied log sources. |
-| 🟡 [Medium](Medium/README.md) | Complex incident response. Advanced malware, multi-vector attacks. |
-| 🔴 [Hard](Hard/README.md) | Advanced DFIR. Deep forensics, sophisticated threat actors. |
+| 🟢 [Easy](./Easy/README.md) | Intermediate DFIR. Multi-step analysis, varied log sources. |
+| 🟡 [Medium](./Medium/README.md) | Complex incident response. Advanced malware, multi-vector attacks. |
+| 🔴 [Hard](./Hard/README.md) | Advanced DFIR. Deep forensics, sophisticated threat actors. |
 
 ---
 

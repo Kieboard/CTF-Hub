@@ -17,8 +17,8 @@ Easy difficulty TryHackMe rooms.
 ## All Writeups
 
 | Room | OS | Tags | Date |
+| <img src="Linux/CupidBot/CupidBot.png" width="32" alt="CupidBot"> | [CupidBot](Linux/CupidBot/CupidBot.md) | `#tryhackme` `#easy` `#machine` `#prompt-injection` `#ai-security` `#llm` | Mar 16, 2026 |
 |------|----|------|------|
-| *Auto-populated as writeups are added* | | | |
 
 ---
 
