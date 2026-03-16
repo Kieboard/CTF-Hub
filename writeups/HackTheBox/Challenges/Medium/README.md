@@ -4,7 +4,7 @@ Medium difficulty HTB Challenges.
 
 ***
 
-## All Writeups.
+## All Writeups
 
 | Challenge                              | Category | Tags | Date |
 | -------------------------------------- | -------- | ---- | ---- |

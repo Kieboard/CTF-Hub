@@ -4,7 +4,7 @@ Hard difficulty HTB Sherlocks.
 
 ***
 
-## All Writeups.
+## All Writeups
 
 | Sherlock                               | Tags | Date |
 | -------------------------------------- | ---- | ---- |

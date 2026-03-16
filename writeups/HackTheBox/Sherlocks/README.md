@@ -4,7 +4,7 @@ Blue team focused DFIR challenges. Analyse logs, memory dumps, and forensic arte
 
 ***
 
-## Difficulty.&#x20;
+## Difficulty
 
 | Level                | What to expect                                                     |
 | -------------------- | ------------------------------------------------------------------ |

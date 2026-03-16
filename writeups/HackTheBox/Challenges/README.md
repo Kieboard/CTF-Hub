@@ -4,7 +4,7 @@ Standalone CTF-style challenges isolating single concepts across web, crypto, fo
 
 ***
 
-## Difficulty.
+## Difficulty
 
 | Level                | What to expect                                                      |
 | -------------------- | ------------------------------------------------------------------- |
