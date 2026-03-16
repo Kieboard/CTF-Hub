@@ -4,11 +4,11 @@ Medium difficulty Windows machines.
 
 ---
 
-## All Writeups
+## Writeups
 
-| Machine | Tags | Date |
-|---------|------|------|
-| *Auto-populated as writeups are added* | | |
+| Icon | Room | Tags | Date |
+|------|------|------|------|
+| *Auto-populated as writeups are added* | | | |
 
 ---
 

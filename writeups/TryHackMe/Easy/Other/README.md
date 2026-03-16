@@ -8,8 +8,8 @@ Easy difficulty Other rooms.
 
 | Icon | Room | Tags | Date |
 |------|------|------|------|
-| *Auto-populated as writeups are added* | | | |
+| <img src="CupidBot/CupidBot.png" width="32" alt="CupidBot"> | [CupidBot](./CupidBot/CupidBot.md) | `#prompt-injection` `#ai-security` `#llm` | Mar 16, 2026 |
 
 ---
 
-> Writeups authored in Notion, auto-published via CTF Publisher.
+> Writeups drafted in Notion and auto-published via a custom Python pipeline using the Claude API.

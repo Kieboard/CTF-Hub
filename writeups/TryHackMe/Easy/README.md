@@ -14,11 +14,12 @@ Easy difficulty TryHackMe rooms.
 
 ---
 
-## All Writeups
+## All Easy Writeups
 
-| Room | OS | Tags | Date |
-| <img src="Linux/CupidBot/CupidBot.png" width="32" alt="CupidBot"> | [CupidBot](Linux/CupidBot/CupidBot.md) | `#tryhackme` `#easy` `#machine` `#prompt-injection` `#ai-security` `#llm` | Mar 16, 2026 |
-|------|----|------|------|
+| Icon | Room | OS | Tags | Date |
+|------|------|----|------|------|
+| <img src="Linux/RootMe/RootMe.png" width="32" alt="RootMe"> | [RootMe](./Linux/RootMe/RootMe.md) | Linux | `#file-upload` `#suid` `#privilege-escalation` | Mar 03, 2026 |
+| <img src="Other/CupidBot/CupidBot.png" width="32" alt="CupidBot"> | [CupidBot](./Other/CupidBot/CupidBot.md) | Other | `#prompt-injection` `#ai-security` `#llm` | Mar 16, 2026 |
 
 ---
 

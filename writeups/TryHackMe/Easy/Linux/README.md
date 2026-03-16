@@ -8,8 +8,8 @@ Easy difficulty Linux rooms.
 
 | Icon | Room | Tags | Date |
 |------|------|------|------|
-| *Auto-populated as writeups are added* | | | |
+| <img src="RootMe/RootMe.png" width="32" alt="RootMe"> | [RootMe](./RootMe/RootMe.md) | `#file-upload` `#suid` `#privilege-escalation` | Mar 03, 2026 |
 
 ---
 
-> Writeups authored in Notion, auto-published via CTF Publisher.
+> Writeups drafted in Notion and auto-published via a custom Python pipeline using the Claude API.
