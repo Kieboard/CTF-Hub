@@ -1,3 +1,7 @@
+---
+icon: clipboard-list-check
+---
+
 # Cheatsheets
 
 Quick reference notes built from real machines and challenges. Not exhaustive — just the commands and techniques I actually reach for.

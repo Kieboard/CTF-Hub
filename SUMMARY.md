@@ -3,9 +3,7 @@
 ## Home
 
 * [Welcome](README.md)
-* [About](ABOUT.md)
-
----
+* [About Me](ABOUT.md)
 
 ## Writeups
 
@@ -52,8 +50,6 @@
     * [Easy](writeups/LetsDefend/Easy/README.md)
     * [Medium](writeups/LetsDefend/Medium/README.md)
     * [Hard](writeups/LetsDefend/Hard/README.md)
-
----
 
 ## Extras
 
