@@ -16,12 +16,4 @@ All writeups are authored in Notion and auto-published here via a custom CI/CD p
 | **Total** | **2** | **0** | **0** | **2** |
 
 
-## 🎯 Goals
-
-- [ ] CompTIA Security+
-- [ ] Complete TryHackMe Pre-Security and Jr Penetration Tester paths
-- [ ] 50 published writeups
-
----
-
 *Built by [Kieboard](https://github.com/Kieboard)*
