@@ -1,7 +1,7 @@
 ---
 icon: shield-check
-cover: ../../.gitbook/assets/ChatGPT Image Mar 16, 2026, 02_36_51 PM.png
-coverY: 79.3388429752066
+cover: ../../.gitbook/assets/ChatGPT Image Mar 16, 2026, 02_46_07 PM.png
+coverY: -6.347107438016536
 ---
 
 # LetsDefend
