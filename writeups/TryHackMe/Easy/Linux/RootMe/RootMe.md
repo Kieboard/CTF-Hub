@@ -11,8 +11,6 @@
 
 ---
 
-# RootMe
-
 ## 🧠 Overview
 
 RootMe is a beginner-friendly Linux box built around two core concepts: file upload filter bypass and SUID binary abuse. The attack path is straightforward but teaches fundamentals that show up constantly in real engagements — weak extension filtering on an upload endpoint, and an interpreter left with SUID set. Both are trivially exploitable once identified. The whole chain from initial recon to root is clean and repeatable.

@@ -11,8 +11,6 @@
 
 ---
 
-# CupidBot
-
 ## 🧠 Overview
 
 No machine, no ports, no traditional recon. The entire attack surface was a chatbot. CupidBot is a pure prompt injection challenge — the goal is to abuse the AI's instruction hierarchy to extract three flags buried in its system prompt. Everything you need is already inside the bot. You just have to ask the right way.
