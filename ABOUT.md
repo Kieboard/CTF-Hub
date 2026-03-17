@@ -9,7 +9,7 @@ Every writeup in this repo is authored in Notion and published automatically via
 ```
 Notion (notes + metadata)
         ↓
-  GitHub Actions (trigger: every 30 mins or manual)
+  GitHub Actions (trigger: 6pm UTC daily or manual)
         ↓
   Python script (ctf_auto.py)
         ↓
@@ -19,16 +19,24 @@ Notion (notes + metadata)
   │ 2. Extract notes and metadata       │
   │ 3. Fetch room icon from platform    │
   │ 4. Scrape room description          │
-  │ 5. Send to Claude AI for formatting │
-  │ 6. Save markdown + icon to GitHub   │
-  │ 7. Update difficulty README table   │
-  │ 8. Update main README stats         │
-  │ 9. Write formatted writeup → Notion │
-  │ 10. Set Notion page icon            │
-  │ 11. Tick Published checkbox         │
+  │ 5. Auto-detect OS (Linux/Win/Other) │
+  │ 6. Generate topic tags via Claude   │
+  │ 7. Send to Claude AI for formatting │
+  │ 8. Save markdown + icon to GitHub   │
+  │ 9. Update OS-level README table     │
+  │ 10. Update difficulty README table  │
+  │ 11. Update platform README table    │
+  │ 12. Update main README stats        │
+  │ 13. Write formatted writeup → Notion│
+  │ 14. Set Notion page icon            │
+  │ 15. Tick Published checkbox         │
   └─────────────────────────────────────┘
         ↓
-  Git commit + push → Live on GitHub
+  Git commit + push to main
+        ↓
+  Sync workflow copies writeups/ → gitbook branch
+        ↓
+  GitBook picks up changes automatically
 ```
 
 ### Tech Stack
@@ -36,10 +44,11 @@ Notion (notes + metadata)
 | Component | Purpose |
 |-----------|---------|
 | **Notion API** | Source of truth for notes and metadata |
-| **GitHub Actions** | Scheduled CI/CD runner (every 30 mins) |
+| **GitHub Actions** | Scheduled CI/CD runner (6pm UTC daily) |
 | **Python** | Core automation script |
 | **Claude AI (Anthropic)** | Formats rough notes into professional writeups |
 | **GitHub** | Version control and public portfolio |
+| **GitBook** | Public-facing writeup site |
 
 ### Notion Database Schema
 
@@ -48,12 +57,14 @@ Each room entry in Notion requires:
 | Property | Type | Description |
 |----------|------|-------------|
 | Note Title | Title | Room name |
-| Platform | Select | TryHackMe, HackTheBox, etc. |
-| Difficulty | Select | Easy, Medium, Hard, Insane |
+| Platform | Select | TryHackMe, HackTheBox, LetsDefend, etc. |
+| Difficulty | Select | Easy, Medium, Hard, Insane, Beginner |
+| Type | Select | Machine, Sherlock, Challenge, Lab |
+| OS | Select | Linux, Windows, Other |
 | URL | URL | Link to the room |
 | Icon URL | URL | Room icon image URL |
 | Tags | Multi-select | e.g. #web, #sqli, #privesc |
-| Completed | Checkbox | Triggers the pipeline when ticked |
+| Completed | Checkbox | Mark when notes are ready |
 | Published | Checkbox | Auto-ticked after publish |
 
 ### Folder Structure
@@ -62,25 +73,45 @@ Each room entry in Notion requires:
 CTF-Hub/
 ├── writeups/
 │   ├── TryHackMe/
-│   │   ├── README.md
+│   │   ├── README.md              ← platform overview + all writeups
 │   │   ├── Easy/
-│   │   │   ├── README.md          ← auto-updated table
-│   │   │   └── RoomName/
-│   │   │       ├── RoomName.md    ← formatted writeup
-│   │   │       ├── RoomName.png   ← room icon
-│   │   │       └── screenshot_01.png
+│   │   │   ├── README.md          ← difficulty overview + OS links
+│   │   │   ├── Linux/
+│   │   │   │   ├── README.md      ← auto-updated table
+│   │   │   │   └── RoomName/
+│   │   │   │       ├── RoomName.md    ← formatted writeup
+│   │   │   │       ├── RoomName.png   ← room icon
+│   │   │   │       └── screenshot_01.png
+│   │   │   ├── Windows/
+│   │   │   └── Other/
 │   │   ├── Medium/
 │   │   └── Hard/
-│   └── HackTheBox/
-│       └── ...
-├── Cheatsheets/
-├── Templates/
+│   ├── HackTheBox/
+│   │   ├── Machines/
+│   │   ├── Sherlocks/
+│   │   └── Challenges/
+│   ├── LetsDefend/
+│   └── Cheatsheets/
 ├── scripts/
 │   ├── ctf_auto.py        ← main pipeline script
 │   └── generate_readmes.py
 └── .github/workflows/
-    └── ctf-publisher.yml  ← GitHub Actions workflow
+    ├── ctf-publisher.yml      ← daily publish pipeline
+    └── sync-to-gitbook.yml    ← syncs writeups/ to gitbook branch
 ```
+
+### Branch Structure
+
+| Branch | Purpose |
+|--------|---------|
+| `main` | Source of truth — scripts, workflows, all content |
+| `gitbook` | Auto-synced from main — GitBook reads from here |
+
+The `gitbook` branch only ever receives the `writeups/` folder. Scripts, workflows and root files stay on `main` only.
+
+### Queue System
+
+The pipeline publishes **one writeup per day** at 6pm UTC. If multiple writeups are queued in Notion, they drip out one per day automatically. Trigger manually via GitHub Actions to publish immediately.
 
 ### Cost
 
@@ -91,4 +122,4 @@ CTF-Hub/
 
 ---
 
-*Built by [Kieboard](https://github.com/Kieboard)*
+*Built by [Kieboard](https://github.com/Kieboard) · Live at [kieboard.gitbook.io/ctf-hub](https://kieboard.gitbook.io/ctf-hub)*
