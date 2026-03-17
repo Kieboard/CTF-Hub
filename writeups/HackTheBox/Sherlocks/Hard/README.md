@@ -1,14 +1,14 @@
-# HackTheBox — Sherlocks — Hard
+# HackTheBox > Sherlocks > Hard
 
 Hard difficulty HTB Sherlocks.
 
 ---
 
-## All Writeups
+## All Hard Writeups
 
-| Sherlock | Tags | Date |
-|----------|------|------|
-| *Auto-populated as writeups are added* | | |
+| Icon | Sherlock | Tags | Date |
+|------|----------|------|------|
+| *Auto-populated as writeups are added* | | | |
 
 ---
 

@@ -1,14 +1,14 @@
-# HackTheBox — Challenges — Medium
+# HackTheBox > Challenges > Medium
 
 Medium difficulty HTB Challenges.
 
 ---
 
-## All Writeups
+## All Medium Writeups
 
-| Challenge | Category | Tags | Date |
-|-----------|----------|------|------|
-| *Auto-populated as writeups are added* | | | |
+| Icon | Challenge | Category | Tags | Date |
+|------|-----------|----------|------|------|
+| *Auto-populated as writeups are added* | | | | |
 
 ---
 

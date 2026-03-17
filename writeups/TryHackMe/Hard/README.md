@@ -1,4 +1,4 @@
-# TryHackMe — Hard
+# TryHackMe > Hard
 
 Hard difficulty TryHackMe rooms.
 
@@ -14,11 +14,11 @@ Hard difficulty TryHackMe rooms.
 
 ---
 
-## All Writeups
+## All Hard Writeups
 
-| Room | OS | Tags | Date |
-|------|----|------|------|
-| *Auto-populated as writeups are added* | | | |
+| Icon | Room | OS | Tags | Date |
+|------|------|----|------|------|
+| *Auto-populated as writeups are added* | | | | |
 
 ---
 

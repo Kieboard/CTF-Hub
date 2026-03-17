@@ -1,4 +1,4 @@
-# HackTheBox — Machines — Hard — Windows
+# HackTheBox > Machines > Hard > Windows
 
 Hard difficulty Windows machines.
 

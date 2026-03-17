@@ -1,14 +1,14 @@
-# HackTheBox — Sherlocks — Medium
+# HackTheBox > Sherlocks > Medium
 
 Medium difficulty HTB Sherlocks.
 
 ---
 
-## All Writeups
+## All Medium Writeups
 
-| Sherlock | Tags | Date |
-|----------|------|------|
-| *Auto-populated as writeups are added* | | |
+| Icon | Sherlock | Tags | Date |
+|------|----------|------|------|
+| *Auto-populated as writeups are added* | | | |
 
 ---
 

@@ -1,14 +1,14 @@
-# HackTheBox — Challenges — Hard
+# HackTheBox > Challenges > Hard
 
 Hard difficulty HTB Challenges.
 
 ---
 
-## All Writeups
+## All Hard Writeups
 
-| Challenge | Category | Tags | Date |
-|-----------|----------|------|------|
-| *Auto-populated as writeups are added* | | | |
+| Icon | Challenge | Category | Tags | Date |
+|------|-----------|----------|------|------|
+| *Auto-populated as writeups are added* | | | | |
 
 ---
 

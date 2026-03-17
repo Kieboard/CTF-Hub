@@ -1,4 +1,4 @@
-# TryHackMe — Medium — Windows
+# TryHackMe > Medium > Windows
 
 Medium difficulty Windows rooms.
 

@@ -1,4 +1,4 @@
-# HackTheBox — Machines — Medium
+# HackTheBox > Machines > Medium
 
 Medium difficulty HTB machines.
 
@@ -13,11 +13,11 @@ Medium difficulty HTB machines.
 
 ---
 
-## All Writeups
+## All Medium Writeups
 
-| Machine | OS | Tags | Date |
-|---------|----|------|------|
-| *Auto-populated as writeups are added* | | | |
+| Icon | Machine | OS | Tags | Date |
+|------|---------|-----|------|------|
+| *Auto-populated as writeups are added* | | | | |
 
 ---
 

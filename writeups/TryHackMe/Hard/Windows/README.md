@@ -1,4 +1,4 @@
-# TryHackMe — Hard — Windows
+# TryHackMe > Hard > Windows
 
 Hard difficulty Windows rooms.
 

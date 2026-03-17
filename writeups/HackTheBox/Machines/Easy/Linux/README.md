@@ -1,4 +1,4 @@
-# HackTheBox — Machines — Easy — Linux
+# HackTheBox > Machines > Easy > Linux
 
 Easy difficulty Linux machines.
 

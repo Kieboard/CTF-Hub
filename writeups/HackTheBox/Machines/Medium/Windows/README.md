@@ -1,4 +1,4 @@
-# HackTheBox — Machines — Medium — Windows
+# HackTheBox > Machines > Medium > Windows
 
 Medium difficulty Windows machines.
 

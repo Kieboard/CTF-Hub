@@ -1,4 +1,4 @@
-# HackTheBox — Machines — Easy — Windows
+# HackTheBox > Machines > Easy > Windows
 
 Easy difficulty Windows machines.
 

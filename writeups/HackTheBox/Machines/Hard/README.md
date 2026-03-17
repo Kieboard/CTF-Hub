@@ -1,4 +1,4 @@
-# HackTheBox — Machines — Hard
+# HackTheBox > Machines > Hard
 
 Hard difficulty HTB machines.
 
@@ -13,11 +13,11 @@ Hard difficulty HTB machines.
 
 ---
 
-## All Writeups
+## All Hard Writeups
 
-| Machine | OS | Tags | Date |
-|---------|----|------|------|
-| *Auto-populated as writeups are added* | | | |
+| Icon | Machine | OS | Tags | Date |
+|------|---------|-----|------|------|
+| *Auto-populated as writeups are added* | | | | |
 
 ---
 

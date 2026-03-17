@@ -1,4 +1,4 @@
-# TryHackMe — Hard — Other
+# TryHackMe > Hard > Other
 
 Hard difficulty Other rooms.
 

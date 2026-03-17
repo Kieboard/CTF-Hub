@@ -1,14 +1,14 @@
-# LetsDefend — Beginner
+# LetsDefend > Beginner
 
 Beginner difficulty LetsDefend labs.
 
 ---
 
-## All Writeups
+## All Beginner Writeups
 
-| Lab | Tags | Date |
-|-----|------|------|
-| *Auto-populated as writeups are added* | | |
+| Icon | Lab | Tags | Date |
+|------|-----|------|------|
+| *Auto-populated as writeups are added* | | | |
 
 ---
 

@@ -1,14 +1,14 @@
-# LetsDefend — Hard
+# LetsDefend > Hard
 
 Hard difficulty LetsDefend labs.
 
 ---
 
-## All Writeups
+## All Hard Writeups
 
-| Lab | Tags | Date |
-|-----|------|------|
-| *Auto-populated as writeups are added* | | |
+| Icon | Lab | Tags | Date |
+|------|-----|------|------|
+| *Auto-populated as writeups are added* | | | |
 
 ---
 

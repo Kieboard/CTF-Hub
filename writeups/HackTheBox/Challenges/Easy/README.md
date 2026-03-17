@@ -1,14 +1,14 @@
-# HackTheBox — Challenges — Easy
+# HackTheBox > Challenges > Easy
 
 Easy difficulty HTB Challenges.
 
 ---
 
-## All Writeups
+## All Easy Writeups
 
-| Challenge | Category | Tags | Date |
-|-----------|----------|------|------|
-| *Auto-populated as writeups are added* | | | |
+| Icon | Challenge | Category | Tags | Date |
+|------|-----------|----------|------|------|
+| *Auto-populated as writeups are added* | | | | |
 
 ---
 

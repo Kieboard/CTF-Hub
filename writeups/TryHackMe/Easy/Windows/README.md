@@ -1,4 +1,4 @@
-# TryHackMe — Easy — Windows
+# TryHackMe > Easy > Windows
 
 Easy difficulty Windows rooms.
 

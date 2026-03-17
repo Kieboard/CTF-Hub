@@ -1,4 +1,4 @@
-# HackTheBox — Machines — Insane
+# HackTheBox > Machines > Insane
 
 Insane difficulty HTB machines.
 
@@ -13,11 +13,11 @@ Insane difficulty HTB machines.
 
 ---
 
-## All Writeups
+## All Insane Writeups
 
-| Machine | OS | Tags | Date |
-|---------|----|------|------|
-| *Auto-populated as writeups are added* | | | |
+| Icon | Machine | OS | Tags | Date |
+|------|---------|-----|------|------|
+| *Auto-populated as writeups are added* | | | | |
 
 ---
 

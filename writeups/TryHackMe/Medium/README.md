@@ -1,4 +1,4 @@
-# TryHackMe — Medium
+# TryHackMe > Medium
 
 Medium difficulty TryHackMe rooms.
 
@@ -14,11 +14,11 @@ Medium difficulty TryHackMe rooms.
 
 ---
 
-## All Writeups
+## All Medium Writeups
 
-| Room | OS | Tags | Date |
-|------|----|------|------|
-| *Auto-populated as writeups are added* | | | |
+| Icon | Room | OS | Tags | Date |
+|------|------|----|------|------|
+| *Auto-populated as writeups are added* | | | | |
 
 ---
 

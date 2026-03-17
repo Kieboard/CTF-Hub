@@ -1,4 +1,4 @@
-# TryHackMe — Easy
+# TryHackMe > Easy
 
 Easy difficulty TryHackMe rooms.
 

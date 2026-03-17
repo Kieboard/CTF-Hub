@@ -1,4 +1,4 @@
-# TryHackMe — Medium — Other
+# TryHackMe > Medium > Other
 
 Medium difficulty Other rooms.
 

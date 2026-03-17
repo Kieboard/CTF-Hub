@@ -1,4 +1,4 @@
-# HackTheBox — Machines — Insane — Linux
+# HackTheBox > Machines > Insane > Linux
 
 Insane difficulty Linux machines.
 

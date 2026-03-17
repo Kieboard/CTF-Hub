@@ -1,4 +1,4 @@
-# TryHackMe — Easy — Linux
+# TryHackMe > Easy > Linux
 
 Easy difficulty Linux rooms.
 

@@ -1,4 +1,4 @@
-# TryHackMe — Medium — Linux
+# TryHackMe > Medium > Linux
 
 Medium difficulty Linux rooms.
 

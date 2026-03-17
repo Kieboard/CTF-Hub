@@ -1,4 +1,4 @@
-# HackTheBox — Machines — Hard — Linux
+# HackTheBox > Machines > Hard > Linux
 
 Hard difficulty Linux machines.
 

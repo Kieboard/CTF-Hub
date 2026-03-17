@@ -1,4 +1,4 @@
-# HackTheBox — Machines — Easy
+# HackTheBox > Machines > Easy
 
 Easy difficulty HTB machines.
 
@@ -13,11 +13,11 @@ Easy difficulty HTB machines.
 
 ---
 
-## All Writeups
+## All Easy Writeups
 
-| Machine | OS | Tags | Date |
-|---------|----|------|------|
-| *Auto-populated as writeups are added* | | | |
+| Icon | Machine | OS | Tags | Date |
+|------|---------|-----|------|------|
+| *Auto-populated as writeups are added* | | | | |
 
 ---
 

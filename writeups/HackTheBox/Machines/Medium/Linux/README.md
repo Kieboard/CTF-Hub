@@ -1,4 +1,4 @@
-# HackTheBox — Machines — Medium — Linux
+# HackTheBox > Machines > Medium > Linux
 
 Medium difficulty Linux machines.
 

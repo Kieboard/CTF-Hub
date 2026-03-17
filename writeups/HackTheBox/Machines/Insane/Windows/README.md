@@ -1,4 +1,4 @@
-# HackTheBox — Machines — Insane — Windows
+# HackTheBox > Machines > Insane > Windows
 
 Insane difficulty Windows machines.
 

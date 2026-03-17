@@ -1,14 +1,14 @@
-# LetsDefend — Easy
+# LetsDefend > Easy
 
 Easy difficulty LetsDefend labs.
 
 ---
 
-## All Writeups
+## All Easy Writeups
 
-| Lab | Tags | Date |
-|-----|------|------|
-| *Auto-populated as writeups are added* | | |
+| Icon | Lab | Tags | Date |
+|------|-----|------|------|
+| *Auto-populated as writeups are added* | | | |
 
 ---
 
