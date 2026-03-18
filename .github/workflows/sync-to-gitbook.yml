@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'writeups/**'
+  workflow_dispatch:
 
 jobs:
   sync:
@@ -25,13 +26,8 @@ jobs:
 
       - name: Sync writeups folder only to gitbook branch
         run: |
-          # Switch to gitbook branch
           git checkout gitbook
-
-          # Copy only the writeups folder from main
           git checkout main -- writeups/
-
-          # Commit and push if there are changes
           git add writeups/
           git diff --cached --quiet || git commit -m "sync: update writeups from main"
           git push origin gitbook
