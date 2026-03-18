@@ -11,6 +11,7 @@ jobs:
 
     permissions:
       contents: write
+      actions: write
 
     steps:
       - name: Checkout CTF-Hub
@@ -38,3 +39,9 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           CTFHUB_REPO_PATH: ${{ github.workspace }}
         run: python scripts/ctf_auto.py
+
+      - name: Trigger GitBook sync
+        run: |
+          gh workflow run sync-to-gitbook.yml --ref main
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
