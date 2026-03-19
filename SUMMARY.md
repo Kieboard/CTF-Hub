@@ -12,7 +12,7 @@
     * [Easy](writeups/TryHackMe/Easy/README.md)
       * [Linux](writeups/TryHackMe/Easy/Linux/README.md)
         * [RootMe](writeups/TryHackMe/Easy/Linux/RootMe/RootMe.md)
-        * [Oracle 9](writeups/TryHackMe/Easy/Linux/Oracle-9-/Oracle-9-.md)
+        * [Oracle 9](writeups/TryHackMe/Easy/Linux/Oracle9/Oracle-9-.md)
       * [Windows](writeups/TryHackMe/Easy/Windows/README.md)
       * [Other](writeups/TryHackMe/Easy/Other/README.md)
         * [CupidBot](writeups/TryHackMe/Easy/Other/CupidBot/CupidBot.md)

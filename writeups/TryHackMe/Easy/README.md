@@ -20,7 +20,7 @@ Easy difficulty TryHackMe rooms.
 |------|------|----|------|------|
 | <img src="Linux/RootMe/RootMe.png" width="32" alt="RootMe"> | [RootMe](./Linux/RootMe/RootMe.md) | Linux | `#file-upload` `#suid` `#privilege-escalation` | Mar 03, 2026 |
 | <img src="Other/CupidBot/CupidBot.png" width="32" alt="CupidBot"> | [CupidBot](./Other/CupidBot/CupidBot.md) | Other | `#prompt-injection` `#ai-security` `#llm` | Mar 16, 2026 |
-| <img src="Linux/Oracle-9-/Oracle9.png" width="32" alt="Oracle 9"> | [Oracle 9](./Linux/Oracle-9-/Oracle-9-.md) | Linux | `#machine` `#prompt-injection` `#ai-security` `#llm` | Mar 18, 2026 |
+| <img src="Linux/Oracle9/Oracle9.png" width="32" alt="Oracle 9"> | [Oracle 9](./Linux/Oracle9/Oracle-9-.md) | Linux | `#machine` `#prompt-injection` `#ai-security` `#llm` | Mar 18, 2026 |
 
 ---
 
