@@ -1,6 +1,6 @@
-# 🟢 HackTheBox
+# 🏁 CTFtime
 
-HackTheBox machine and challenge writeups covering real-world attack scenarios.
+General CTF competition writeups from various events and competitions listed on CTFtime.
 
 ---
 
@@ -11,7 +11,6 @@ HackTheBox machine and challenge writeups covering real-world attack scenarios.
 | 🟢 Easy | [`Easy/`](./Easy/) |
 | 🟡 Medium | [`Medium/`](./Medium/) |
 | 🔴 Hard | [`Hard/`](./Hard/) |
-| 💀 Insane | [`Insane/`](./Insane/) |
 
 ---
 

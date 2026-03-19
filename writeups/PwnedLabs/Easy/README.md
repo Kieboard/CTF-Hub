@@ -1,6 +1,6 @@
-# 🟡 TryHackMe — Medium
+# 🟢 PwnedLabs — Easy
 
-Intermediate rooms requiring chained exploits, deeper enumeration, and creative thinking.
+Beginner-friendly rooms. Focus on core methodology, enumeration fundamentals, and common vulnerabilities.
 
 ---
 

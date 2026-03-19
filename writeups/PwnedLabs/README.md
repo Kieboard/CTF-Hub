@@ -1,6 +1,6 @@
-# 🟢 HackTheBox
+# 🔵 PwnedLabs
 
-HackTheBox machine and challenge writeups covering real-world attack scenarios.
+PwnedLabs cloud and Active Directory focused challenge writeups.
 
 ---
 
@@ -11,7 +11,6 @@ HackTheBox machine and challenge writeups covering real-world attack scenarios.
 | 🟢 Easy | [`Easy/`](./Easy/) |
 | 🟡 Medium | [`Medium/`](./Medium/) |
 | 🔴 Hard | [`Hard/`](./Hard/) |
-| 💀 Insane | [`Insane/`](./Insane/) |
 
 ---
 

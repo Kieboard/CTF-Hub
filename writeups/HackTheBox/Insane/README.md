@@ -1,6 +1,6 @@
-# 🟡 TryHackMe — Medium
+# 💀 HackTheBox — Insane
 
-Intermediate rooms requiring chained exploits, deeper enumeration, and creative thinking.
+Expert-level machines requiring advanced exploitation techniques and deep system knowledge.
 
 ---
 

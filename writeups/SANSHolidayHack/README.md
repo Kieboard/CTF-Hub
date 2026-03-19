@@ -1,6 +1,6 @@
-# 🟢 HackTheBox
+# 🎄 SANSHolidayHack
 
-HackTheBox machine and challenge writeups covering real-world attack scenarios.
+SANS Holiday Hack Challenge writeups. Annual CTF featuring real-world scenarios and creative challenges.
 
 ---
 
@@ -11,7 +11,6 @@ HackTheBox machine and challenge writeups covering real-world attack scenarios.
 | 🟢 Easy | [`Easy/`](./Easy/) |
 | 🟡 Medium | [`Medium/`](./Medium/) |
 | 🔴 Hard | [`Hard/`](./Hard/) |
-| 💀 Insane | [`Insane/`](./Insane/) |
 
 ---
 

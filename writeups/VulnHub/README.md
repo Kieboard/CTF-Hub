@@ -1,6 +1,6 @@
-# 🟢 HackTheBox
+# 🟣 VulnHub
 
-HackTheBox machine and challenge writeups covering real-world attack scenarios.
+VulnHub vulnerable machine writeups. Offline lab practice and methodology building.
 
 ---
 
@@ -11,7 +11,6 @@ HackTheBox machine and challenge writeups covering real-world attack scenarios.
 | 🟢 Easy | [`Easy/`](./Easy/) |
 | 🟡 Medium | [`Medium/`](./Medium/) |
 | 🔴 Hard | [`Hard/`](./Hard/) |
-| 💀 Insane | [`Insane/`](./Insane/) |
 
 ---
 

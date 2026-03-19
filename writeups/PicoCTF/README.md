@@ -1,6 +1,6 @@
-# 🟢 HackTheBox
+# 🏴 PicoCTF
 
-HackTheBox machine and challenge writeups covering real-world attack scenarios.
+PicoCTF challenge writeups. Beginner-friendly CTF covering web, forensics, crypto and more.
 
 ---
 
@@ -11,7 +11,6 @@ HackTheBox machine and challenge writeups covering real-world attack scenarios.
 | 🟢 Easy | [`Easy/`](./Easy/) |
 | 🟡 Medium | [`Medium/`](./Medium/) |
 | 🔴 Hard | [`Hard/`](./Hard/) |
-| 💀 Insane | [`Insane/`](./Insane/) |
 
 ---
 

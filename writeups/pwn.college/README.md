@@ -1,6 +1,6 @@
-# 🟢 HackTheBox
+# 🎓 pwn.college
 
-HackTheBox machine and challenge writeups covering real-world attack scenarios.
+pwn.college challenge writeups. Focused on binary exploitation, system security, and CTF fundamentals.
 
 ---
 
@@ -11,7 +11,6 @@ HackTheBox machine and challenge writeups covering real-world attack scenarios.
 | 🟢 Easy | [`Easy/`](./Easy/) |
 | 🟡 Medium | [`Medium/`](./Medium/) |
 | 🔴 Hard | [`Hard/`](./Hard/) |
-| 💀 Insane | [`Insane/`](./Insane/) |
 
 ---
 

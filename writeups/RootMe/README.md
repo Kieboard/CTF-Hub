@@ -1,6 +1,6 @@
-# 🟢 HackTheBox
+# ⚫ RootMe
 
-HackTheBox machine and challenge writeups covering real-world attack scenarios.
+Root-Me challenge writeups covering web, network, and system exploitation.
 
 ---
 
@@ -11,7 +11,6 @@ HackTheBox machine and challenge writeups covering real-world attack scenarios.
 | 🟢 Easy | [`Easy/`](./Easy/) |
 | 🟡 Medium | [`Medium/`](./Medium/) |
 | 🔴 Hard | [`Hard/`](./Hard/) |
-| 💀 Insane | [`Insane/`](./Insane/) |
 
 ---
 

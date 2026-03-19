@@ -1,6 +1,6 @@
-# 🟢 HackTheBox
+# 🟠 ProvingGrounds
 
-HackTheBox machine and challenge writeups covering real-world attack scenarios.
+OffSec Proving Grounds machines. Direct OSCP preparation and practice.
 
 ---
 
@@ -11,7 +11,6 @@ HackTheBox machine and challenge writeups covering real-world attack scenarios.
 | 🟢 Easy | [`Easy/`](./Easy/) |
 | 🟡 Medium | [`Medium/`](./Medium/) |
 | 🔴 Hard | [`Hard/`](./Hard/) |
-| 💀 Insane | [`Insane/`](./Insane/) |
 
 ---
 

@@ -1,27 +1,17 @@
-# TryHackMe > Easy
+# 🟢 TryHackMe — Easy
 
-Easy difficulty TryHackMe rooms.
-
----
-
-## OS
-
-| OS | What to expect |
-|----|----------------|
-| 🐧 [Linux](./Linux/README.md) | Linux-based machines. |
-| 🪟 [Windows](./Windows/README.md) | Windows-based machines. |
-| 💻 [Other](./Other/README.md) | Other OS or web-only challenges. |
+Beginner-friendly rooms. Focus on core methodology, enumeration fundamentals, and common vulnerabilities.
 
 ---
 
-## All Easy Writeups
+## 📋 Writeups
 
-| Icon | Room | OS | Tags | Date |
-|------|------|----|------|------|
-| <img src="Linux/RootMe/RootMe.png" width="32" alt="RootMe"> | [RootMe](./Linux/RootMe/RootMe.md) | Linux | `#file-upload` `#suid` `#privilege-escalation` | Mar 03, 2026 |
-| <img src="Other/CupidBot/CupidBot.png" width="32" alt="CupidBot"> | [CupidBot](./Other/CupidBot/CupidBot.md) | Other | `#prompt-injection` `#ai-security` `#llm` | Mar 16, 2026 |
-| <img src="Linux/Oracle9/Oracle9.png" width="32" alt="Oracle 9"> | [Oracle 9](./Linux/Oracle9/Oracle-9-.md) | Linux | `#machine` `#prompt-injection` `#ai-security` `#llm` | Mar 18, 2026 |
+| Icon | Room | Tags | Date |
+|------|------|------|------|
+| <img src="RootMe/RootMe.png" width="32" alt="RootMe"> | [RootMe](RootMe/RootMe.md) | `#tryhackme` `#easy` `#machine` `#file-upload` `#suid` `#privilege-escalation` | Mar 03, 2026 |
+| <img src="CupidBot/CupidBot.png" width="32" alt="CupidBot"> | [CupidBot](CupidBot/CupidBot.md) | `#tryhackme` `#easy` `#machine` `#prompt-injection` `#ai-security` `#llm` | Mar 16, 2026 |
+| <img src="Linux/Oracle-9-/Oracle9.png" width="32" alt="Oracle 9 "> | [Oracle 9 ](Linux/Oracle-9-/Oracle-9-.md) | `#tryhackme` `#easy` `#machine` `#prompt-injection` `#ai-security` `#llm` | Mar 18, 2026 |
 
 ---
 
-> Writeups drafted in Notion and auto-published via a custom Python pipeline using the Claude API.
+> Writeups authored in Notion, auto-published via CTF Publisher.
