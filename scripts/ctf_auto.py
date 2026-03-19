@@ -1069,8 +1069,8 @@ def get_destination_folder(meta: dict) -> Path:
         return diff_dir / room_clean
 
 
-def update_gitbook_summary(meta: dict):
-    """Checkout gitbook branch, add the room to SUMMARY.md, commit and push, return to main."""
+def update_gitbook_branch(meta: dict):
+    """Checkout gitbook branch, copy new writeup files, update SUMMARY.md and README tables, push."""
     platform   = PLATFORM_FOLDERS.get(meta["platform"].lower().replace(" ", ""), meta["platform"])
     difficulty = DIFFICULTY_FOLDERS.get(meta["difficulty"].lower(), meta["difficulty"])
     room_clean = re.sub(r'[^\w\-]', '', meta["room_name"].replace(" ", "-"))
@@ -1149,15 +1149,36 @@ def update_gitbook_summary(meta: dict):
         else:
             print(f"   ⚠️  Parent line not found in SUMMARY.md: {parent_line}")
 
+        # Copy new writeup files from main
+        import shutil
+        room_clean_local = re.sub(r'[^\w\-]', '', meta["room_name"].replace(" ", "-"))
+        if platform in OS_SPLIT_PLATFORMS and os_name:
+            src_folder = Path(CTFHUB_REPO_PATH) / "writeups" / platform / difficulty / os_name / room_clean_local
+        else:
+            src_folder = Path(CTFHUB_REPO_PATH) / "writeups" / platform / difficulty / room_clean_local
+
+        # Update README tables on gitbook branch
+        platform_dir_gb = Path(CTFHUB_REPO_PATH) / "writeups" / platform
+        diff_dir_gb = platform_dir_gb / difficulty
+        os_dir_gb = (diff_dir_gb / os_name) if (platform in OS_SPLIT_PLATFORMS and os_name) else None
+        icon_fn = meta.get("icon_filename", "") or ""
+
+        update_platform_readme(platform_dir_gb, platform, meta, icon_fn, [])
+        update_difficulty_readme(diff_dir_gb, platform, difficulty, meta, icon_fn, [])
+        if os_dir_gb:
+            update_os_readme(os_dir_gb, platform, difficulty, os_name, meta, icon_fn, [])
+        update_main_readme_stats()
+        print("   ✅ README tables updated on gitbook branch")
+
         # Commit and push to gitbook
-        subprocess.run(["git", "add", "SUMMARY.md"], cwd=CTFHUB_REPO_PATH, check=True, capture_output=True)
+        subprocess.run(["git", "add", "."], cwd=CTFHUB_REPO_PATH, check=True, capture_output=True)
         result = subprocess.run(
-            ["git", "commit", "-m", f"summary: Add {platform} - {meta['room_name']}"],
+            ["git", "commit", "-m", f"sync: Add {platform} - {meta['room_name']}"],
             cwd=CTFHUB_REPO_PATH, capture_output=True, text=True
         )
         if "nothing to commit" not in result.stdout:
             subprocess.run(["git", "push", "origin", "gitbook"], cwd=CTFHUB_REPO_PATH, check=True, capture_output=True)
-            print("   ✅ SUMMARY.md pushed to gitbook branch")
+            print("   ✅ Gitbook branch updated")
 
     except subprocess.CalledProcessError as e:
         print(f"   ⚠️  SUMMARY update error: {e.stderr}")
@@ -1383,6 +1404,7 @@ def process_page(page: dict):
 
     # 6. Fetch room icon
     icon_filename = fetch_room_icon(meta.get("icon_url", ""), meta["url"], dest_folder, meta["room_name"])
+    meta["icon_filename"] = icon_filename  # store for gitbook branch update
 
     # 7. Download screenshots
     saved_screenshots = []
@@ -1427,8 +1449,8 @@ def process_page(page: dict):
     update_main_readme_stats()
     git_commit_push(meta["room_name"], meta["platform"])
 
-    # 17. Update SUMMARY.md on gitbook branch
-    update_gitbook_summary(meta)
+    # 17. Update gitbook branch with new writeup files + SUMMARY + READMEs
+    update_gitbook_branch(meta)
 
     # 18. Mark as published
     try:
