@@ -16,10 +16,10 @@ Not just _what_ I did — but _why_ it worked. Every recon step, every rabbit ho
 
 | Platform   | Easy  | Medium | Hard  | Total |
 | ---------- | ----- | ------ | ----- | ----- |
-| TryHackMe  | 2     | —      | —     | 2     |
+| TryHackMe  | 3     | —      | —     | 3     |
 | HackTheBox | —     | —      | —     | —     |
 | LetsDefend | —     | —      | —     | —     |
-| **Total**  | **2** | **0**  | **0** | **2** |
+| **Total**  | **3** | **0**  | **0** | **3** |
 
 > Stats update automatically with each published writeup.
 
