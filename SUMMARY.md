@@ -55,4 +55,4 @@
 ## Extras
 
 * [Cheatsheets](writeups/Cheatsheets/README.md)
-  * [Enumeration](writeups/Cheatsheets/Enumeration.md)
+  * [🔍 Enumeration](writeups/Cheatsheets/Enumeration.md)
