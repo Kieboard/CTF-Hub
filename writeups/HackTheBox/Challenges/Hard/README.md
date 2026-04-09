@@ -1,15 +1,15 @@
-# HackTheBox > Challenges > Hard
+# Hard
 
 Hard difficulty HTB Challenges.
 
----
+***
 
-## All Hard Writeups
+## Hard Challenges
 
-| Icon | Challenge | Category | Tags | Date |
-|------|-----------|----------|------|------|
-| *Auto-populated as writeups are added* | | | | |
+| Icon                                   | Challenge | Category | Tags | Date |
+| -------------------------------------- | --------- | -------- | ---- | ---- |
+| _Auto-populated as writeups are added_ |           |          |      |      |
 
----
+***
 
 > Writeups drafted in Notion and auto-published via a custom Python pipeline using the Claude API.

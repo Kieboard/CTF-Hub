@@ -1,24 +1,24 @@
-# HackTheBox > Machines > Insane
+# Insane
 
 Insane difficulty HTB machines.
 
----
+***
 
 ## OS
 
-| OS | What to expect |
-|----|----------------|
-| 🐧 [Linux](./Linux/README.md) | Linux-based machines. |
-| 🪟 [Windows](./Windows/README.md) | Windows-based machines. |
+| OS                  | What to expect          |
+| ------------------- | ----------------------- |
+| [Linux](Linux/)     | Linux-based machines.   |
+| [Windows](Windows/) | Windows-based machines. |
 
----
+***
 
-## All Insane Writeups
+## Insane Writeups
 
-| Icon | Machine | OS | Tags | Date |
-|------|---------|-----|------|------|
-| *Auto-populated as writeups are added* | | | | |
+| Icon                                   | Machine | OS | Tags | Date |
+| -------------------------------------- | ------- | -- | ---- | ---- |
+| _Auto-populated as writeups are added_ |         |    |      |      |
 
----
+***
 
 > Writeups drafted in Notion and auto-published via a custom Python pipeline using the Claude API.

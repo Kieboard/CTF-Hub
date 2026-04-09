@@ -1,15 +1,15 @@
-# LetsDefend > Beginner
+# Beginner
 
 Beginner difficulty LetsDefend labs.
 
----
+***
 
-## All Beginner Writeups
+## Beginner Writeups
 
-| Icon | Lab | Tags | Date |
-|------|-----|------|------|
-| *Auto-populated as writeups are added* | | | |
+| Icon                                   | Lab | Tags | Date |
+| -------------------------------------- | --- | ---- | ---- |
+| _Auto-populated as writeups are added_ |     |      |      |
 
----
+***
 
 > Writeups drafted in Notion and auto-published via a custom Python pipeline using the Claude API.
