@@ -24,10 +24,19 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Sync writeups folder only to gitbook branch
+      - name: Sync new writeup files only to gitbook branch
         run: |
           git checkout gitbook
-          git checkout main -- writeups/
-          git add writeups/
-          git diff --cached --quiet || git commit -m "sync: update writeups from main"
+
+          # Only copy non-README files that are new or changed on main
+          # This preserves all GitBook formatting, icons and banners on the gitbook branch
+          for file in $(git diff --name-only gitbook main -- 'writeups/**' | grep -v 'README.md'); do
+            if git cat-file -e main:"$file" 2>/dev/null; then
+              mkdir -p "$(dirname "$file")"
+              git show main:"$file" > "$file"
+              git add "$file"
+            fi
+          done
+
+          git diff --cached --quiet || git commit -m "sync: add new writeup files from main"
           git push origin gitbook
