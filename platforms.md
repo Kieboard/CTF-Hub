@@ -1,6 +1,6 @@
 ---
 icon: layer-group
-cover: .gitbook/assets/47a52ec5-eb2b-4fa6-95ee-9c8ffd58aaaa.png
+cover: .gitbook/assets/platforms.png
 coverY: 83.30578512396694
 ---
 
