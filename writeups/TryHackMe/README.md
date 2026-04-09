@@ -1,6 +1,6 @@
 ---
 icon: cloud-binary
-cover: ../../.gitbook/assets/ChatGPT Image Mar 16, 2026, 02_34_00 PM (1).png
+cover: ../../.gitbook/assets/thm.png
 coverY: 0
 ---
 
