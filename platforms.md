@@ -1,7 +1,8 @@
 ---
+description: Lists all platform's I have been actively working on.
 icon: layer-group
 cover: .gitbook/assets/platforms.png
-coverY: 83.30578512396694
+coverY: 64.79338842975207
 ---
 
 # Platforms
@@ -13,4 +14,3 @@ Writeups organised by platform. Each platform has its own difficulty structure â
 | [TryHackMe](writeups/TryHackMe/)   | Offensive | Guided rooms, fundamentals, methodology         |
 | [HackTheBox](writeups/HackTheBox/) | Offensive | Machines, Sherlocks, Challenges                 |
 | [LetsDefend](writeups/LetsDefend/) | Defensive | SOC analysis, incident response, threat hunting |
-

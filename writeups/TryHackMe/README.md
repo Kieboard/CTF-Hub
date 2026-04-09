@@ -1,7 +1,7 @@
 ---
 icon: cloud-binary
 cover: ../../.gitbook/assets/thm.png
-coverY: 0
+coverY: 3.173553719008264
 ---
 
 # TryHackMe
@@ -10,7 +10,7 @@ TryHackMe rooms organised by difficulty. Focused on fundamentals, methodology, a
 
 ***
 
-## 📂 Difficulty
+## Difficulty
 
 | Level     | Folder               |
 | --------- | -------------------- |
@@ -20,7 +20,7 @@ TryHackMe rooms organised by difficulty. Focused on fundamentals, methodology, a
 
 ***
 
-## 🖥️ Machines
+## Writeups
 
 | Icon                                                  | Room                                          | Difficulty | Tags                                                      | Date         |
 | ----------------------------------------------------- | --------------------------------------------- | ---------- | --------------------------------------------------------- | ------------ |

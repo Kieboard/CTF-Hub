@@ -1,7 +1,7 @@
 ---
 icon: box
 cover: ../../.gitbook/assets/htb.png
-coverY: 68.23140495867769
+coverY: 43.371900826446286
 ---
 
 # HackTheBox
@@ -10,7 +10,7 @@ HackTheBox machine and challenge writeups covering real-world attack scenarios.
 
 ***
 
-## 📂 Difficulty
+## Difficulty
 
 | Level     | Folder               |
 | --------- | -------------------- |

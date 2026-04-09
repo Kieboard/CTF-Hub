@@ -1,5 +1,7 @@
 ---
 icon: jack-o-lantern
+cover: .gitbook/assets/main-cover.png
+coverY: 30.942148760330575
 ---
 
 # About Me
