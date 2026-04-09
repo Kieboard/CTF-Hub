@@ -1,15 +1,25 @@
-# Medium
+# TryHackMe > Medium
 
-Intermediate rooms requiring chained exploits, deeper enumeration, and creative thinking.
+Medium difficulty TryHackMe rooms.
 
-***
+---
 
-## Medium Writeups
+## OS
 
-| Icon                                   | Room | Tags | Date |
-| -------------------------------------- | ---- | ---- | ---- |
-| _Auto-populated as writeups are added_ |      |      |      |
+| OS | What to expect |
+|----|----------------|
+| [Linux](Linux/README.md) | Linux-based machines. |
+| [Windows](Windows/README.md) | Windows-based machines. |
+| [Other](Other/README.md) | Other OS or web-only challenges. |
 
-***
+---
 
-> Writeups authored in Notion, auto-published via CTF Publisher.
+## All Medium Writeups
+
+| Icon | Room | OS | Tags | Date |
+|------|------|----|------|------|
+| *Auto-populated as writeups are added* | | | | |
+
+---
+
+> Writeups drafted in Notion and auto-published via a custom Python pipeline using the Claude API.
