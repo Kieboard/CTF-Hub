@@ -1,17 +1,27 @@
-# Easy
+# TryHackMe > Easy
 
-Beginner-friendly rooms. Focus on core methodology, enumeration fundamentals, and common vulnerabilities.
+Easy difficulty TryHackMe rooms.
 
-***
+---
 
-## Easy Writeups
+## OS
 
-| Icon                                                     | Room                                     | Tags                                                                           | Date         |
-| -------------------------------------------------------- | ---------------------------------------- | ------------------------------------------------------------------------------ | ------------ |
-| ![RootMe](<../../../.gitbook/assets/RootMe (5).png>)     | [RootMe](RootMe/RootMe.md)               | `#tryhackme` `#easy` `#machine` `#file-upload` `#suid` `#privilege-escalation` | Mar 03, 2026 |
-| ![CupidBot](<../../../.gitbook/assets/CupidBot (5).png>) | [CupidBot](CupidBot/CupidBot.md)         | `#tryhackme` `#easy` `#machine` `#prompt-injection` `#ai-security` `#llm`      | Mar 16, 2026 |
-| ![Oracle 9](<../../../.gitbook/assets/Oracle9 (2).png>)  | [Oracle 9](Linux/Oracle-9-/Oracle-9-.md) | `#tryhackme` `#easy` `#machine` `#prompt-injection` `#ai-security` `#llm`      | Mar 18, 2026 |
+| OS | What to expect |
+|----|----------------|
+| [Linux](Linux/README.md) | Linux-based machines. |
+| [Windows](Windows/README.md) | Windows-based machines. |
+| [Other](Other/README.md) | Other OS or web-only challenges. |
 
-***
+---
 
-> Writeups authored in Notion, auto-published via CTF Publisher.
+## All Easy Writeups
+
+| Icon | Room | OS | Tags | Date |
+|------|------|----|------|------|
+| ![RootMe](<../../../.gitbook/assets/RootMe (5).png>) | [RootMe](Linux/RootMe/RootMe.md) | Linux | `#file-upload` `#suid` `#privilege-escalation` | Mar 03, 2026 |
+| ![CupidBot](<../../../.gitbook/assets/CupidBot (5).png>) | [CupidBot](Other/CupidBot/CupidBot.md) | Other | `#prompt-injection` `#ai-security` `#llm` | Mar 16, 2026 |
+| ![Oracle 9](<../../../.gitbook/assets/Oracle9 (2).png>) | [Oracle 9](Linux/Oracle9/Oracle-9-.md) | Linux | `#prompt-injection` `#ai-security` `#llm` | Mar 18, 2026 |
+
+---
+
+> Writeups drafted in Notion and auto-published via a custom Python pipeline using the Claude API.
