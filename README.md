@@ -12,6 +12,6 @@ All writeups are authored in Notion and auto-published here via a custom CI/CD p
 
 | Platform | Easy | Medium | Hard | Total |
 |----------|------|--------|------|-------|
-| 🔴 TryHackMe | 3 | — | — | 3 |
-| **Total** | **3** | **0** | **0** | **3** |
+| 🔴 TryHackMe | 4 | — | — | 4 |
+| **Total** | **4** | **0** | **0** | **4** |
 
