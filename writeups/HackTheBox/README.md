@@ -1,6 +1,6 @@
 ---
 icon: box
-cover: ../../.gitbook/assets/ChatGPT Image Mar 16, 2026, 02_36_01 PM (1).png
+cover: ../../.gitbook/assets/htb.png
 coverY: 68.23140495867769
 ---
 
