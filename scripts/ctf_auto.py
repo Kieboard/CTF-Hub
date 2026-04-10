@@ -786,7 +786,7 @@ def update_difficulty_readme(diff_dir: Path, platform: str, difficulty: str, met
     platform_f = PLATFORM_FOLDERS.get(meta["platform"].lower().replace(" ", ""), meta["platform"])
 
     # Build path with OS subfolder if applicable
-    if platform_f in OS_SPLIT_PLATFORMS and os_name and os_name != "Other":
+    if platform_f in OS_SPLIT_PLATFORMS and os_name:
         room_path = f"{os_name}/{room_clean}/{room_clean}.md"
         icon_path = f"{os_name}/{room_clean}/{icon_filename}" if icon_filename else ""
     else:
@@ -1050,23 +1050,39 @@ def get_destination_folder(meta: dict) -> Path:
     difficulty = DIFFICULTY_FOLDERS.get(meta["difficulty"].lower(), meta["difficulty"])
     room_clean = re.sub(r'[^\w\-]', '', meta["room_name"].replace(" ", "-"))
     os_name    = meta.get("os", "")
+    room_type  = meta.get("room_type", "")
 
     platform_dir = WRITEUPS_PATH / platform
-    diff_dir     = platform_dir / difficulty
-
     platform_dir.mkdir(parents=True, exist_ok=True)
     ensure_platform_readme(platform_dir, platform)
-    diff_dir.mkdir(parents=True, exist_ok=True)
-    ensure_difficulty_readme(diff_dir, platform, difficulty)
 
-    # Insert OS subfolder for HTB and THM only
-    if platform in OS_SPLIT_PLATFORMS and os_name and os_name != "Other":
-        os_dir = diff_dir / os_name
-        os_dir.mkdir(parents=True, exist_ok=True)
-        ensure_os_readme(os_dir, platform, difficulty, os_name)
-        return os_dir / room_clean
+    # HTB uses type subfolder (Machines/Sherlocks/Challenges) before difficulty
+    if platform == "HackTheBox" and room_type in ("Machine", "Sherlock", "Challenge"):
+        type_folder = {"Machine": "Machines", "Sherlock": "Sherlocks", "Challenge": "Challenges"}[room_type]
+        type_dir = platform_dir / type_folder
+        diff_dir = type_dir / difficulty
+        type_dir.mkdir(parents=True, exist_ok=True)
+        diff_dir.mkdir(parents=True, exist_ok=True)
+        ensure_difficulty_readme(diff_dir, platform, difficulty)
+        if os_name:  # Machines have OS split
+            os_dir = diff_dir / os_name
+            os_dir.mkdir(parents=True, exist_ok=True)
+            ensure_os_readme(os_dir, platform, difficulty, os_name)
+            return os_dir / room_clean
+        else:
+            return diff_dir / room_clean
     else:
-        return diff_dir / room_clean
+        diff_dir = platform_dir / difficulty
+        diff_dir.mkdir(parents=True, exist_ok=True)
+        ensure_difficulty_readme(diff_dir, platform, difficulty)
+        # Insert OS subfolder for THM only
+        if platform in OS_SPLIT_PLATFORMS and os_name:
+            os_dir = diff_dir / os_name
+            os_dir.mkdir(parents=True, exist_ok=True)
+            ensure_os_readme(os_dir, platform, difficulty, os_name)
+            return os_dir / room_clean
+        else:
+            return diff_dir / room_clean
 
 
 def update_gitbook_branch(meta: dict):
@@ -1077,14 +1093,21 @@ def update_gitbook_branch(meta: dict):
     os_name    = meta.get("os", "")
 
     # Build the writeup path and SUMMARY indent level
-    if platform in OS_SPLIT_PLATFORMS and os_name and os_name != "Other":
+    # HTB has a type subfolder (Machines/Sherlocks/Challenges) before difficulty
+    room_type = meta.get("room_type", "")
+    if platform == "HackTheBox" and room_type in ("Machine", "Sherlock", "Challenge"):
+        type_folder = {"Machine": "Machines", "Sherlock": "Sherlocks", "Challenge": "Challenges"}[room_type]
+        if os_name:  # Machines have OS split
+            writeup_path = f"writeups/{platform}/{type_folder}/{difficulty}/{os_name}/{room_clean}/{room_clean}.md"
+            parent_line  = f"        * [{os_name}](writeups/{platform}/{type_folder}/{difficulty}/{os_name}/README.md)"
+            new_entry    = f"          * [{meta['room_name']}]({writeup_path})"
+        else:  # Sherlocks/Challenges no OS
+            writeup_path = f"writeups/{platform}/{type_folder}/{difficulty}/{room_clean}/{room_clean}.md"
+            parent_line  = f"      * [{difficulty}](writeups/{platform}/{type_folder}/{difficulty}/README.md)"
+            new_entry    = f"        * [{meta['room_name']}]({writeup_path})"
+    elif platform in OS_SPLIT_PLATFORMS and os_name:
         writeup_path = f"writeups/{platform}/{difficulty}/{os_name}/{room_clean}/{room_clean}.md"
-        # Find the OS line and indent one level deeper
         parent_line  = f"    * [{os_name}](writeups/{platform}/{difficulty}/{os_name}/README.md)"
-        new_entry    = f"      * [{meta['room_name']}]({writeup_path})"
-    elif platform in OS_SPLIT_PLATFORMS and os_name == "Other":
-        writeup_path = f"writeups/{platform}/{difficulty}/Other/{room_clean}/{room_clean}.md"
-        parent_line  = f"    * [Other](writeups/{platform}/{difficulty}/Other/README.md)"
         new_entry    = f"      * [{meta['room_name']}]({writeup_path})"
     else:
         writeup_path = f"writeups/{platform}/{difficulty}/{room_clean}/{room_clean}.md"
@@ -1096,9 +1119,15 @@ def update_gitbook_branch(meta: dict):
         # Stash any uncommitted changes on main first
         subprocess.run(["git", "stash"], cwd=CTFHUB_REPO_PATH, capture_output=True)
 
+        # Fetch gitbook branch (not fetched by default in Actions runner)
+        subprocess.run(
+            ["git", "fetch", "origin", "gitbook"],
+            cwd=CTFHUB_REPO_PATH, capture_output=True
+        )
+
         # Switch to gitbook branch
         subprocess.run(
-            ["git", "checkout", "gitbook"],
+            ["git", "checkout", "-B", "gitbook", "origin/gitbook"],
             cwd=CTFHUB_REPO_PATH, check=True, capture_output=True
         )
 
@@ -1152,14 +1181,21 @@ def update_gitbook_branch(meta: dict):
         # Copy new writeup files from main
         import shutil
         room_clean_local = re.sub(r'[^\w\-]', '', meta["room_name"].replace(" ", "-"))
-        if platform in OS_SPLIT_PLATFORMS and os_name:
-            src_folder = Path(CTFHUB_REPO_PATH) / "writeups" / platform / difficulty / os_name / room_clean_local
+
+        # Build correct paths accounting for HTB type subfolder
+        if platform == "HackTheBox" and room_type in ("Machine", "Sherlock", "Challenge"):
+            type_folder_gb = {"Machine": "Machines", "Sherlock": "Sherlocks", "Challenge": "Challenges"}[room_type]
+            diff_dir_gb = Path(CTFHUB_REPO_PATH) / "writeups" / platform / type_folder_gb / difficulty
         else:
-            src_folder = Path(CTFHUB_REPO_PATH) / "writeups" / platform / difficulty / room_clean_local
+            diff_dir_gb = Path(CTFHUB_REPO_PATH) / "writeups" / platform / difficulty
+
+        if platform in OS_SPLIT_PLATFORMS and os_name:
+            src_folder = diff_dir_gb / os_name / room_clean_local
+        else:
+            src_folder = diff_dir_gb / room_clean_local
 
         # Update README tables on gitbook branch
         platform_dir_gb = Path(CTFHUB_REPO_PATH) / "writeups" / platform
-        diff_dir_gb = platform_dir_gb / difficulty
         os_dir_gb = (diff_dir_gb / os_name) if (platform in OS_SPLIT_PLATFORMS and os_name) else None
         icon_fn = meta.get("icon_filename", "") or ""
 
@@ -1392,12 +1428,19 @@ def process_page(page: dict):
     dest_folder.mkdir(parents=True, exist_ok=True)
 
     difficulty   = DIFFICULTY_FOLDERS.get(meta["difficulty"].lower(), meta["difficulty"])
-    diff_dir     = WRITEUPS_PATH / platform / difficulty
     platform_dir = WRITEUPS_PATH / platform
+    os_name      = meta.get("os", "")
+    room_type    = meta.get("room_type", "")
+
+    # Build diff_dir accounting for HTB type subfolder
+    if platform == "HackTheBox" and room_type in ("Machine", "Sherlock", "Challenge"):
+        type_folder = {"Machine": "Machines", "Sherlock": "Sherlocks", "Challenge": "Challenges"}[room_type]
+        diff_dir = WRITEUPS_PATH / platform / type_folder / difficulty
+    else:
+        diff_dir = WRITEUPS_PATH / platform / difficulty
 
     # OS dir reference for README updates
-    os_name = meta.get("os", "")
-    if platform in OS_SPLIT_PLATFORMS and os_name and os_name != "Other":
+    if platform in OS_SPLIT_PLATFORMS and os_name:
         os_dir = diff_dir / os_name
     else:
         os_dir = None
