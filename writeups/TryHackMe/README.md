@@ -8,7 +8,7 @@ coverY: 3.173553719008264
 
 TryHackMe is a beginner-to-intermediate offensive security platform built around guided, gamified rooms. It's where methodology gets drilled — enumeration, web exploitation, privilege escalation, Active Directory, and everything in between.
 
-> **3 rooms completed · 3 flags captured · Last updated Mar 18, 2026**
+> **4 rooms completed · 4 flags captured · Last updated Apr 09, 2026**
 
 ---
 
@@ -29,6 +29,7 @@ TryHackMe is a beginner-to-intermediate offensive security platform built around
 | ![RootMe](<../../.gitbook/assets/RootMe (5).png>) | [RootMe](Easy/Linux/RootMe/RootMe.md) | 🟢 Easy | Linux | `#file-upload` `#suid` `#privilege-escalation` | Mar 03, 2026 |
 | ![CupidBot](<../../.gitbook/assets/CupidBot (5).png>) | [CupidBot](Easy/Other/CupidBot/CupidBot.md) | 🟢 Easy | Other | `#prompt-injection` `#ai-security` `#llm` | Mar 16, 2026 |
 | ![Oracle 9](<../../.gitbook/assets/Oracle9 (2).png>) | [Oracle 9](Easy/Linux/Oracle9/Oracle-9-.md) | 🟢 Easy | Linux | `#prompt-injection` `#ai-security` `#llm` | Mar 18, 2026 |
+| ![TakeOver](Easy/Other/TakeOver/TakeOver.png) | [TakeOver](Easy/Other/TakeOver/TakeOver.md) | 🟢 Easy | Other | `#subdomain-enumeration` `#ssl-certificates` `#web` | Apr 09, 2026 |
 
 ---
 
