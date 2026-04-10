@@ -700,7 +700,7 @@ def update_platform_readme(platform_dir: Path, platform: str, meta: dict, icon_f
 
     # Build path with OS subfolder if applicable
     os_name = meta.get("os", "")
-    if platform in OS_SPLIT_PLATFORMS and os_name and os_name != "Other":
+    if platform in OS_SPLIT_PLATFORMS and os_name:
         room_link  = f"[{meta['room_name']}]({diff_dir}/{os_name}/{room_clean}/{room_clean}.md)"
         icon_rel   = f"{diff_dir}/{os_name}/{room_clean}/{icon_filename}" if icon_filename else ""
     else:
@@ -751,7 +751,7 @@ def update_platform_readme(platform_dir: Path, platform: str, meta: dict, icon_f
         if footer_found:
             content = content.replace(
                 footer_found,
-                new_section + b"\n---\n\n" + footer_found
+                new_section + "\n---\n\n" + footer_found
             )
         else:
             content = content.rstrip() + new_section
