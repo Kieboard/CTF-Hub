@@ -16,6 +16,7 @@
       * [Windows](writeups/TryHackMe/Easy/Windows/README.md)
       * [Other](writeups/TryHackMe/Easy/Other/README.md)
         * [CupidBot](writeups/TryHackMe/Easy/Other/CupidBot/CupidBot.md)
+        * [TakeOver](writeups/TryHackMe/Easy/Other/TakeOver/TakeOver.md)
     * [Medium](writeups/TryHackMe/Medium/README.md)
       * [Linux](writeups/TryHackMe/Medium/Linux/README.md)
       * [Windows](writeups/TryHackMe/Medium/Windows/README.md)
