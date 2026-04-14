@@ -15,30 +15,21 @@ LetsDefend is a blue team focused security platform. Challenges simulate real SO
 
 ## Difficulty
 
-| Level                   | What to expect                                                         |
-| ----------------------- | ---------------------------------------------------------------------- |
+| Level | What to expect |
+| ----- | -------------- |
 | ⚪ [Beginner](Beginner/) | Introductory SOC concepts. Clear attack lifecycles, obvious artefacts. |
-| 🟢 [Easy](Easy/)        | Fundamental investigation. Single-tool analysis, clear indicators.     |
-| 🟡 [Medium](Medium/)    | Multi-step analysis. Complex log correlation, varied artefact types.   |
-| 🔴 [Hard](Hard/)        | Advanced threat hunting. Sophisticated TTPs, minimal indicators.       |
+| 🟢 [Easy](Easy/) | Fundamental investigation. Single-tool analysis, clear indicators. |
+| 🟡 [Medium](Medium/) | Multi-step analysis. Complex log correlation, varied artefact types. |
+| 🔴 [Hard](Hard/) | Advanced threat hunting. Sophisticated TTPs, minimal indicators. |
 
 ***
 
 ## All Writeups
 
-| Lab                                    | Difficulty | Tags | Date |
-| -------------------------------------- | ---------- | ---- | ---- |
-| _Auto-populated as writeups are added_ |            |      |      |
+| Lab | Difficulty | Tags | Date |
+| --- | ---------- | ---- | ---- |
+| _Auto-populated as writeups are added_ | | | |
 
 ***
-
-
-## 🏴 Challenges
-
-| Icon | Room | Difficulty | Tags | Date |
-|------|------|------------|------|------|
-| <img src="Easy/Phishing-Email/PhishingEmail.png" width="32" alt="Phishing Email"> | [Phishing Email](Easy/Phishing-Email/Phishing-Email.md) | `Easy` | `#challenge` `#letsdefend` | Apr 14, 2026 |
-
----
 
 > Writeups drafted in Notion and auto-published via a custom Python pipeline using the Claude API.
