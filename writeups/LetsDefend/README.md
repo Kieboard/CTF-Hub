@@ -32,4 +32,13 @@ LetsDefend is a blue team focused security platform. Challenges simulate real SO
 
 ***
 
+
+## 🏴 Challenges
+
+| Icon | Room | Difficulty | Tags | Date |
+|------|------|------------|------|------|
+| <img src="Easy/Phishing-Email/PhishingEmail.png" width="32" alt="Phishing Email"> | [Phishing Email](Easy/Phishing-Email/Phishing-Email.md) | `Easy` | `#challenge` `#letsdefend` | Apr 14, 2026 |
+
+---
+
 > Writeups drafted in Notion and auto-published via a custom Python pipeline using the Claude API.
