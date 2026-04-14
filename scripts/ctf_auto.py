@@ -450,7 +450,8 @@ def format_with_claude(raw_notes: str, room_info: str, meta: dict, saved_screens
     all_tags = list(dict.fromkeys(
         [f"#{meta['platform'].lower().replace(' ', '')}",
          f"#{meta['difficulty'].lower()}"] +
-        [f"#{t.lower().replace(' ', '-')}" for t in meta["tags"]]
+        [f"#{t.lower().replace(' ', '-')}" for t in meta["tags"]] +
+        [f"#{t}" for t in meta.get("topic_tags", [])]
     ))
     tags_str = " ".join(all_tags)
 
@@ -700,7 +701,7 @@ def update_platform_readme(platform_dir: Path, platform: str, meta: dict, icon_f
 
     # Build path with OS subfolder if applicable
     os_name = meta.get("os", "")
-    if platform in OS_SPLIT_PLATFORMS and os_name:
+    if platform in OS_SPLIT_PLATFORMS and os_name and os_name != "Other":
         room_link  = f"[{meta['room_name']}]({diff_dir}/{os_name}/{room_clean}/{room_clean}.md)"
         icon_rel   = f"{diff_dir}/{os_name}/{room_clean}/{icon_filename}" if icon_filename else ""
     else:
@@ -751,14 +752,14 @@ def update_platform_readme(platform_dir: Path, platform: str, meta: dict, icon_f
         if footer_found:
             content = content.replace(
                 footer_found,
-                new_section + "\n---\n\n" + footer_found
+                new_section + b"\n---\n\n" + footer_found
             )
         else:
             content = content.rstrip() + new_section
 
     # Update stats line — count rows in All Writeups table
     lines = content.split("\n")
-    writeup_rows = [l for l in lines if l.startswith("| [") and "Auto-populated" not in l]
+    writeup_rows = [l for l in lines if (l.startswith("| [") or l.startswith("| !")) and "Auto-populated" not in l]
     total = len(writeup_rows)
     today = meta["date"]
     new_stats = f"> **{total} room{'s' if total != 1 else ''} completed · {total} flag{'s' if total != 1 else ''} captured · Last updated {today}**"
@@ -1111,8 +1112,8 @@ def update_gitbook_branch(meta: dict):
         new_entry    = f"      * [{meta['room_name']}]({writeup_path})"
     else:
         writeup_path = f"writeups/{platform}/{difficulty}/{room_clean}/{room_clean}.md"
-        parent_line  = f"  * [{difficulty}](writeups/{platform}/{difficulty}/README.md)"
-        new_entry    = f"    * [{meta['room_name']}]({writeup_path})"
+        parent_line  = f"    * [{difficulty}](writeups/{platform}/{difficulty}/README.md)"
+        new_entry    = f"      * [{meta['room_name']}]({writeup_path})"
 
     print("   → Updating SUMMARY.md on gitbook branch...")
     try:
@@ -1457,6 +1458,7 @@ def process_page(page: dict):
 
     # 8. Generate topic tags
     topic_tags = suggest_topic_tags(raw_notes, room_info, meta["room_name"])
+    meta["topic_tags"] = topic_tags  # store for metadata block
 
     # 9. Format with Claude
     formatted = format_with_claude(raw_notes, room_info, meta, saved_screenshots, icon_filename)
@@ -1464,7 +1466,7 @@ def process_page(page: dict):
     # 10. Save markdown to GitHub
     room_clean  = re.sub(r'[^\w\-]', '', meta["room_name"].replace(" ", "-"))
     output_file = dest_folder / f"{room_clean}.md"
-    gif_footer = "\n\n---\n\n![](https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExaDdhdmt6N2dhazFqbTdsdmk0ZThkdTBrYjBoOGdobWF2NzRmbXBjeCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/8kDPdrfdBUP8k/giphy.gif)\n"
+    gif_footer = "\n\n---\n\n<p align=\"center\"><img src=\"https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExaDdhdmt6N2dhazFqbTdsdmk0ZThkdTBrYjBoOGdobWF2NzRmbXBjeCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/8kDPdrfdBUP8k/giphy.gif\" width=\"300\"></p>\n"
     output_file.write_text(formatted + gif_footer, encoding="utf-8")
     print(f"   ✅ Writeup saved: {output_file}")
 
