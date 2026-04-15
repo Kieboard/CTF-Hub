@@ -1246,12 +1246,9 @@ def update_gitbook_branch(meta: dict):
 
         content = summary_path.read_text(encoding="utf-8")
 
-        # Don't add if already there
+        # Don't add if already there — but still update READMEs
         if writeup_path in content:
             print(f"   ℹ️  {meta['room_name']} already in SUMMARY.md")
-            subprocess.run(["git", "checkout", "main"], cwd=CTFHUB_REPO_PATH, capture_output=True)
-            subprocess.run(["git", "stash", "pop"], cwd=CTFHUB_REPO_PATH, capture_output=True)
-            return
 
         # Insert the new room entry after the parent line
         if parent_line in content:
