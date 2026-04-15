@@ -1,7 +1,7 @@
 ---
 description: Lists all platform's I have been actively working on.
 icon: layer-group
-cover: .gitbook/assets/platforms.png
+cover: .gitbook/assets/platforms (1).png
 coverY: 64.79338842975207
 ---
 

@@ -1,8 +1,8 @@
-# 🔍 Enumeration Cheatsheet
+# Enumeration
 
 Quick reference for enumeration methodology across common CTF and lab scenarios.
 
----
+***
 
 ## 🌐 Network Enumeration
 
@@ -31,7 +31,7 @@ nmap -sC -sV -p <ports> -oA nmap/<name> <IP>
 rustscan -a <IP> -- -sC -sV
 ```
 
----
+***
 
 ## 🌍 Web Enumeration
 
@@ -66,7 +66,7 @@ whatweb http://<IP>
 nikto -h http://<IP>
 ```
 
----
+***
 
 ## 🗂️ SMB Enumeration
 
@@ -88,7 +88,7 @@ crackmapexec smb <IP>
 crackmapexec smb <IP> -u '' -p '' --shares
 ```
 
----
+***
 
 ## 📂 FTP Enumeration
 
@@ -102,7 +102,7 @@ ftp <IP>
 nmap -p 21 --script ftp-anon,ftp-bounce <IP>
 ```
 
----
+***
 
 ## 📧 SMTP Enumeration
 
@@ -112,7 +112,7 @@ nc <IP> 25
 VRFY root
 ```
 
----
+***
 
 ## 🔐 SNMP Enumeration
 
@@ -121,7 +121,7 @@ snmpwalk -c public -v1 <IP>
 onesixtyone -c /usr/share/seclists/Discovery/SNMP/common-snmp-community-strings.txt <IP>
 ```
 
----
+***
 
 ## 🐧 Linux Privilege Escalation Checklist
 
@@ -163,7 +163,7 @@ cat /etc/os-release
 curl -L https://github.com/carlospolop/PEASS-ng/releases/latest/download/linpeas.sh | sh
 ```
 
----
+***
 
 ## 🪟 Windows Privilege Escalation Checklist
 
@@ -194,7 +194,7 @@ wmic product get name,version
 .\winPEASx64.exe
 ```
 
----
+***
 
 ## 🔑 Password Cracking
 
@@ -218,23 +218,23 @@ hashid <hash>
 # 1000 = NTLM
 ```
 
----
+***
 
 ## 🛠️ Useful Tools Reference
 
-| Tool | Purpose |
-|------|---------|
-| `nmap` | Port scanning |
-| `gobuster` / `ffuf` | Directory/subdomain fuzzing |
-| `enum4linux` | SMB/Windows enumeration |
-| `crackmapexec` | SMB/AD enumeration |
+| Tool                  | Purpose                       |
+| --------------------- | ----------------------------- |
+| `nmap`                | Port scanning                 |
+| `gobuster` / `ffuf`   | Directory/subdomain fuzzing   |
+| `enum4linux`          | SMB/Windows enumeration       |
+| `crackmapexec`        | SMB/AD enumeration            |
 | `linpeas` / `winpeas` | Automated privesc enumeration |
-| `john` / `hashcat` | Password cracking |
-| `burpsuite` | Web proxy and fuzzing |
-| `metasploit` | Exploitation framework |
-| `impacket` | AD/Windows attack toolkit |
-| `bloodhound` | AD attack path visualisation |
+| `john` / `hashcat`    | Password cracking             |
+| `burpsuite`           | Web proxy and fuzzing         |
+| `metasploit`          | Exploitation framework        |
+| `impacket`            | AD/Windows attack toolkit     |
+| `bloodhound`          | AD attack path visualisation  |
 
----
+***
 
-*Part of [CTF-Hub](https://github.com/Kieboard/CTF-Hub) — maintained by Kieboard*
+_Part of_ [_CTF-Hub_](https://github.com/Kieboard/CTF-Hub) _— maintained by Kieboard_

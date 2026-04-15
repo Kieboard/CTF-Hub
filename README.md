@@ -1,6 +1,6 @@
 ---
 icon: info
-cover: .gitbook/assets/main-cover.png
+cover: .gitbook/assets/main-cover (1).png
 coverY: 33.32231404958677
 ---
 

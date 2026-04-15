@@ -1,6 +1,6 @@
 ---
 icon: shield-check
-cover: ../../.gitbook/assets/letsdefend.png
+cover: ../../.gitbook/assets/letsdefend (1).png
 coverY: 42.84297520661157
 coverHeight: 284
 ---
@@ -15,20 +15,20 @@ LetsDefend is a blue team focused security platform. Challenges simulate real SO
 
 ## Difficulty
 
-| Level | What to expect |
-| ----- | -------------- |
+| Level                   | What to expect                                                         |
+| ----------------------- | ---------------------------------------------------------------------- |
 | ⚪ [Beginner](Beginner/) | Introductory SOC concepts. Clear attack lifecycles, obvious artefacts. |
-| 🟢 [Easy](Easy/) | Fundamental investigation. Single-tool analysis, clear indicators. |
-| 🟡 [Medium](Medium/) | Multi-step analysis. Complex log correlation, varied artefact types. |
-| 🔴 [Hard](Hard/) | Advanced threat hunting. Sophisticated TTPs, minimal indicators. |
+| 🟢 [Easy](Easy/)        | Fundamental investigation. Single-tool analysis, clear indicators.     |
+| 🟡 [Medium](Medium/)    | Multi-step analysis. Complex log correlation, varied artefact types.   |
+| 🔴 [Hard](Hard/)        | Advanced threat hunting. Sophisticated TTPs, minimal indicators.       |
 
 ***
 
 ## All Writeups
 
-| Icon | Lab | Difficulty | Tags | Date |
-| ---- | --- | ---------- | ---- | ---- |
-| *Auto-populated as writeups are added* | | | | |
+| Icon                                   | Lab | Difficulty | Tags | Date |
+| -------------------------------------- | --- | ---------- | ---- | ---- |
+| _Auto-populated as writeups are added_ |     |            |      |      |
 
 ***
 
