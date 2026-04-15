@@ -9,7 +9,7 @@ coverHeight: 284
 
 LetsDefend is a blue team focused security platform. Challenges simulate real SOC analyst work — log analysis, malware investigation, incident response, and threat hunting across varied environments.
 
-> **0 labs completed · Last updated —**
+> **1 lab completed · Last updated Apr 15, 2026**
 
 ***
 
@@ -26,19 +26,10 @@ LetsDefend is a blue team focused security platform. Challenges simulate real SO
 
 ## All Writeups
 
-| Lab | Difficulty | Tags | Date |
-| --- | ---------- | ---- | ---- |
-| _Auto-populated as writeups are added_ | | | |
+| Icon | Lab | Difficulty | Tags | Date |
+| ---- | --- | ---------- | ---- | ---- |
+| <img src="Beginner/Phishing-Email/PhishingEmail.png" width="32" alt="Phishing Email"> | [Phishing Email](Beginner/Phishing-Email/Phishing-Email.md) | `Beginner` | `#challenge` `#phishing` `#email-analysis` `#osint` | Apr 15, 2026 |
 
 ***
-
-
-## 🧪 Labs
-
-| Icon | Room | Difficulty | Tags | Date |
-|------|------|------------|------|------|
-| <img src="Beginner/Phishing-Email/PhishingEmail.png" width="32" alt="Phishing Email"> | [Phishing Email](Beginner/Phishing-Email/Phishing-Email.md) | `Beginner` | `#lab` `#letsdefend` | Apr 15, 2026 |
-
----
 
 > Writeups drafted in Notion and auto-published via a custom Python pipeline using the Claude API.
