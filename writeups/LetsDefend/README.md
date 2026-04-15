@@ -9,7 +9,7 @@ coverHeight: 284
 
 LetsDefend is a blue team focused security platform. Challenges simulate real SOC analyst work — log analysis, malware investigation, incident response, and threat hunting across varied environments.
 
-> **1 lab completed · Last updated Apr 15, 2026**
+> **0 labs completed · Last updated —**
 
 ***
 
@@ -28,7 +28,7 @@ LetsDefend is a blue team focused security platform. Challenges simulate real SO
 
 | Icon | Lab | Difficulty | Tags | Date |
 | ---- | --- | ---------- | ---- | ---- |
-| <img src="Beginner/Phishing-Email/PhishingEmail.png" width="32" alt="Phishing Email"> | [Phishing Email](Beginner/Phishing-Email/Phishing-Email.md) | `Beginner` | `#challenge` `#phishing` `#email-analysis` `#osint` | Apr 15, 2026 |
+| *Auto-populated as writeups are added* | | | | |
 
 ***
 
