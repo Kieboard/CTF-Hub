@@ -49,6 +49,7 @@
       * [Hard](writeups/HackTheBox/Challenges/Hard/README.md)
   * [LetsDefend](writeups/LetsDefend/README.md)
     * [Beginner](writeups/LetsDefend/Beginner/README.md)
+      * [Phishing Email](writeups/LetsDefend/Beginner/Phishing-Email/Phishing-Email.md)
     * [Easy](writeups/LetsDefend/Easy/README.md)
     * [Medium](writeups/LetsDefend/Medium/README.md)
     * [Hard](writeups/LetsDefend/Hard/README.md)
