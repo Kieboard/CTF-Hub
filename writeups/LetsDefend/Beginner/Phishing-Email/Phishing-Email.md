@@ -5,7 +5,7 @@
     <b>Status:</b> Completed ✅<br>
     <b>URL:</b> <a href="https://app.letsdefend.io/challenge/phishing-email">Phishing Email</a><br>
     <b>Date:</b> Apr 15, 2026<br>
-    <b>Tags:</b> #letsdefend #beginner #easy #phishing #email-analysis #osint
+    <b>Tags:</b> #letsdefend #beginner #phishing #email-analysis #osint
   </sub>
 </p>
 
@@ -48,7 +48,7 @@ The extracted `.eml` file was opened in **Mozilla Thunderbird**. Rather than rea
 
 ## 🔬 Investigation
 
-### Return Path Analysis
+### Return-Path Analysis
 
 With the raw source open, I used the find function to search for `return`, locating the `Return-Path` header immediately.
 
@@ -68,7 +68,7 @@ I analysed the raw HTML source, applying knowledge of how anchor tags and `href`
 storage.googleapis.com
 ```
 
-**Key Evidence:** The actual link destination was a Google Cloud Storage bucket — not a PayPal domain. The display text likely showed something PayPal-branded while the href pointed elsewhere.
+**Key Evidence:** The actual link destination was a Google Cloud Storage bucket — not a PayPal domain. The display text likely showed something PayPal-branded while the `href` pointed elsewhere.
 
 ---
 
@@ -114,8 +114,10 @@ Within VirusTotal, I navigated to the **Details** tab on the URL analysis. This 
 | Body SHA-256 | `13945ecc33afee74ac7f72e1d5bb73050894356c4bf63d02a1a53e76830567f5` |
 | Phishing email? | Yes |
 
-**IOC Found:** `bounce@rjttznyzjjzydnillquh.designclub.uk.com` — attacker-controlled bounce/reply handler  
-**IOC Found:** `storage.googleapis.com` — phishing page hosting via GCS bucket  
+**IOC Found:** `bounce@rjttznyzjjzydnillquh.designclub.uk.com` — attacker-controlled bounce/reply handler
+
+**IOC Found:** `storage.googleapis.com` — phishing page hosting via GCS bucket
+
 **IOC Found:** Body SHA-256 `13945ecc33afee74ac7f72e1d5bb73050894356c4bf63d02a1a53e76830567f5`
 
 ### Attack Chain
