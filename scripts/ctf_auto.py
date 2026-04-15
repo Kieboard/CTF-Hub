@@ -878,7 +878,7 @@ def update_platform_readme(platform_dir: Path, platform: str, meta: dict, icon_f
     if frontmatter:
         content = frontmatter + "\n" + content.lstrip("\n")
     readme.write_text(content, encoding="utf-8")
-    print(f"   ✅ Updated {platform}/README.md — added to {section['header']} section")
+    print(f"   ✅ Updated {platform}/README.md — All Writeups table updated")
 
 
 def update_difficulty_readme(diff_dir: Path, platform: str, difficulty: str, meta: dict, icon_filename: str, topic_tags: list = None):
