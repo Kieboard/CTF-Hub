@@ -398,13 +398,13 @@ def download_screenshots(image_urls: list, dest_folder: Path) -> list:
 # CLAUDE FORMATTING
 # ─────────────────────────────────────────────
 
-SYSTEM_PROMPT = """You are a cybersecurity writeup formatter for a professional CTF/HTB portfolio.
+# ─────────────────────────────────────────────
+# WRITEUP SYSTEM PROMPTS — TYPE AWARE
+# ─────────────────────────────────────────────
 
-You receive:
-1. Raw rough notes from the hacker (Kieran)
-2. Room description scraped from the CTF platform
+SYSTEM_PROMPT_REDTEAM = """You are a cybersecurity writeup formatter for a professional offensive security portfolio.
 
-Combine both to produce a clean, narrative-driven, professional writeup in the style of top HTB writeup authors.
+You receive raw notes and a room description. Produce a clean, narrative-driven, professional red team writeup.
 
 WRITING STYLE:
 - Write like you are talking someone through the box — narrative, not a checklist
@@ -415,27 +415,121 @@ WRITING STYLE:
 - Short punchy sentences. No waffle.
 
 CODE BLOCKS:
-- Every single command must be in a fenced code block with the correct language tag (```bash, ```python, ```xml etc)
-- Never put commands inline in prose — always block
-- Add a brief line of context BEFORE each code block explaining what it does
-- Add a brief **Result:** or **Output:** note AFTER key code blocks explaining what came back
-- IMPORTANT: All bash/shell commands must include a terminal prompt prefix in this format:
-  - TryHackMe rooms: kie@kiepc:~/THM/{RoomName}$
-  - HackTheBox rooms: kie@kiepc:~/HTB/{RoomName}$
-  - LetsDefend rooms: kie@kiepc:~/LetsDefend/{RoomName}$
-  - Other platforms: kie@kiepc:~/{Platform}/{RoomName}$
-  Example: kie@kiepc:~/THM/RootMe$ nmap -sV 10.10.110.118
-  Do NOT add the prompt to code that is output/results — only to commands being run.
+- Every command in a fenced code block with correct language tag (```bash, ```python, ```xml etc)
+- Never put commands inline in prose
+- Brief context line BEFORE each block, **Result:** note AFTER key blocks
+- All shell commands must include terminal prompt:
+  - TryHackMe: kie@kiepc:~/THM/{RoomName}$
+  - HackTheBox: kie@kiepc:~/HTB/{RoomName}$
+  - OffSec/ProvingGrounds: kie@kiepc:~/PG/{RoomName}$
+  - Other: kie@kiepc:~/{Platform}/{RoomName}$
 
-STRUCTURE RULES:
-- Keep Kieran's voice — don't make it sound corporate or AI-generated
-- Preserve ALL image references exactly as given (e.g. ![Screenshot 1](screenshot_01.png))
+STRUCTURE (in this order, omit empty sections):
+## 🧠 Overview
+## 🎯 Objectives
+## 🔍 Reconnaissance & Initial Analysis
+## ⚙️ Exploitation
+## 🔐 Privilege Escalation (omit if not applicable)
+## 🏁 Flags / Proof
+## 🧩 Key Takeaways
+## ⛓️ Attack Chain Summary
+(numbered list, one line per step, full path from recon to root)
+## 🔎 Detection Strategies
+### Offensive Indicators
+### Defensive Mitigations
+## 🛠️ Tools & References
+
+RULES:
+- Preserve ALL image references exactly as given
 - Don't invent flags, IPs, or details not in the notes
-- If a section has no content, omit it entirely
-- The Attack Chain Summary should be a numbered list of concise one-liners covering the full path
-- Detection Strategies should have two subsections: Offensive Indicators and Defensive Mitigations
 
-OUTPUT: Pure markdown only. No preamble. No explanation. Start directly with the metadata block."""
+OUTPUT: Pure markdown only. No preamble. Start directly with the metadata block."""
+
+
+SYSTEM_PROMPT_BLUETEAM = """You are a cybersecurity writeup formatter for a professional blue team / DFIR portfolio.
+
+You receive raw notes and a lab/challenge description. Produce a clean, analytical, professional blue team writeup.
+
+WRITING STYLE:
+- Write like a SOC analyst documenting an investigation — methodical, evidence-based
+- Keep Kieran's voice — direct, technical, no fluff
+- Use past tense ("I identified", "The logs showed", "Analysis revealed")
+- Explain WHY each finding matters from a defensive perspective
+- Highlight key findings with bold labels e.g. **IOC Found:** or **Key Evidence:**
+- Short punchy sentences. No waffle.
+
+CODE BLOCKS:
+- Any queries, commands, or scripts in fenced code blocks with correct language tag
+- Brief context BEFORE each block, **Finding:** note AFTER key blocks
+- No terminal prompts needed — blue team work is tool-based not shell-based
+
+STRUCTURE (in this order, omit empty sections):
+## 🧠 Overview
+## 🎯 Objectives
+## 🔍 Evidence & Initial Analysis
+## 🔬 Investigation
+## 🚨 Findings
+## 🗺️ MITRE ATT&CK Mapping
+(list relevant techniques with IDs e.g. T1566.001 - Spearphishing Attachment)
+## 🧩 Key Takeaways
+## 🛡️ Defensive Recommendations
+## 🛠️ Tools & References
+
+RULES:
+- Preserve ALL image references exactly as given
+- Don't invent IOCs, timestamps, or details not in the notes
+
+OUTPUT: Pure markdown only. No preamble. Start directly with the metadata block."""
+
+
+SYSTEM_PROMPT_CHALLENGE = """You are a cybersecurity writeup formatter for a professional CTF challenge portfolio.
+
+You receive raw notes and a challenge description. Produce a clean, technical, professional CTF writeup.
+
+WRITING STYLE:
+- Write like you are explaining your solution to another technical person
+- Keep Kieran's voice — direct, technical, no fluff
+- Use past tense ("I noticed", "This gave me", "Decoding revealed")
+- Explain the thought process, not just the steps
+- Highlight breakthroughs with bold labels e.g. **Key Insight:** or **Breakthrough:**
+- Short punchy sentences. No waffle.
+
+CODE BLOCKS:
+- Every command/script/payload in a fenced code block with correct language tag
+- Brief context BEFORE each block, **Output:** note AFTER key blocks
+- Include terminal prompts where relevant
+
+STRUCTURE (in this order, omit empty sections):
+## 🧠 Overview
+## 🎯 Objective
+## 🔍 Analysis
+## ⚙️ Solution
+## 🏁 Flag / Proof
+## 🧩 Key Concepts
+## 🛠️ Tools & References
+
+RULES:
+- Preserve ALL image references exactly as given
+- Don't invent flags or details not in the notes
+
+OUTPUT: Pure markdown only. No preamble. Start directly with the metadata block."""
+
+
+# Platform/type routing
+BLUETEAM_PLATFORMS = {"LetsDefend"}
+BLUETEAM_TYPES     = {"Sherlock", "Lab"}
+CHALLENGE_TYPES    = {"Challenge"}
+
+def get_system_prompt(platform: str, room_type: str) -> str:
+    """Select the appropriate system prompt based on platform and room type."""
+    if platform in BLUETEAM_PLATFORMS or room_type in BLUETEAM_TYPES:
+        return SYSTEM_PROMPT_BLUETEAM
+    elif room_type in CHALLENGE_TYPES:
+        return SYSTEM_PROMPT_CHALLENGE
+    else:
+        return SYSTEM_PROMPT_REDTEAM
+
+SYSTEM_PROMPT = SYSTEM_PROMPT_REDTEAM  # fallback
 
 
 def format_with_claude(raw_notes: str, room_info: str, meta: dict, saved_screenshots: list, icon_filename: str) -> str:
@@ -471,25 +565,12 @@ def format_with_claude(raw_notes: str, room_info: str, meta: dict, saved_screens
     if saved_screenshots:
         screenshots_note = f"\n\nScreenshots available: {', '.join(saved_screenshots)}"
 
-    user_message = f"""Format a CTF writeup for: "{meta["room_name"]}"
+    user_message = f"""Format a cybersecurity writeup for: "{meta["room_name"]}"
 
 Use this metadata block exactly at the top:
 {metadata_block}
 
-Then use this structure — keep sections in this order, omit any section with no content:
-## 🧠 Overview
-## 🎯 Objectives
-## 🔍 Reconnaissance & Initial Analysis
-## ⚙️ Exploitation
-## 🔐 Privilege Escalation (omit if not applicable)
-## 🏁 Flags / Proof
-## 🧩 Key Takeaways
-## ⛓️ Attack Chain Summary
-(numbered list, one line per step, full attack path from recon to root)
-## 🔎 Detection Strategies
-### Offensive Indicators
-### Defensive Mitigations
-## 🛠️ Tools & References
+Follow the structure defined in the system prompt. Keep sections in order, omit any with no content.
 
 ---
 ROOM DESCRIPTION (from platform):
@@ -503,11 +584,14 @@ ROUGH NOTES FROM KIERAN:
 
 Return ONLY the formatted markdown. Nothing else."""
 
+    # Select system prompt based on platform and room type
+    system_prompt = get_system_prompt(meta.get("platform", ""), meta.get("room_type", ""))
+
     print("   → Sending to Claude...")
     message = claude.messages.create(
         model="claude-sonnet-4-6",
         max_tokens=4000,
-        system=SYSTEM_PROMPT,
+        system=system_prompt,
         messages=[{"role": "user", "content": user_message}]
     )
     print("   ✅ Claude formatting complete")
@@ -752,7 +836,7 @@ def update_platform_readme(platform_dir: Path, platform: str, meta: dict, icon_f
         if footer_found:
             content = content.replace(
                 footer_found,
-                new_section + b"\n---\n\n" + footer_found
+                new_section + "\n---\n\n" + footer_found
             )
         else:
             content = content.rstrip() + new_section
