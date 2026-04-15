@@ -834,16 +834,26 @@ def update_platform_readme(platform_dir: Path, platform: str, meta: dict, icon_f
             section_found = "## All Writeups"
 
     if section_found:
-        lines        = content.split("\n")
-        section_idx  = next(i for i, l in enumerate(lines) if l.strip() == section_found)
-        last_row_idx = section_idx
-        for i in range(section_idx + 1, len(lines)):
-            if lines[i].startswith("| ") and "---" not in lines[i]:
-                last_row_idx = i
-            elif lines[i].startswith("## ") and i > section_idx + 1:
+        # Remove placeholder row if present before inserting
+        for placeholder in [
+            "| *Auto-populated as writeups are added* | | | | |",
+            "| *Auto-populated as writeups are added* | | | |",
+            "| *Auto-populated as writeups are added* | | |",
+        ]:
+            if placeholder in content:
+                content = content.replace(placeholder, new_row)
                 break
-        lines.insert(last_row_idx + 1, new_row)
-        content = "\n".join(lines)
+        else:
+            lines        = content.split("\n")
+            section_idx  = next(i for i, l in enumerate(lines) if l.strip() == section_found)
+            last_row_idx = section_idx
+            for i in range(section_idx + 1, len(lines)):
+                if lines[i].startswith("| ") and "---" not in lines[i]:
+                    last_row_idx = i
+                elif lines[i].startswith("## ") and i > section_idx + 1:
+                    break
+            lines.insert(last_row_idx + 1, new_row)
+            content = "\n".join(lines)
     else:
         new_section = f"\n## All Writeups\n\n| Icon | Room | Difficulty | Tags | Date |\n|------|------|------------|------|------|\n{new_row}\n"
         footer_variants = [
@@ -1246,12 +1256,13 @@ def update_gitbook_branch(meta: dict):
 
         content = summary_path.read_text(encoding="utf-8")
 
-        # Don't add if already there — but still update READMEs
-        if writeup_path in content:
-            print(f"   ℹ️  {meta['room_name']} already in SUMMARY.md")
+        # Don't add if already there — but still update READMEs below
+        already_in_summary = writeup_path in content
+        if already_in_summary:
+            print(f"   ℹ️  {meta['room_name']} already in SUMMARY.md — skipping insert")
 
-        # Insert the new room entry after the parent line
-        if parent_line in content:
+        # Insert the new room entry after the parent line (only if not already present)
+        if not already_in_summary and parent_line in content:
             lines     = content.split("\n")
             insert_at = -1
             for i, line in enumerate(lines):
@@ -1407,7 +1418,8 @@ def update_main_readme_stats():
     rows = []
     for platform, data in stats.items():
         c = data["counts"]
-        rows.append(f"| {data['emoji']} {platform} | {c['Easy'] or '—'} | {c['Medium'] or '—'} | {c['Hard'] or '—'} | {data['total']} |")
+        easy_count = c['Beginner'] + c['Easy']
+        rows.append(f"| {data['emoji']} {platform} | {easy_count or '—'} | {c['Medium'] or '—'} | {c['Hard'] or '—'} | {data['total']} |")
     rows.append(f"| **Total** | **{total_easy}** | **{total_medium}** | **{total_hard}** | **{grand_total}** |")
 
     new_table = "| Platform | Easy | Medium | Hard | Total |\n|----------|------|--------|------|-------|\n" + "\n".join(rows)
