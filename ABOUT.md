@@ -1,5 +1,7 @@
 ---
 icon: id-badge
+cover: .gitbook/assets/main-cover.png
+coverY: 36.49586776859504
 ---
 
 # About Me
