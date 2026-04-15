@@ -1,15 +1,15 @@
-# 📁 LetsDefend — Beginner
+# LetsDefend > Beginner
 
-Beginner difficulty writeups.
-
----
-
-## 📋 Writeups
-
-| Icon | Room | Tags | Date |
-| <img src="Phishing-Email/PhishingEmail.png" width="32" alt="Phishing Email"> | [Phishing Email](Phishing-Email/Phishing-Email.md) | `#letsdefend` `#beginner` `#challenge` `#email-analysis` `#phishing` `#osint` | Apr 15, 2026 |
-|------|------|------|------|
+Beginner difficulty LetsDefend labs.
 
 ---
 
-> Writeups authored in Notion, auto-published via CTF Publisher.
+## All Beginner Writeups
+
+| Icon | Lab | Tags | Date |
+| ---- | --- | ---- | ---- |
+| *Auto-populated as writeups are added* | | | |
+
+---
+
+> Writeups drafted in Notion and auto-published via a custom Python pipeline using the Claude API.

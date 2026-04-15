@@ -1,125 +1,50 @@
-# ⚙️ About This Repo
-
-## How It Works
-
-Every writeup in this repo is authored in Notion and published automatically via a custom CI/CD pipeline. Here's what happens under the hood:
-
-### The Pipeline
-
-```
-Notion (notes + metadata)
-        ↓
-  GitHub Actions (trigger: 6pm UTC daily or manual)
-        ↓
-  Python script (ctf_auto.py)
-        ↓
-  ┌─────────────────────────────────────┐
-  │ 1. Query Notion API                 │
-  │    → Find Completed + Unpublished   │
-  │ 2. Extract notes and metadata       │
-  │ 3. Fetch room icon from platform    │
-  │ 4. Scrape room description          │
-  │ 5. Auto-detect OS (Linux/Win/Other) │
-  │ 6. Generate topic tags via Claude   │
-  │ 7. Send to Claude AI for formatting │
-  │ 8. Save markdown + icon to GitHub   │
-  │ 9. Update OS-level README table     │
-  │ 10. Update difficulty README table  │
-  │ 11. Update platform README table    │
-  │ 12. Update main README stats        │
-  │ 13. Write formatted writeup → Notion│
-  │ 14. Set Notion page icon            │
-  │ 15. Tick Published checkbox         │
-  └─────────────────────────────────────┘
-        ↓
-  Git commit + push to main
-        ↓
-  Sync workflow copies writeups/ → gitbook branch
-        ↓
-  GitBook picks up changes automatically
-```
-
-### Tech Stack
-
-| Component | Purpose |
-|-----------|---------|
-| **Notion API** | Source of truth for notes and metadata |
-| **GitHub Actions** | Scheduled CI/CD runner (6pm UTC daily) |
-| **Python** | Core automation script |
-| **Claude AI (Anthropic)** | Formats rough notes into professional writeups |
-| **GitHub** | Version control and public portfolio |
-| **GitBook** | Public-facing writeup site |
-
-### Notion Database Schema
-
-Each room entry in Notion requires:
-
-| Property | Type | Description |
-|----------|------|-------------|
-| Note Title | Title | Room name |
-| Platform | Select | TryHackMe, HackTheBox, LetsDefend, etc. |
-| Difficulty | Select | Easy, Medium, Hard, Insane, Beginner |
-| Type | Select | Machine, Sherlock, Challenge, Lab |
-| OS | Select | Linux, Windows, Other |
-| URL | URL | Link to the room |
-| Icon URL | URL | Room icon image URL |
-| Tags | Multi-select | e.g. #web, #sqli, #privesc |
-| Completed | Checkbox | Mark when notes are ready |
-| Published | Checkbox | Auto-ticked after publish |
-
-### Folder Structure
-
-```
-CTF-Hub/
-├── writeups/
-│   ├── TryHackMe/
-│   │   ├── README.md              ← platform overview + all writeups
-│   │   ├── Easy/
-│   │   │   ├── README.md          ← difficulty overview + OS links
-│   │   │   ├── Linux/
-│   │   │   │   ├── README.md      ← auto-updated table
-│   │   │   │   └── RoomName/
-│   │   │   │       ├── RoomName.md    ← formatted writeup
-│   │   │   │       ├── RoomName.png   ← room icon
-│   │   │   │       └── screenshot_01.png
-│   │   │   ├── Windows/
-│   │   │   └── Other/
-│   │   ├── Medium/
-│   │   └── Hard/
-│   ├── HackTheBox/
-│   │   ├── Machines/
-│   │   ├── Sherlocks/
-│   │   └── Challenges/
-│   ├── LetsDefend/
-│   └── Cheatsheets/
-├── scripts/
-│   ├── ctf_auto.py        ← main pipeline script
-│   └── generate_readmes.py
-└── .github/workflows/
-    ├── ctf-publisher.yml      ← daily publish pipeline
-    └── sync-to-gitbook.yml    ← syncs writeups/ to gitbook branch
-```
-
-### Branch Structure
-
-| Branch | Purpose |
-|--------|---------|
-| `main` | Source of truth — scripts, workflows, all content |
-| `gitbook` | Auto-synced from main — GitBook reads from here |
-
-The `gitbook` branch only ever receives the `writeups/` folder. Scripts, workflows and root files stay on `main` only.
-
-### Queue System
-
-The pipeline publishes **one writeup per day** at 6pm UTC. If multiple writeups are queued in Notion, they drip out one per day automatically. Trigger manually via GitHub Actions to publish immediately.
-
-### Cost
-
-- GitHub Actions: free (public repo)
-- Notion API: free
-- Claude API: ~£0.01–0.02 per writeup
-- Scheduled runs with nothing to process: £0
-
+---
+icon: id-badge
+cover: .gitbook/assets/main-cover.png
+coverY: 36.49586776859504
 ---
 
-*Built by [Kieboard](https://github.com/Kieboard) · Live at [kieboard.gitbook.io/ctf-hub](https://kieboard.gitbook.io/ctf-hub)*
+# About Me
+
+Hey, I'm Kie — an IT Analyst working my way into Information Security.
+
+This site is a living record of my CTF progress — every room, every machine, every flag. Not just the solutions, but the methodology behind them. Why something worked, where I got stuck, and what I learned.
+
+***
+
+## Background
+
+* 🖥️ IT Analyst
+* 🎓 BSc Cyber Security — Open University (Cisco-focused)
+* ⚙️ Core skills: Networking, Active Directory, Azure, M365, ITIL 4
+* 🔒 Focus areas: Offensive security, blue team, cloud security
+
+***
+
+## Certifications
+
+| Certification                                                                                  | Status         | Credential |
+| ---------------------------------------------------------------------------------------------- | -------------- | ---------- |
+| [ITIL 4 Foundation](https://www.axelos.com/certifications/itil-certifications/itil-foundation) | 🔄 In Progress | —          |
+| [CompTIA Security+](https://www.comptia.org/certifications/security)                           | 🔄 In Progress | —          |
+| [GitHub Foundations](https://resources.github.com/learn/certifications/)                       | 🔄 In Progress | —          |
+
+***
+
+## Platforms
+
+| Platform   | Focus                                      |
+| ---------- | ------------------------------------------ |
+| TryHackMe  | Fundamentals, methodology, guided rooms    |
+| HackTheBox | Real-world machines, DFIR, challenges      |
+| LetsDefend | Blue team, SOC analysis, incident response |
+
+***
+
+## Find Me
+
+[TryHackMe](https://tryhackme.com/p/Kieboard) · [HackTheBox](https://app.hackthebox.com/public/users/1030668) · [GitHub](https://github.com/Kieboard) · [Portfolio](https://kieboard.me)
+
+***
+
+_This site is built with GitBook, backed by GitHub, and auto-populated via a custom Python pipeline using the Claude API._
