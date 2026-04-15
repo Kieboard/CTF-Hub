@@ -775,17 +775,13 @@ def update_platform_readme(platform_dir: Path, platform: str, meta: dict, icon_f
             frontmatter = content[:end_idx + 3] + "\n"
             content = content[end_idx + 3:].lstrip("\n")
 
-    room_type      = meta.get("room_type", "") or "Other"
-    section        = TYPE_SECTIONS.get(room_type, {"emoji": "📁", "header": room_type or "Other"})
-    section_header = f"## {section['emoji']} {section['header']}"
-    table_header   = "| Icon | Room | Difficulty | Tags | Date |\n|------|------|------------|------|------|"
-
+    room_type  = meta.get("room_type", "") or "Other"
     room_clean = re.sub(r'[^\w\-]', '', meta["room_name"].replace(" ", "-"))
     diff_dir   = DIFFICULTY_FOLDERS.get(meta["difficulty"].lower(), meta["difficulty"])
 
     # Build path with OS subfolder if applicable
     os_name = meta.get("os", "")
-    if platform in OS_SPLIT_PLATFORMS and os_name and os_name != "Other":
+    if platform in OS_SPLIT_PLATFORMS and os_name:
         room_link  = f"[{meta['room_name']}]({diff_dir}/{os_name}/{room_clean}/{room_clean}.md)"
         icon_rel   = f"{diff_dir}/{os_name}/{room_clean}/{icon_filename}" if icon_filename else ""
     else:
@@ -794,7 +790,7 @@ def update_platform_readme(platform_dir: Path, platform: str, meta: dict, icon_f
 
     icon_cell = f'<img src="{icon_rel}" width="32" alt="{meta["room_name"]}">' if icon_rel else ""
 
-    redundant = {"thm", "htb", "tryhackme", "hackthebox", "easy", "medium", "hard", "insane"}
+    redundant = {"thm", "htb", "tryhackme", "hackthebox", "easy", "medium", "hard", "insane", "beginner"}
     type_tag  = [f"`#{room_type.lower()}`"] if room_type else []
     ai_tags   = [f"`#{t}`" for t in topic_tags]
     user_tags = [f"`#{t.lower().replace(' ', '-')}`" for t in meta["tags"]
@@ -811,9 +807,17 @@ def update_platform_readme(platform_dir: Path, platform: str, meta: dict, icon_f
         lines   = content.split("\n")
         content = "\n".join(l for l in lines if not (search_path in l and room_clean in l))
 
-    if section_header in content:
+    # Always update "All Writeups" table — never create type sections
+    all_writeups_headers = ["## All Writeups", "## 🖥️ Machines", "## 📋 Writeups"]
+    section_found = None
+    for h in all_writeups_headers:
+        if h in content:
+            section_found = h
+            break
+
+    if section_found:
         lines        = content.split("\n")
-        section_idx  = next(i for i, l in enumerate(lines) if l.strip() == section_header)
+        section_idx  = next(i for i, l in enumerate(lines) if l.strip() == section_found)
         last_row_idx = section_idx
         for i in range(section_idx + 1, len(lines)):
             if lines[i].startswith("| ") and "---" not in lines[i]:
@@ -823,7 +827,7 @@ def update_platform_readme(platform_dir: Path, platform: str, meta: dict, icon_f
         lines.insert(last_row_idx + 1, new_row)
         content = "\n".join(lines)
     else:
-        new_section = f"\n{section_header}\n\n{table_header}\n{new_row}\n"
+        new_section = f"\n## All Writeups\n\n| Icon | Room | Difficulty | Tags | Date |\n|------|------|------------|------|------|\n{new_row}\n"
         footer_variants = [
             "> Writeups drafted in Notion and auto-published via a custom Python pipeline using the Claude API.",
             "> Writeups authored in Notion, auto-published via CTF Publisher.",
@@ -849,10 +853,9 @@ def update_platform_readme(platform_dir: Path, platform: str, meta: dict, icon_f
     new_stats = f"> **{total} room{'s' if total != 1 else ''} completed · {total} flag{'s' if total != 1 else ''} captured · Last updated {today}**"
     import re as _re
     if _re.search(r'> \*\*\d+ rooms? completed', content):
-        content = _re.sub(r'> \*\*\d+ rooms? completed.*?\*\*', new_stats.strip(">").strip(), content)
-        content = _re.sub(r'> \*\*', '> **', content)
-    elif "**" in content and "completed" not in content:
-        pass  # no stats line yet, skip
+        content = _re.sub(r'> \*\*\d+ rooms? completed[^*]*\*\*', new_stats[2:].strip(), content)
+    elif _re.search(r'> \*\*\d+ labs? completed', content):
+        content = _re.sub(r'> \*\*\d+ labs? completed[^*]*\*\*', new_stats[2:].strip(), content)
 
     if frontmatter:
         content = frontmatter + "\n" + content.lstrip("\n")
@@ -885,7 +888,7 @@ def update_difficulty_readme(diff_dir: Path, platform: str, difficulty: str, met
 
     icon_cell = f'<img src="{icon_path}" width="32" alt="{meta["room_name"]}">' if icon_path else ""
 
-    redundant  = {"thm", "htb", "tryhackme", "hackthebox", "easy", "medium", "hard", "insane"}
+    redundant  = {"thm", "htb", "tryhackme", "hackthebox", "easy", "medium", "hard", "insane", "beginner"}
     room_type  = meta.get("room_type", "")
     type_tag   = [f"`#{room_type.lower()}`"] if room_type else []
     auto_tags  = [
@@ -940,7 +943,7 @@ def update_os_readme(os_dir: Path, platform: str, difficulty: str, os_name: str,
 
     icon_cell = f'<img src="{icon_path}" width="32" alt="{meta["room_name"]}">' if icon_path else ""
 
-    redundant  = {"thm", "htb", "tryhackme", "hackthebox", "easy", "medium", "hard", "insane"}
+    redundant  = {"thm", "htb", "tryhackme", "hackthebox", "easy", "medium", "hard", "insane", "beginner"}
     room_type  = meta.get("room_type", "")
     type_tag   = [f"`#{room_type.lower()}`"] if room_type else []
     ai_tags    = [f"`#{t}`" for t in (topic_tags or [])]
@@ -1347,7 +1350,7 @@ def update_main_readme_stats():
         "pwn.college": "🎓", "PicoCTF": "🏴", "RootMe": "⚫",
         "CTFtime": "🏁", "SANSHolidayHack": "🎄",
     }
-    difficulties = ["Easy", "Medium", "Hard", "Insane"]
+    difficulties = ["Beginner", "Easy", "Medium", "Hard", "Insane"]
 
     stats = {}
     total_easy = total_medium = total_hard = total_insane = 0
@@ -1356,7 +1359,7 @@ def update_main_readme_stats():
         platform_dir = WRITEUPS_PATH / platform
         if not platform_dir.exists():
             continue
-        counts = {"Easy": 0, "Medium": 0, "Hard": 0, "Insane": 0}
+        counts = {"Beginner": 0, "Easy": 0, "Medium": 0, "Hard": 0, "Insane": 0}
         for difficulty in difficulties:
             diff_dir = platform_dir / difficulty
             if not diff_dir.exists():
@@ -1379,7 +1382,7 @@ def update_main_readme_stats():
         total = sum(counts.values())
         if total > 0:
             stats[platform] = {"emoji": emoji, "counts": counts, "total": total}
-            total_easy   += counts["Easy"]
+            total_easy   += counts["Beginner"] + counts["Easy"]
             total_medium += counts["Medium"]
             total_hard   += counts["Hard"]
             total_insane += counts["Insane"]
@@ -1395,10 +1398,11 @@ def update_main_readme_stats():
     new_table = "| Platform | Easy | Medium | Hard | Total |\n|----------|------|--------|------|-------|\n" + "\n".join(rows)
 
     content = readme_path.read_text(encoding="utf-8")
-    pattern = r"(\| Platform \| Easy \| Medium \| Hard \| Total \|.*?)(\n---|$)"
+    # Match both markdown and GitBook pipe-table formats
+    pattern = r"\| Platform[ \t]*\| Easy[ \t]*\| Medium[ \t]*\| Hard[ \t]*\| Total[ \t]*\|.*?(?=\n\n|\n>|\n\*|\Z)"
     match   = re.search(pattern, content, re.DOTALL)
     if match:
-        content = content[:match.start()] + new_table + "\n" + content[match.end():]
+        content = content[:match.start()] + new_table + content[match.end():]
         readme_path.write_text(content, encoding="utf-8")
         print(f"   ✅ Stats updated: {grand_total} total writeup(s)")
     else:
@@ -1413,7 +1417,7 @@ def auto_categorise(platform: str, room_info: str, room_name: str) -> str:
     platform_defaults = {
         "VulnHub":         "Machine",
         "ProvingGrounds":  "Machine",
-    "LetsDefend":      "Challenge",
+    "LetsDefend":      "Lab",
         "OffSec":          "Machine",
         "pwn.college":     "Dojo",
         "PicoCTF":         "Challenge",
