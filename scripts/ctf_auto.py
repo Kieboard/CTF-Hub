@@ -521,13 +521,24 @@ BLUETEAM_TYPES     = {"Sherlock", "Lab"}
 CHALLENGE_TYPES    = {"Challenge"}
 
 def get_system_prompt(platform: str, room_type: str) -> str:
-    """Select the appropriate system prompt based on platform and room type."""
-    if platform in BLUETEAM_PLATFORMS or room_type in BLUETEAM_TYPES:
+    """Select the appropriate system prompt based on platform and room type.
+    
+    Priority:
+    1. Platform overrides type — LetsDefend is always blue team
+    2. Type-based routing for other platforms
+    3. Default to red team
+    """
+    # Platform always wins — LetsDefend is always blue team regardless of type
+    if platform in BLUETEAM_PLATFORMS:
         return SYSTEM_PROMPT_BLUETEAM
-    elif room_type in CHALLENGE_TYPES:
+    # HTB Sherlocks and Labs are always blue team
+    if room_type in BLUETEAM_TYPES:
+        return SYSTEM_PROMPT_BLUETEAM
+    # Standalone challenges (HTB Challenges, PicoCTF etc)
+    if room_type in CHALLENGE_TYPES:
         return SYSTEM_PROMPT_CHALLENGE
-    else:
-        return SYSTEM_PROMPT_REDTEAM
+    # Everything else — machines, walkthroughs etc
+    return SYSTEM_PROMPT_REDTEAM
 
 SYSTEM_PROMPT = SYSTEM_PROMPT_REDTEAM  # fallback
 
@@ -814,6 +825,13 @@ def update_platform_readme(platform_dir: Path, platform: str, meta: dict, icon_f
         if h in content:
             section_found = h
             break
+
+    # If a type section exists from a previous run, we still want All Writeups
+    # Remove any orphan type section headers that shouldn't be there
+    if section_found and section_found != "## All Writeups":
+        # Check if All Writeups also exists - if so use that instead
+        if "## All Writeups" in content:
+            section_found = "## All Writeups"
 
     if section_found:
         lines        = content.split("\n")
