@@ -120,6 +120,35 @@ DIFF_DESC  = {
 }
 
 # ─────────────────────────────────────────────
+# CENTRALISED TAG BUILDER
+# ─────────────────────────────────────────────
+
+def build_tags_cell(meta: dict, topic_tags: list) -> str:
+    """Build a consistent 4-tag cell string used across ALL README tables.
+
+    Fixed order: #type #topic1 #topic2 #topic3
+
+    Platform and difficulty are omitted — they are redundant given the page
+    hierarchy (platform README, difficulty README etc). The type tag provides
+    the bridge between context and content.
+
+    Examples:
+      #machine #file-upload #suid #privilege-escalation
+      #challenge #phishing #email-analysis #osint
+    """
+    room_type = meta.get("room_type", "")
+    type_tag  = [f"`#{room_type.lower()}`"] if room_type else []
+
+    # Always exactly 3 topic tags from suggest_topic_tags
+    topics = [f"`#{t}`" for t in (topic_tags or [])[:3]]
+    while len(topics) < 3:
+        topics.append("`#misc`")
+
+    combined = list(dict.fromkeys(type_tag + topics))
+    return " ".join(combined[:4])
+
+
+# ─────────────────────────────────────────────
 # NOTION HELPERS
 # ─────────────────────────────────────────────
 
@@ -552,13 +581,13 @@ def format_with_claude(raw_notes: str, room_info: str, meta: dict, saved_screens
         f'    <b>OS:</b> {meta["os"]}<br>\n'
         if meta.get("os") else ""
     )
-    all_tags = list(dict.fromkeys(
-        [f"#{meta['platform'].lower().replace(' ', '')}",
-         f"#{meta['difficulty'].lower()}"] +
-        [f"#{t.lower().replace(' ', '-')}" for t in meta["tags"]] +
-        [f"#{t}" for t in meta.get("topic_tags", [])]
-    ))
-    tags_str = " ".join(all_tags)
+    # Use same 6-tag structure as README tables — built from tags_cell already on meta
+    # tags_cell uses backtick format; strip for plain metadata block
+    tags_cell_str = meta.get("tags_cell", "")
+    tags_str = tags_cell_str.replace("`", "") if tags_cell_str else (
+        f"#{meta['platform'].lower().replace(' ', '')} "
+        f"#{meta['difficulty'].lower()}"
+    )
 
     metadata_block = f"""<p align="right">
   <sub>
@@ -610,14 +639,15 @@ Return ONLY the formatted markdown. Nothing else."""
 
 
 def suggest_topic_tags(raw_notes: str, room_info: str, room_name: str) -> list:
-    prompt = f"""You are tagging a CTF room for a portfolio. Based on the room name, description and notes below, suggest exactly 2-3 short topic tags that describe what the room is about technically.
+    prompt = f"""You are tagging a CTF room for a portfolio. Based on the room name, description and notes below, suggest exactly 3 short topic tags that describe what the room is about technically.
 
 Rules:
 - Tags must be lowercase, no spaces (use hyphens), no # symbol
-- Be specific and technical e.g. prompt-injection, sqli, privilege-escalation, buffer-overflow, file-upload, lfi, rce, active-directory, web, forensics, crypto, osint, reversing, steganography, dfir, malware
-- Do NOT include platform names (tryhackme, htb) or difficulty (easy, medium, hard)
-- Do NOT include type names (machine, sherlock, challenge, walkthrough, ctf, dojo)
-- Return ONLY a comma separated list of tags, nothing else. Example: prompt-injection,ai-security,web
+- Be specific and technical e.g. prompt-injection, sqli, privilege-escalation, buffer-overflow, file-upload, lfi, rce, active-directory, web, forensics, crypto, osint, reversing, steganography, dfir, malware, phishing, email-analysis
+- Do NOT include platform names (tryhackme, htb, letsdefend) or difficulty (easy, medium, hard, beginner)
+- Do NOT include type names (machine, sherlock, challenge, walkthrough, ctf, dojo, lab)
+- You MUST return exactly 3 tags — no more, no fewer
+- Return ONLY a comma separated list of 3 tags, nothing else. Example: prompt-injection,ai-security,web
 
 Room: {room_name}
 Description: {room_info[:500] if room_info else "Not available"}
@@ -633,11 +663,14 @@ Notes summary: {raw_notes[:500]}"""
         tags = [t.strip().replace(" ", "-") for t in raw.split(",") if t.strip()]
         tags = [re.sub(r"[^a-z0-9\-]", "", t) for t in tags]
         tags = [t for t in tags if t][:3]
+        # Pad to 3 if model returned fewer
+        while len(tags) < 3:
+            tags.append("misc")
         print(f"   ✅ Topic tags: {tags}")
         return tags
     except Exception as e:
         print(f"   ⚠️  Could not generate topic tags: {e}")
-        return []
+        return ["misc", "misc", "misc"]
 
 
 # ─────────────────────────────────────────────
@@ -801,14 +834,7 @@ def update_platform_readme(platform_dir: Path, platform: str, meta: dict, icon_f
 
     icon_cell = f'<img src="{icon_rel}" width="32" alt="{meta["room_name"]}">' if icon_rel else ""
 
-    redundant = {"thm", "htb", "tryhackme", "hackthebox", "easy", "medium", "hard", "insane", "beginner"}
-    type_tag  = [f"`#{room_type.lower()}`"] if room_type else []
-    ai_tags   = [f"`#{t}`" for t in topic_tags]
-    user_tags = [f"`#{t.lower().replace(' ', '-')}`" for t in meta["tags"]
-                 if t.lower().replace(" ", "") not in redundant]
-    all_tags  = list(dict.fromkeys(type_tag + ai_tags + user_tags))[:5]
-    tags_cell = " ".join(all_tags)
-
+    tags_cell  = meta.get("tags_cell") or build_tags_cell(meta, topic_tags)
     diff_badge = f"`{meta['difficulty']}`"
     new_row    = f"| {icon_cell} | {room_link} | {diff_badge} | {tags_cell} | {meta['date']} |"
 
@@ -916,18 +942,7 @@ def update_difficulty_readme(diff_dir: Path, platform: str, difficulty: str, met
 
     icon_cell = f'<img src="{icon_path}" width="32" alt="{meta["room_name"]}">' if icon_path else ""
 
-    redundant  = {"thm", "htb", "tryhackme", "hackthebox", "easy", "medium", "hard", "insane", "beginner"}
-    room_type  = meta.get("room_type", "")
-    type_tag   = [f"`#{room_type.lower()}`"] if room_type else []
-    auto_tags  = [
-        f"`#{meta['platform'].lower().replace(' ', '')}`",
-        f"`#{meta['difficulty'].lower()}`"
-    ]
-    ai_tags    = [f"`#{t}`" for t in (topic_tags or [])]
-    user_tags  = [f"`#{t.lower().replace(' ', '-')}`" for t in meta["tags"]
-                  if t.lower().replace(" ", "") not in redundant]
-    all_tags   = list(dict.fromkeys(auto_tags + type_tag + ai_tags + user_tags))[:6]
-    tags_cell  = " ".join(all_tags)
+    tags_cell  = meta.get("tags_cell") or build_tags_cell(meta, topic_tags)
 
     room_link = f"[{meta['room_name']}]({room_path})"
     new_row   = f"| {icon_cell} | {room_link} | {tags_cell} | {meta['date']} |"
@@ -951,6 +966,14 @@ def update_difficulty_readme(diff_dir: Path, platform: str, difficulty: str, met
         else:
             content += f"\n{new_row}\n"
 
+    # Normalise section header — strip "All " prefix if present
+    import re as _re
+    content = _re.sub(
+        r'## All (Easy|Medium|Hard|Insane|Beginner) Writeups',
+        r'## \1 Writeups',
+        content
+    )
+
     readme.write_text(content, encoding="utf-8")
     print(f"   ✅ Added {meta['room_name']} to {platform}/{difficulty}/README.md")
 
@@ -971,14 +994,7 @@ def update_os_readme(os_dir: Path, platform: str, difficulty: str, os_name: str,
 
     icon_cell = f'<img src="{icon_path}" width="32" alt="{meta["room_name"]}">' if icon_path else ""
 
-    redundant  = {"thm", "htb", "tryhackme", "hackthebox", "easy", "medium", "hard", "insane", "beginner"}
-    room_type  = meta.get("room_type", "")
-    type_tag   = [f"`#{room_type.lower()}`"] if room_type else []
-    ai_tags    = [f"`#{t}`" for t in (topic_tags or [])]
-    user_tags  = [f"`#{t.lower().replace(' ', '-')}`" for t in meta["tags"]
-                  if t.lower().replace(" ", "") not in redundant]
-    all_tags   = list(dict.fromkeys(type_tag + ai_tags + user_tags))[:6]
-    tags_cell  = " ".join(all_tags)
+    tags_cell  = meta.get("tags_cell") or build_tags_cell(meta, topic_tags)
 
     room_link = f"[{meta['room_name']}]({room_clean}/{room_clean}.md)"
     new_row   = f"| {icon_cell} | {room_link} | {tags_cell} | {meta['date']} |"
@@ -1571,9 +1587,11 @@ def process_page(page: dict):
         print(f"   → Downloading {len(image_urls)} screenshot(s)...")
         saved_screenshots = download_screenshots(image_urls, dest_folder)
 
-    # 8. Generate topic tags
+    # 8. Generate topic tags and build canonical tags cell (used everywhere)
     topic_tags = suggest_topic_tags(raw_notes, room_info, meta["room_name"])
     meta["topic_tags"] = topic_tags  # store for metadata block
+    meta["tags_cell"] = build_tags_cell(meta, topic_tags)  # canonical cell string
+    print(f"   ✅ Tags cell: {meta['tags_cell']}")
 
     # 9. Format with Claude
     formatted = format_with_claude(raw_notes, room_info, meta, saved_screenshots, icon_filename)
