@@ -28,7 +28,7 @@ LetsDefend is a blue team focused security platform. Challenges simulate real SO
 
 | Icon | Lab | Difficulty | Tags | Date |
 | ---- | --- | ---------- | ---- | ---- |
-| <img src="Beginner/Phishing-Email/PhishingEmail.png" width="32" alt="Phishing Email"> | [Phishing Email](Beginner/Phishing-Email/Phishing-Email.md) | `Beginner` | `#challenge` `#phishing` `#email-analysis` | Apr 15, 2026 |
+| <img src="Beginner/Phishing-Email/PhishingEmail.png" width="32" alt="Phishing Email"> | [Phishing Email](Beginner/Phishing-Email/Phishing-Email.md) | `#letsdefend` `#beginner` `#challenge` `#phishing` `#email-analysis` `#osint` | Apr 15, 2026 |
 
 ***
 
