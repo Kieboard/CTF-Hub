@@ -4,7 +4,7 @@ Beginner difficulty LetsDefend labs.
 
 ---
 
-## All Beginner Writeups
+## Beginner Writeups
 
 | Icon | Lab | Tags | Date |
 | ---- | --- | ---- | ---- |

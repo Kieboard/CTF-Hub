@@ -14,7 +14,7 @@ Medium difficulty TryHackMe rooms.
 
 ---
 
-## All Medium Writeups
+## Medium Writeups
 
 | Icon | Room | OS | Tags | Date |
 |------|------|----|------|------|

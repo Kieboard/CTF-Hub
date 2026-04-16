@@ -14,7 +14,7 @@ Easy difficulty TryHackMe rooms.
 
 ---
 
-## All Easy Writeups
+## Easy Writeups
 
 | Icon | Room | OS | Tags | Date |
 |------|------|----|------|------|

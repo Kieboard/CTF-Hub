@@ -4,7 +4,7 @@ Easy difficulty LetsDefend labs.
 
 ---
 
-## All Easy Writeups
+## Easy Writeups
 
 | Icon | Lab | Tags | Date |
 | ---- | --- | ---- | ---- |
