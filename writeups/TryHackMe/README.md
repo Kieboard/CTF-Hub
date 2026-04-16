@@ -24,12 +24,12 @@ TryHackMe is a beginner-to-intermediate offensive security platform built around
 
 ## All Writeups
 
-| Icon | Room | Difficulty | OS | Tags | Date |
-|------|------|-----------|-----|------|------|
-| ![RootMe](<../../.gitbook/assets/RootMe (5).png>) | [RootMe](Easy/Linux/RootMe/RootMe.md) | 🟢 Easy | Linux | `#tryhackme` `#easy` `#machine` `#file-upload` `#suid` `#privilege-escalation` | Mar 03, 2026 |
-| ![CupidBot](<../../.gitbook/assets/CupidBot (5).png>) | [CupidBot](Easy/Other/CupidBot/CupidBot.md) | 🟢 Easy | Other | `#tryhackme` `#easy` `#machine` `#prompt-injection` `#ai-security` `#web` | Mar 16, 2026 |
-| ![Oracle 9](Easy/Linux/Oracle-9-/Oracle9.png) | [Oracle 9](Easy/Linux/Oracle-9-/Oracle-9-.md) | 🟢 Easy | Linux | `#tryhackme` `#easy` `#machine` `#prompt-injection` `#ai-security` `#llm` | Mar 18, 2026 |
-| ![TakeOver](Easy/Other/TakeOver/TakeOver.png) | [TakeOver](Easy/Other/TakeOver/TakeOver.md) | 🟢 Easy | Other | `#tryhackme` `#easy` `#machine` `#subdomain-enumeration` `#ssl-certificates` `#web` | Apr 09, 2026 |
+| Icon | Room | Tags | Date |
+|------|------|------|------|
+| ![RootMe](<../../.gitbook/assets/RootMe (5).png>) | [RootMe](Easy/Linux/RootMe/RootMe.md) | `#machine` `#file-upload` `#suid` `#privilege-escalation` | Mar 03, 2026 |
+| ![CupidBot](<../../.gitbook/assets/CupidBot (5).png>) | [CupidBot](Easy/Other/CupidBot/CupidBot.md) | `#machine` `#prompt-injection` `#ai-security` `#web` | Mar 16, 2026 |
+| ![Oracle 9](Easy/Linux/Oracle-9-/Oracle9.png) | [Oracle 9](Easy/Linux/Oracle-9-/Oracle-9-.md) | `#machine` `#prompt-injection` `#ai-security` `#llm` | Mar 18, 2026 |
+| ![TakeOver](Easy/Other/TakeOver/TakeOver.png) | [TakeOver](Easy/Other/TakeOver/TakeOver.md) | `#machine` `#subdomain-enumeration` `#ssl-certificates` `#web` | Apr 09, 2026 |
 
 ---
 

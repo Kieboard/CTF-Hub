@@ -8,7 +8,7 @@ Beginner difficulty LetsDefend labs.
 
 | Icon | Lab | Tags | Date |
 | ---- | --- | ---- | ---- |
-| <img src="Phishing-Email/PhishingEmail.png" width="32" alt="Phishing Email"> | [Phishing Email](Phishing-Email/Phishing-Email.md) | `#letsdefend` `#beginner` `#challenge` `#phishing` `#email-analysis` `#osint` | Apr 15, 2026 |
+| <img src="Phishing-Email/PhishingEmail.png" width="32" alt="Phishing Email"> | [Phishing Email](Phishing-Email/Phishing-Email.md) | `#challenge` `#phishing` `#email-analysis` `#osint` | Apr 15, 2026 |
 
 ---
 
