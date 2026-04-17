@@ -488,7 +488,10 @@ WRITING STYLE:
 CODE BLOCKS:
 - Any queries, commands, or scripts in fenced code blocks with correct language tag
 - Brief context BEFORE each block, **Finding:** note AFTER key blocks
-- No terminal prompts needed — blue team work is tool-based not shell-based
+- Where shell commands are used (file analysis, scripting, tool execution), include terminal prompt:
+  - LetsDefend: kie@kiepc:~/LetsDefend/{RoomName}$
+  - HTB Sherlocks: kie@kiepc:~/HTB/Sherlocks/{RoomName}$
+  - For GUI-based analysis (SIEM, dashboards), no terminal prompt needed
 
 STRUCTURE (in this order, omit empty sections):
 ## 🧠 Overview
@@ -1440,7 +1443,7 @@ def update_main_readme_stats():
     for platform, data in stats.items():
         c = data["counts"]
         easy_count = c['Beginner'] + c['Easy']
-        rows.append(f"| {data['emoji']} {platform} | {easy_count or '—'} | {c['Medium'] or '—'} | {c['Hard'] or '—'} | {data['total']} |")
+        rows.append(f"| {platform} | {easy_count or '—'} | {c['Medium'] or '—'} | {c['Hard'] or '—'} | {data['total']} |")
     rows.append(f"| **Total** | **{total_easy}** | **{total_medium}** | **{total_hard}** | **{grand_total}** |")
 
     new_table = "| Platform | Easy | Medium | Hard | Total |\n|----------|------|--------|------|-------|\n" + "\n".join(rows)
