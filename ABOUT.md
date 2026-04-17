@@ -47,4 +47,4 @@ This site is a living record of my CTF progress — every room, every machine, e
 
 ---
 
-*This site is built with GitBook, backed by GitHub, and auto-populated via a custom Python pipeline using the Claude API.*
+*This site is built with GitBook, backed by GitHub, and auto-populated via a custom Python pipeline using Claude.*

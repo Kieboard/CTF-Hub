@@ -6,7 +6,7 @@
     <b>Status:</b> Completed ✅<br>
     <b>URL:</b> <a href="https://tryhackme.com/room/oracle9">Oracle 9 </a><br>
     <b>Date:</b> Mar 18, 2026<br>
-    <b>Tags:</b> #tryhackme #easy #thm
+    <b>Tags:</b> #tryhackme #easy #machine #prompt-injection #ai-security #llm
   </sub>
 </p>
 

@@ -6,7 +6,7 @@ coverY: 33.32231404958677
 
 # Welcome
 
-> A living archive of CTF writeups, machine walkthroughs, and offensive security notes. From IT support to information security — one flag at a time.
+> A living archive of CTF writeups, machine walkthroughs, and offensive security notes. From IT support to Information Security — one flag at a time.
 
 Not just _what_ I did — but _why_ it worked. Every recon step, every rabbit hole, every privilege escalation documented as it happens.
 
@@ -16,9 +16,9 @@ Not just _what_ I did — but _why_ it worked. Every recon step, every rabbit ho
 
 | Platform   | Easy  | Medium | Hard  | Total |
 | ---------- | ----- | ------ | ----- | ----- |
-| 🔴 TryHackMe  | 4     | —      | —     | 4     |
-| 🟢 HackTheBox | —     | —      | —     | —     |
-| 🛡️ LetsDefend | —     | —      | —     | 1     |
+| TryHackMe  | 4     | —      | —     | 4     |
+| HackTheBox | —     | —      | —     | —     |
+| LetsDefend | —     | —      | —     | 1     |
 | **Total**  | **4** | **0**  | **0** | **5** |
 
 > Stats update automatically with each published writeup.

@@ -5,7 +5,7 @@
     <b>Status:</b> Completed ✅<br>
     <b>URL:</b> <a href="https://app.letsdefend.io/challenge/phishing-email">Phishing Email</a><br>
     <b>Date:</b> Apr 15, 2026<br>
-    <b>Tags:</b> #letsdefend #beginner #email-analysis #phishing #osint
+    <b>Tags:</b> #letsdefend #beginner #challenge #phishing #email-analysis #osint
   </sub>
 </p>
 
