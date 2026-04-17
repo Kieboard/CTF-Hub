@@ -37,4 +37,4 @@ Writeups across TryHackMe, HackTheBox, and LetsDefend — organised by difficult
 
 ***
 
-_Writeups drafted in Notion, auto-formatted and published via a custom Python pipeline using the Claude API. Source in the_ [_CTF-Hub repo_](https://github.com/Kieboard/CTF-Hub)_. Built with GitBook._
+_Writeups drafted in Notion, auto-formatted and published via a custom Python pipeline using Claude. Source in the_ [_CTF-Hub repo_](https://github.com/Kieboard/CTF-Hub)_. Built with GitBook._
