@@ -1,15 +1,20 @@
-# TryHackMe > Hard > Linux
+---
+cover: ../../../../.gitbook/assets/thm.png
+coverY: 3.173553719008264
+---
 
-Hard difficulty Linux rooms.
+# TryHackMe — Hard — Linux
+
+Advanced Linux machines with custom vulnerabilities, obscure services, and privilege escalation chains that require deep system knowledge.
 
 ---
 
 ## Writeups
 
-| Icon | Room | Tags | Date |
-|------|------|------|------|
-| *Auto-populated as writeups are added* | | | |
+| Icon | Room | Type | Tags | Date |
+| ---- | ---- | ---- | ---- | ---- |
+| *Auto-populated as writeups are added* | | | | |
 
 ---
 
-> Writeups authored in Notion, auto-published via CTF Publisher.
+> Writeups drafted in Notion and auto-published via a custom Python pipeline using Claude.

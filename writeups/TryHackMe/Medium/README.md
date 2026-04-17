@@ -1,25 +1,20 @@
-# TryHackMe > Medium
-
-Medium difficulty TryHackMe rooms.
-
+---
+cover: ../../../.gitbook/assets/thm.png
+coverY: 3.173553719008264
 ---
 
-## OS
+# TryHackMe — Medium
 
-| OS | What to expect |
-|----|----------------|
-| [Linux](Linux/README.md) | Linux-based machines. |
-| [Windows](Windows/README.md) | Windows-based machines. |
-| [Other](Other/README.md) | Other OS or web-only challenges. |
+The step up from Easy is where enumeration stops being spoon-fed. Medium rooms expect you to chain findings together — a misconfiguration here, a credential there, a service that shouldn't be exposed. The path is less obvious and rabbit holes are common. Good for drilling methodology under pressure.
 
 ---
 
 ## Medium Writeups
 
 | Icon | Room | OS | Tags | Date |
-|------|------|----|------|------|
+| ---- | ---- | -- | ---- | ---- |
 | *Auto-populated as writeups are added* | | | | |
 
 ---
 
-> Writeups drafted in Notion and auto-published via a custom Python pipeline using the Claude API.
+> Writeups drafted in Notion and auto-published via a custom Python pipeline using Claude.

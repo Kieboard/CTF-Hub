@@ -1,15 +1,20 @@
-# HackTheBox > Machines > Easy > Windows
+---
+cover: ../../../../../.gitbook/assets/htb.png
+coverY: 43.371900826446286
+---
 
-Easy difficulty Windows machines.
+# HackTheBox — Machines — Easy — Windows
+
+Easy difficulty Windows machines. Misconfigured services, weak permissions, and credential exposure. Solid grounding before moving into Active Directory territory.
 
 ---
 
 ## Writeups
 
-| Icon | Room | Tags | Date |
-|------|------|------|------|
-| *Auto-populated as writeups are added* | | | |
+| Icon | Room | Difficulty | Tags | Date |
+|------|------|------------|------|------|
+| *Auto-populated as writeups are added* | | | | |
 
 ---
 
-> Writeups authored in Notion, auto-published via CTF Publisher.
+> Writeups drafted in Notion and auto-published via a custom Python pipeline using Claude.

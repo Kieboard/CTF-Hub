@@ -1,15 +1,22 @@
+---
+cover: ../../../.gitbook/assets/letsdefend.png
+coverY: 42.84297520661157
+---
+
 # LetsDefend > Beginner
 
-Beginner difficulty LetsDefend labs.
+Entry-level SOC challenges. The focus here isn't speed — it's building the habit of thinking like a defender. Every alert has a story. Beginner challenges teach you to read it.
+
+Expect clear indicators, obvious artefacts, and scenarios where the answer is in the evidence — if you know where to look.
 
 ---
 
 ## Beginner Writeups
 
-| Icon | Lab | Tags | Date |
-| ---- | --- | ---- | ---- |
-| <img src="Phishing-Email/PhishingEmail.png" width="32" alt="Phishing Email"> | [Phishing Email](Phishing-Email/Phishing-Email.md) | `#challenge` `#phishing` `#email-analysis` `#osint` | Apr 15, 2026 |
+| Icon | Room | Difficulty | Tags | Date |
+| ---- | ---- | ---------- | ---- | ---- |
+| <img src="Phishing-Email/PhishingEmail.png" width="32" alt="Phishing Email"> | [Phishing Email](Phishing-Email/Phishing-Email.md) | Beginner | `#letsdefend` `#beginner` `#challenge` `#phishing` `#email-analysis` `#osint` | Apr 15, 2026 |
 
 ---
 
-> Writeups drafted in Notion and auto-published via a custom Python pipeline using the Claude API.
+> Writeups drafted in Notion and auto-published via a custom Python pipeline using Claude.

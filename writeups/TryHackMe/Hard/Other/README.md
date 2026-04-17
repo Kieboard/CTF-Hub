@@ -1,15 +1,20 @@
-# TryHackMe > Hard > Other
+---
+cover: ../../../../.gitbook/assets/thm.png
+coverY: 3.173553719008264
+---
 
-Hard difficulty Other rooms.
+# TryHackMe — Hard — Other
+
+Hard difficulty rooms outside standard OS scope — expect unconventional targets and attack paths that require lateral thinking.
 
 ---
 
 ## Writeups
 
-| Icon | Room | Tags | Date |
-|------|------|------|------|
-| *Auto-populated as writeups are added* | | | |
+| Icon | Room | Type | Tags | Date |
+| ---- | ---- | ---- | ---- | ---- |
+| *Auto-populated as writeups are added* | | | | |
 
 ---
 
-> Writeups authored in Notion, auto-published via CTF Publisher.
+> Writeups drafted in Notion and auto-published via a custom Python pipeline using Claude.

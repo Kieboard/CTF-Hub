@@ -1,15 +1,20 @@
-# HackTheBox > Machines > Insane > Windows
+---
+cover: ../../../../../.gitbook/assets/htb.png
+coverY: 43.371900826446286
+---
 
-Insane difficulty Windows machines.
+# HackTheBox — Machines — Insane — Windows
+
+Insane Windows machines push Active Directory and Windows internals knowledge to the limit. Expect cutting-edge techniques and very few global solves.
 
 ---
 
 ## Writeups
 
-| Icon | Room | Tags | Date |
-|------|------|------|------|
-| *Auto-populated as writeups are added* | | | |
+| Icon | Room | Difficulty | Tags | Date |
+|------|------|------------|------|------|
+| *Auto-populated as writeups are added* | | | | |
 
 ---
 
-> Writeups authored in Notion, auto-published via CTF Publisher.
+> Writeups drafted in Notion and auto-published via a custom Python pipeline using Claude.

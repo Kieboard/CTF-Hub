@@ -1,15 +1,20 @@
-# HackTheBox > Machines > Hard > Linux
+---
+cover: ../../../../../.gitbook/assets/htb.png
+coverY: 43.371900826446286
+---
 
-Hard difficulty Linux machines.
+# HackTheBox — Machines — Hard — Linux
+
+Advanced Linux machines with custom vulnerabilities, obscure services, and privilege escalation chains that require deep system knowledge.
 
 ---
 
 ## Writeups
 
-| Icon | Room | Tags | Date |
-|------|------|------|------|
-| *Auto-populated as writeups are added* | | | |
+| Icon | Room | Difficulty | Tags | Date |
+|------|------|------------|------|------|
+| *Auto-populated as writeups are added* | | | | |
 
 ---
 
-> Writeups authored in Notion, auto-published via CTF Publisher.
+> Writeups drafted in Notion and auto-published via a custom Python pipeline using Claude.

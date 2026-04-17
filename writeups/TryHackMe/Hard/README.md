@@ -1,25 +1,20 @@
-# TryHackMe > Hard
-
-Hard difficulty TryHackMe rooms.
-
+---
+cover: ../../../.gitbook/assets/thm.png
+coverY: 3.173553719008264
 ---
 
-## OS
+# TryHackMe — Hard
 
-| OS | What to expect |
-|----|----------------|
-| [Linux](Linux/README.md) | Linux-based machines. |
-| [Windows](Windows/README.md) | Windows-based machines. |
-| [Other](Other/README.md) | Other OS or web-only challenges. |
+Hard rooms don't hold your hand. Expect custom exploits, obscure attack vectors, and multi-stage privilege escalation chains that require pulling everything together. These are the rooms that expose gaps in your knowledge fast — which is exactly the point.
 
 ---
 
 ## Hard Writeups
 
 | Icon | Room | OS | Tags | Date |
-|------|------|----|------|------|
+| ---- | ---- | -- | ---- | ---- |
 | *Auto-populated as writeups are added* | | | | |
 
 ---
 
-> Writeups drafted in Notion and auto-published via a custom Python pipeline using the Claude API.
+> Writeups drafted in Notion and auto-published via a custom Python pipeline using Claude.

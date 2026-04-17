@@ -1,15 +1,20 @@
-# Easy
+---
+cover: ../../../../.gitbook/assets/htb.png
+coverY: 43.371900826446286
+---
 
-Easy difficulty HTB Challenges.
+# HackTheBox — Challenges — Easy
 
-***
+Bite-sized technical challenges across web, crypto, reversing, forensics, OSINT, and more. Easy challenges introduce a single concept cleanly — good for picking up techniques outside your main discipline without committing to a full machine.
 
-## Easy Challenges
+---
 
-| Icon                                   | Challenge | Category | Tags | Date |
-| -------------------------------------- | --------- | -------- | ---- | ---- |
-| _Auto-populated as writeups are added_ |           |          |      |      |
+## Easy Writeups
 
-***
+| Icon | Room | Difficulty | Tags | Date |
+| ---- | ---- | ---------- | ---- | ---- |
+| *Auto-populated as writeups are added* | | | | |
 
-> Writeups drafted in Notion and auto-published via a custom Python pipeline using the Claude API.
+---
+
+> Writeups drafted in Notion and auto-published via a custom Python pipeline using Claude.

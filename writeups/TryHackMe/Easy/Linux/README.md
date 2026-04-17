@@ -1,16 +1,21 @@
-# TryHackMe > Easy > Linux
+---
+cover: ../../../../.gitbook/assets/thm.png
+coverY: 3.173553719008264
+---
 
-Easy difficulty Linux rooms.
+# TryHackMe — Easy — Linux
+
+Easy difficulty Linux machines. SSH, SUID, cron jobs, writable paths — the core privilege escalation toolkit starts here.
 
 ---
 
 ## Writeups
 
-| Icon | Room | Tags | Date |
-|------|------|------|------|
-| ![RootMe](<../../../../.gitbook/assets/RootMe (5).png>) | [RootMe](RootMe/RootMe.md) | `#machine` `#file-upload` `#suid` `#privilege-escalation` | Mar 03, 2026 |
-| ![Oracle 9](<../../../../.gitbook/assets/Oracle9 (2).png>) | [Oracle 9](Oracle-9-/Oracle-9-.md) | `#machine` `#prompt-injection` `#ai-security` `#llm` | Mar 18, 2026 |
+| Icon | Room | Difficulty | Tags | Date |
+|------|------|------------|------|------|
+| ![RootMe](<../../../../.gitbook/assets/RootMe (5).png>) | [RootMe](RootMe/RootMe.md) | Easy | `#tryhackme` `#easy` `#machine` `#file-upload` `#suid` `#privilege-escalation` | Mar 03, 2026 |
+| ![Oracle 9](<../../../../.gitbook/assets/Oracle9 (2).png>) | [Oracle 9](Oracle-9-/Oracle-9-.md) | Easy | `#tryhackme` `#easy` `#machine` `#prompt-injection` `#ai-security` `#llm` | Mar 18, 2026 |
 
 ---
 
-> Writeups drafted in Notion and auto-published via a custom Python pipeline using the Claude API.
+> Writeups drafted in Notion and auto-published via a custom Python pipeline using Claude.

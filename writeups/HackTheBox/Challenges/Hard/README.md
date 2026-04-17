@@ -1,15 +1,20 @@
-# Hard
+---
+cover: ../../../../.gitbook/assets/htb.png
+coverY: 43.371900826446286
+---
 
-Hard difficulty HTB Challenges.
+# HackTheBox — Challenges — Hard
 
-***
+Hard challenges push specialist knowledge to its limits. Expect obscure cryptography, complex reversing, advanced forensics, and problems with no straightforward solution path. These are genuinely difficult and completing them stands out.
 
-## Hard Challenges
+---
 
-| Icon                                   | Challenge | Category | Tags | Date |
-| -------------------------------------- | --------- | -------- | ---- | ---- |
-| _Auto-populated as writeups are added_ |           |          |      |      |
+## Hard Writeups
 
-***
+| Icon | Room | Difficulty | Tags | Date |
+| ---- | ---- | ---------- | ---- | ---- |
+| *Auto-populated as writeups are added* | | | | |
 
-> Writeups drafted in Notion and auto-published via a custom Python pipeline using the Claude API.
+---
+
+> Writeups drafted in Notion and auto-published via a custom Python pipeline using Claude.

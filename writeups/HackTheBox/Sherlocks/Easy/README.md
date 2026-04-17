@@ -1,15 +1,20 @@
-# Easy
+---
+cover: ../../../../.gitbook/assets/htb.png
+coverY: 43.371900826446286
+---
 
-Easy difficulty HTB Sherlocks.
+# HackTheBox — Sherlocks — Easy
 
-***
+Easy Sherlocks present a clear attack lifecycle with straightforward artefacts and high-granularity logs. The investigation path is guided by questions that build a picture of what happened. Good entry point for DFIR — the fundamentals of log triage, timeline analysis, and indicator identification without the complexity of multi-stage incidents.
 
-## Easy Sherlocks
+---
 
-| Icon                                   | Sherlock | Tags | Date |
-| -------------------------------------- | -------- | ---- | ---- |
-| _Auto-populated as writeups are added_ |          |      |      |
+## Easy Writeups
 
-***
+| Icon | Room | Difficulty | Tags | Date |
+| ---- | ---- | ---------- | ---- | ---- |
+| *Auto-populated as writeups are added* | | | | |
 
-> Writeups drafted in Notion and auto-published via a custom Python pipeline using the Claude API.
+---
+
+> Writeups drafted in Notion and auto-published via a custom Python pipeline using Claude.

@@ -1,15 +1,20 @@
-# TryHackMe > Medium > Other
+---
+cover: ../../../../.gitbook/assets/thm.png
+coverY: 3.173553719008264
+---
 
-Medium difficulty Other rooms.
+# TryHackMe — Medium — Other
+
+Medium difficulty rooms outside the standard OS categories — typically technique-focused with less conventional attack paths.
 
 ---
 
 ## Writeups
 
-| Icon | Room | Tags | Date |
-|------|------|------|------|
-| *Auto-populated as writeups are added* | | | |
+| Icon | Room | Type | Tags | Date |
+| ---- | ---- | ---- | ---- | ---- |
+| *Auto-populated as writeups are added* | | | | |
 
 ---
 
-> Writeups authored in Notion, auto-published via CTF Publisher.
+> Writeups drafted in Notion and auto-published via a custom Python pipeline using Claude.

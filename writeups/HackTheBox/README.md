@@ -6,7 +6,7 @@ coverY: 43.371900826446286
 
 # HackTheBox
 
-HackTheBox is the industry standard for offensive security labs. Machines simulate real corporate environments, Sherlocks put you in the seat of a DFIR analyst, and Challenges isolate single concepts across web, crypto, forensics, reversing and more.
+HackTheBox is the step up. No hints, no guided tasks — just a machine and a flag. Machines simulate real corporate environments, Sherlocks put you in the seat of a DFIR analyst investigating actual incidents, and Challenges isolate single concepts across web, crypto, forensics, reversing, and more. The content here is harder, the community is more competitive, and getting a solve actually means something.
 
 > **0 machines completed · Last updated —**
 
@@ -25,9 +25,9 @@ HackTheBox is the industry standard for offensive security labs. Machines simula
 
 | Level | What to expect |
 |-------|----------------|
-| 🟢 [Easy](Sherlocks/Easy/README.md) | Intermediate DFIR. Multi-step analysis, varied log sources. |
-| 🟡 [Medium](Sherlocks/Medium/README.md) | Complex incident response. Advanced malware, multi-vector attacks. |
-| 🔴 [Hard](Sherlocks/Hard/README.md) | Advanced DFIR. Deep forensics, sophisticated threat actors. |
+| 🟢 [Easy](Sherlocks/Easy/README.md) | Clear attack lifecycle, guided investigation, high-granularity logs. |
+| 🟡 [Medium](Sherlocks/Medium/README.md) | Multi-step incidents, cross-source log correlation, varied artefact types. |
+| 🔴 [Hard](Sherlocks/Hard/README.md) | Advanced threat actors, minimal artefacts, deep DFIR methodology required. |
 
 ## Challenges
 
@@ -41,10 +41,10 @@ HackTheBox is the industry standard for offensive security labs. Machines simula
 
 ## All Writeups
 
-| Icon | Room | Type | Difficulty | OS | Tags | Date |
-|------|------|------|-----------|-----|------|------|
-| *Auto-populated as writeups are added* | | | | | | |
+| Icon | Room | Type | Tags | Date |
+|------|------|------|------|------|
+| *Auto-populated as writeups are added* | | | | |
 
 ---
 
-> Writeups drafted in Notion and auto-published via a custom Python pipeline using the Claude API.
+> Writeups drafted in Notion and auto-published via a custom Python pipeline using Claude.
