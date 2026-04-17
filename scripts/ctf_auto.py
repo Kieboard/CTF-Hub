@@ -745,7 +745,7 @@ def ensure_platform_readme(platform_dir: Path, platform: str):
 
 ---
 
-> Writeups authored in Notion, auto-published via CTF Publisher.
+> Writeups drafted in Notion and auto-published via a custom Python pipeline using Claude.
 """
     readme.write_text(content, encoding="utf-8")
     print(f"   ✅ Created {platform}/README.md")
@@ -755,15 +755,14 @@ def ensure_difficulty_readme(diff_dir: Path, platform: str, difficulty: str):
     readme = diff_dir / "README.md"
     if readme.exists():
         return
-    emoji   = DIFF_EMOJI.get(difficulty, "📁")
-    desc    = DIFF_DESC.get(difficulty, f"{difficulty} difficulty writeups.")
-    content = f"""# {emoji} {platform} — {difficulty}
+    desc = DIFF_DESC.get(difficulty, f"{difficulty} difficulty writeups.")
+    content = f"""# {platform} — {difficulty}
 
 {desc}
 
 ---
 
-## 📋 Writeups
+## {difficulty} Writeups
 
 | Icon | Room | OS | Tags | Date |
 |------|------|-----|------|------|
@@ -771,7 +770,7 @@ def ensure_difficulty_readme(diff_dir: Path, platform: str, difficulty: str):
 
 ---
 
-> Writeups authored in Notion, auto-published via CTF Publisher.
+> Writeups drafted in Notion and auto-published via a custom Python pipeline using Claude.
 """
     readme.write_text(content, encoding="utf-8")
     print(f"   ✅ Created {platform}/{difficulty}/README.md")
@@ -782,22 +781,21 @@ def ensure_os_readme(os_dir: Path, platform: str, difficulty: str, os_name: str)
     readme = os_dir / "README.md"
     if readme.exists():
         return
-    emoji = "🐧" if os_name == "Linux" else "🪟" if os_name == "Windows" else "💻"
-    content = f"""# {emoji} {platform} — {difficulty} — {os_name}
+    content = f"""# {platform} — {difficulty} — {os_name}
 
 {difficulty} difficulty {os_name} machines.
 
 ---
 
-## 📋 Writeups
+## Writeups
 
-| Icon | Room | OS | Tags | Date |
-|------|------|-----|------|------|
+| Icon | Room | Difficulty | Tags | Date |
+|------|------|------------|------|------|
 | *Auto-populated as writeups are added* | | | | |
 
 ---
 
-> Writeups authored in Notion, auto-published via CTF Publisher.
+> Writeups drafted in Notion and auto-published via a custom Python pipeline using Claude.
 """
     readme.write_text(content, encoding="utf-8")
     print(f"   ✅ Created {platform}/{difficulty}/{os_name}/README.md")
@@ -882,6 +880,7 @@ def update_platform_readme(platform_dir: Path, platform: str, meta: dict, icon_f
         footer_variants = [
             "> Writeups drafted in Notion and auto-published via a custom Python pipeline using Claude.",
             "> Writeups authored in Notion, auto-published via CTF Publisher.",
+            "> Writeups drafted in Notion and auto-published via a custom Python pipeline using the Claude API.",
         ]
         footer_found = None
         for fv in footer_variants:
