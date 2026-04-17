@@ -23,4 +23,4 @@ Retired and active HTB machines organised by difficulty.
 
 ***
 
-> Writeups drafted in Notion and auto-published via a custom Python pipeline using the Claude API.
+> Writeups drafted in Notion and auto-published via a custom Python pipeline using Claude.

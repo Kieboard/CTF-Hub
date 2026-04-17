@@ -22,4 +22,4 @@ Standalone CTF-style challenges isolating single concepts across web, crypto, fo
 
 ***
 
-> Writeups drafted in Notion and auto-published via a custom Python pipeline using the Claude API.
+> Writeups drafted in Notion and auto-published via a custom Python pipeline using Claude.

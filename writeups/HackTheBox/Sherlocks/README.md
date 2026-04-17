@@ -22,4 +22,4 @@ Blue team focused DFIR challenges. Analyse logs, memory dumps, and forensic arte
 
 ***
 
-> Writeups drafted in Notion and auto-published via a custom Python pipeline using the Claude API.
+> Writeups drafted in Notion and auto-published via a custom Python pipeline using Claude.
