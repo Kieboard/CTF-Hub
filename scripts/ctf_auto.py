@@ -1,6 +1,6 @@
 """
 CTF Auto Publisher — Full Pipeline
-Kieran Rorrison — CTF-Hub
+CTF-Hub
 """
 
 import os
@@ -124,28 +124,26 @@ DIFF_DESC  = {
 # ─────────────────────────────────────────────
 
 def build_tags_cell(meta: dict, topic_tags: list) -> str:
-    """Build a consistent 4-tag cell string used across ALL README tables.
+    """Build a consistent 6-tag cell string used across ALL README tables.
 
-    Fixed order: #type #topic1 #topic2 #topic3
-
-    Platform and difficulty are omitted — they are redundant given the page
-    hierarchy (platform README, difficulty README etc). The type tag provides
-    the bridge between context and content.
+    Fixed order: #platform #difficulty #type #topic1 #topic2 #topic3
 
     Examples:
-      #machine #file-upload #suid #privilege-escalation
-      #challenge #phishing #email-analysis #osint
+      #tryhackme #easy #machine #file-upload #suid #privilege-escalation
+      #letsdefend #beginner #challenge #phishing #email-analysis #osint
     """
-    room_type = meta.get("room_type", "")
-    type_tag  = [f"`#{room_type.lower()}`"] if room_type else []
+    platform   = f"`#{meta['platform'].lower().replace(' ', '')}`"
+    difficulty = f"`#{meta['difficulty'].lower()}`"
+    room_type  = meta.get("room_type", "")
+    type_tag   = [f"`#{room_type.lower()}`"] if room_type else []
 
     # Always exactly 3 topic tags from suggest_topic_tags
     topics = [f"`#{t}`" for t in (topic_tags or [])[:3]]
     while len(topics) < 3:
         topics.append("`#misc`")
 
-    combined = list(dict.fromkeys(type_tag + topics))
-    return " ".join(combined[:4])
+    combined = list(dict.fromkeys([platform, difficulty] + type_tag + topics))
+    return " ".join(combined[:6])
 
 
 # ─────────────────────────────────────────────
@@ -767,9 +765,9 @@ def ensure_difficulty_readme(diff_dir: Path, platform: str, difficulty: str):
 
 ## 📋 Writeups
 
-| Icon | Room | Tags | Date |
-|------|------|------|------|
-| *Auto-populated as writeups are added* | | | |
+| Icon | Room | OS | Tags | Date |
+|------|------|-----|------|------|
+| *Auto-populated as writeups are added* | | | | |
 
 ---
 
@@ -793,9 +791,9 @@ def ensure_os_readme(os_dir: Path, platform: str, difficulty: str, os_name: str)
 
 ## 📋 Writeups
 
-| Icon | Room | Tags | Date |
-|------|------|------|------|
-| *Auto-populated as writeups are added* | | | |
+| Icon | Room | OS | Tags | Date |
+|------|------|-----|------|------|
+| *Auto-populated as writeups are added* | | | | |
 
 ---
 
@@ -835,8 +833,7 @@ def update_platform_readme(platform_dir: Path, platform: str, meta: dict, icon_f
     icon_cell = f'<img src="{icon_rel}" width="32" alt="{meta["room_name"]}">' if icon_rel else ""
 
     tags_cell  = meta.get("tags_cell") or build_tags_cell(meta, topic_tags)
-    diff_badge = f"`{meta['difficulty']}`"
-    new_row    = f"| {icon_cell} | {room_link} | {diff_badge} | {tags_cell} | {meta['date']} |"
+    new_row    = f"| {icon_cell} | {room_link} | {meta['difficulty']} | {tags_cell} | {meta['date']} |" 
 
     # Remove old row if it exists
     search_path = f"{diff_dir}/"
@@ -883,7 +880,7 @@ def update_platform_readme(platform_dir: Path, platform: str, meta: dict, icon_f
     else:
         new_section = f"\n## All Writeups\n\n| Icon | Room | Difficulty | Tags | Date |\n|------|------|------------|------|------|\n{new_row}\n"
         footer_variants = [
-            "> Writeups drafted in Notion and auto-published via a custom Python pipeline using the Claude API.",
+            "> Writeups drafted in Notion and auto-published via a custom Python pipeline using Claude.",
             "> Writeups authored in Notion, auto-published via CTF Publisher.",
         ]
         footer_found = None
@@ -904,10 +901,17 @@ def update_platform_readme(platform_dir: Path, platform: str, meta: dict, icon_f
     writeup_rows = [l for l in lines if (l.startswith("| [") or l.startswith("| !")) and "Auto-populated" not in l]
     total = len(writeup_rows)
     today = meta["date"]
-    new_stats = f"> **{total} room{'s' if total != 1 else ''} completed · {total} flag{'s' if total != 1 else ''} captured · Last updated {today}**"
     import re as _re
+    # Platform-aware stats line
+    blueteam_platforms = {"LetsDefend", "PwnedLabs"}
+    if platform in blueteam_platforms:
+        new_stats = f"> **{total} challenge{'s' if total != 1 else ''} completed · Last updated {today}**"
+    else:
+        new_stats = f"> **{total} room{'s' if total != 1 else ''} completed · {total} flag{'s' if total != 1 else ''} captured · Last updated {today}**"
     if _re.search(r'> \*\*\d+ rooms? completed', content):
         content = _re.sub(r'> \*\*\d+ rooms? completed[^*]*\*\*', new_stats[2:].strip(), content)
+    elif _re.search(r'> \*\*\d+ challenge[^*]*\*\*', content):
+        content = _re.sub(r'> \*\*\d+ challenge[^*]*\*\*', new_stats[2:].strip(), content)
     elif _re.search(r'> \*\*\d+ labs? completed', content):
         content = _re.sub(r'> \*\*\d+ labs? completed[^*]*\*\*', new_stats[2:].strip(), content)
 
@@ -943,11 +947,12 @@ def update_difficulty_readme(diff_dir: Path, platform: str, difficulty: str, met
     icon_cell = f'<img src="{icon_path}" width="32" alt="{meta["room_name"]}">' if icon_path else ""
 
     tags_cell  = meta.get("tags_cell") or build_tags_cell(meta, topic_tags)
-
+    os_col     = os_name if os_name else "N/A"
     room_link = f"[{meta['room_name']}]({room_path})"
-    new_row   = f"| {icon_cell} | {room_link} | {tags_cell} | {meta['date']} |"
+    new_row   = f"| {icon_cell} | {room_link} | {os_col} | {tags_cell} | {meta['date']} |" 
 
     for placeholder in [
+        "| *Auto-populated as writeups are added* | | | | |",
         "| *Auto-populated as writeups are added* | | | |",
         "| *Auto-populated as writeups are added* | | |",
     ]:
@@ -995,11 +1000,12 @@ def update_os_readme(os_dir: Path, platform: str, difficulty: str, os_name: str,
     icon_cell = f'<img src="{icon_path}" width="32" alt="{meta["room_name"]}">' if icon_path else ""
 
     tags_cell  = meta.get("tags_cell") or build_tags_cell(meta, topic_tags)
-
+    type_col   = meta.get("room_type", "Machine")
     room_link = f"[{meta['room_name']}]({room_clean}/{room_clean}.md)"
-    new_row   = f"| {icon_cell} | {room_link} | {tags_cell} | {meta['date']} |"
+    new_row   = f"| {icon_cell} | {room_link} | {type_col} | {tags_cell} | {meta['date']} |" 
 
     for placeholder in [
+        "| *Auto-populated as writeups are added* | | | | |",
         "| *Auto-populated as writeups are added* | | | |",
         "| *Auto-populated as writeups are added* | | |",
     ]:
