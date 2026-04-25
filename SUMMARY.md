@@ -50,6 +50,8 @@
   * [LetsDefend](writeups/LetsDefend/README.md)
     * [Beginner](writeups/LetsDefend/Beginner/README.md)
       * [Phishing Email](writeups/LetsDefend/Beginner/Phishing-Email/Phishing-Email.md)
+      * [Malicious AutoIT](writeups/LetsDefend/Beginner/Malicious-AutoIT/Malicious-AutoIT.md)
+      * [PCAP Analysis](writeups/LetsDefend/Beginner/PCAP-Analysis/PCAP-Analysis.md)
     * [Easy](writeups/LetsDefend/Easy/README.md)
     * [Medium](writeups/LetsDefend/Medium/README.md)
     * [Hard](writeups/LetsDefend/Hard/README.md)
