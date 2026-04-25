@@ -18,8 +18,8 @@ Not just _what_ I did — but _why_ it worked. Every recon step, every rabbit ho
 | ---------- | ----- | ------ | ----- | ----- |
 | TryHackMe  | 4     | —      | —     | 4     |
 | HackTheBox | —     | —      | —     | —     |
-| LetsDefend | —     | —      | —     | 1     |
-| **Total**  | **4** | **0**  | **0** | **5** |
+| LetsDefend | 3     | —      | —     | 3     |
+| **Total**  | **7** | **0**  | **0** | **7** |
 
 > Stats update automatically with each published writeup.
 
