@@ -488,10 +488,12 @@ WRITING STYLE:
 CODE BLOCKS:
 - Any queries, commands, or scripts in fenced code blocks with correct language tag
 - Brief context BEFORE each block, **Finding:** note AFTER key blocks
-- Where shell commands are used (file analysis, scripting, tool execution), include terminal prompt:
-  - LetsDefend: kie@kiepc:~/LetsDefend/{RoomName}$
-  - HTB Sherlocks: kie@kiepc:~/HTB/Sherlocks/{RoomName}$
-  - For GUI-based analysis (SIEM, dashboards), no terminal prompt needed
+- Always include the appropriate terminal prompt on the FIRST line of every code block:
+  - Linux shell (LetsDefend): kie@kiepc:~/LetsDefend/{RoomName}$ <command>
+  - Linux shell (HTB Sherlocks): kie@kiepc:~/HTB/Sherlocks/{RoomName}$ <command>
+  - PowerShell / Windows CMD: PS C:\\Users\\Kie\\LetsDefend> <command>
+  - Tool output blocks (no prompt — just the raw output, use plain/text language tag)
+  - GUI-based analysis (SIEM, dashboards) — no prompt needed, use screenshot reference instead
 
 STRUCTURE (in this order, omit empty sections):
 ## 🧠 Overview
@@ -1351,7 +1353,7 @@ def update_gitbook_branch(meta: dict):
             cwd=CTFHUB_REPO_PATH, capture_output=True, text=True
         )
         if "nothing to commit" not in result.stdout:
-            subprocess.run(["git", "push", "origin", "gitbook"], cwd=CTFHUB_REPO_PATH, check=True, capture_output=True)
+            subprocess.run(["git", "push", "--force", "origin", "gitbook"], cwd=CTFHUB_REPO_PATH, check=True, capture_output=True)
             print("   ✅ Gitbook branch updated")
 
     except subprocess.CalledProcessError as e:
@@ -1394,18 +1396,17 @@ def update_main_readme_stats():
         print("   ⚠️  Main README not found, skipping stats update")
         return
 
-    platforms  = {
-        "TryHackMe": "🔴", "HackTheBox": "🟢", "VulnHub": "🟣",
-        "PwnedLabs": "🔵", "OffSec": "🟠", "ProvingGrounds": "🟠", "LetsDefend": "🛡️",
-        "pwn.college": "🎓", "PicoCTF": "🏴", "RootMe": "⚫",
-        "CTFtime": "🏁", "SANSHolidayHack": "🎄",
-    }
+    platforms  = [
+        "TryHackMe", "HackTheBox", "VulnHub", "PwnedLabs", "OffSec",
+        "ProvingGrounds", "LetsDefend", "pwn.college", "PicoCTF",
+        "RootMe", "CTFtime", "SANSHolidayHack",
+    ]
     difficulties = ["Beginner", "Easy", "Medium", "Hard", "Insane"]
 
     stats = {}
     total_easy = total_medium = total_hard = total_insane = 0
 
-    for platform, emoji in platforms.items():
+    for platform in platforms:
         platform_dir = WRITEUPS_PATH / platform
         if not platform_dir.exists():
             continue
@@ -1431,7 +1432,7 @@ def update_main_readme_stats():
 
         total = sum(counts.values())
         if total > 0:
-            stats[platform] = {"emoji": emoji, "counts": counts, "total": total}
+            stats[platform] = {"counts": counts, "total": total}
             total_easy   += counts["Beginner"] + counts["Easy"]
             total_medium += counts["Medium"]
             total_hard   += counts["Hard"]
@@ -1651,10 +1652,29 @@ LAST_PUBLISHED_FILE = Path(CTFHUB_REPO_PATH) / "scripts" / ".last_published"
 
 
 def already_published_today() -> bool:
-    if not LAST_PUBLISHED_FILE.exists():
-        return False
-    last = LAST_PUBLISHED_FILE.read_text(encoding="utf-8").strip()
-    return last == datetime.now().strftime("%Y-%m-%d")
+    """Check Notion for any writeup published today — survives fresh CI checkouts."""
+    today = datetime.now().strftime("%Y-%m-%d")
+    try:
+        response = notion.databases.query(
+            database_id=NOTION_DATABASE_ID,
+            filter={
+                "and": [
+                    {"property": "Published", "checkbox": {"equals": True}},
+                    {"property": "Date", "date": {"equals": today}},
+                ]
+            }
+        )
+        count = len(response.get("results", []))
+        if count > 0:
+            print(f"   📅 Found {count} writeup(s) already published today in Notion")
+            return True
+    except Exception as e:
+        print(f"   ⚠️  Could not check Notion for today's publishes: {e}")
+        # Fall back to local file
+        if LAST_PUBLISHED_FILE.exists():
+            last = LAST_PUBLISHED_FILE.read_text(encoding="utf-8").strip()
+            return last == today
+    return False
 
 
 def mark_published_today():
