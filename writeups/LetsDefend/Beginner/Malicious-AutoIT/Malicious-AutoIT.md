@@ -5,7 +5,7 @@
     <b>Status:</b> Completed ✅<br>
     <b>URL:</b> <a href="https://app.letsdefend.io/challenge/malicious-autoit">Malicious AutoIT</a><br>
     <b>Date:</b> Apr 21, 2026<br>
-    <b>Tags:</b> #letsdefend #beginner #challenge #malware #reversing #dfir
+    <b>Tags:</b> #letsdefend #beginner #challenge #malware #reversing #static-analysis
   </sub>
 </p>
 
@@ -30,11 +30,13 @@ The SOC detected suspicious activity involving a compiled AutoIT executable. Aut
 
 The challenge file was provided as a password-protected archive.
 
-**File:** `sample.zip`
-**Password:** `infected`
-**Location:** `C:\Users\LetsDefend\Desktop\ChallengeFile\`
+| Field | Value |
+|---|---|
+| **File** | `sample.zip` |
+| **Password** | `infected` |
+| **Location** | `C:\Users\LetsDefend\Desktop\ChallengeFile\` |
 
-After extraction, `sample` (a compiled AutoIT executable) was available for analysis.
+The archive was extracted using the password `infected`. The resulting `sample` file is a compiled AutoIT executable and was the sole subject of analysis.
 
 ---
 
@@ -45,7 +47,7 @@ After extraction, `sample` (a compiled AutoIT executable) was available for anal
 VirusTotal was unavailable on the challenge machine. PowerShell's native `Get-FileHash` cmdlet was used as an alternative to fingerprint the sample.
 
 ```powershell
-PS C:\Users\Kie\LetsDefend> Get-FileHash "C:\Users\LetsDefend\Desktop\ChallengeFile\sample" -Algorithm MD5
+Get-FileHash "C:\Users\LetsDefend\Desktop\ChallengeFile\sample" -Algorithm MD5
 ```
 
 ![Screenshot 1](screenshot_01.png)
@@ -94,7 +96,7 @@ Both values were visible on the DIE main view without additional navigation.
 Compiled AutoIT executables embed the original `.au3` script. AutoIT Ripper was used to decompile and extract it.
 
 ```powershell
-PS C:\Users\Kie\LetsDefend> autoit-ripper "C:\Users\LetsDefend\Desktop\ChallengeFile\sample" "C:\Users\LetsDefend\Desktop\ChallengeFile\"
+autoit-ripper "C:\Users\LetsDefend\Desktop\ChallengeFile\sample" "C:\Users\LetsDefend\Desktop\ChallengeFile\"
 ```
 
 ![Screenshot 5](screenshot_05.png)
@@ -115,7 +117,7 @@ This domain name follows a pattern common to threat actors — benign-sounding n
 
 ### Step 7 — Hex-Encoded File Path
 
-A hexadecimal string was identified in the script. It was decoded using CyberChef.
+A hexadecimal string was identified within the script. It was decoded using CyberChef.
 
 ![Screenshot 6](screenshot_06.png)
 
@@ -155,10 +157,10 @@ A search for `.dll` within the script located a referenced library at the bottom
 | Technique | ID | Notes |
 |---|---|---|
 | Obfuscated Files or Information | T1027 | Embedded script with hex-encoded strings |
-| Compiled HTML File / Scripting | T1059.010 | AutoIT used as scripting execution vehicle |
+| Command and Scripting Interpreter | T1059.010 | AutoIT used as scripting execution vehicle |
 | System Binary Proxy Execution | T1218 | Targeting `System32`, potential DLL abuse |
-| Application Layer Protocol: Web Protocols | T1071.001 | C2 communication via domain |
-| Input Capture / API Hooking | T1056 | `user32.dll` abuse potential |
+| Application Layer Protocol: Web Protocols | T1071.001 | C2 communication via hardcoded domain |
+| Input Capture / API Hooking | T1056 | `user32.dll` abuse potential for keylogging and message hooking |
 
 ---
 

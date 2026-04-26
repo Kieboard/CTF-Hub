@@ -6,7 +6,7 @@
     <b>Status:</b> Completed ✅<br>
     <b>URL:</b> <a href="https://tryhackme.com/room/takeover">TakeOver</a><br>
     <b>Date:</b> Apr 09, 2026<br>
-    <b>Tags:</b> #tryhackme #easy #machine #subdomain-enumeration #ssl-certificates #web
+    <b>Tags:</b> #tryhackme #easy
   </sub>
 </p>
 

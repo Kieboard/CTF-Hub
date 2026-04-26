@@ -5,7 +5,7 @@
     <b>Status:</b> Completed ✅<br>
     <b>URL:</b> <a href="https://app.letsdefend.io/challenge/phishing-email">Phishing Email</a><br>
     <b>Date:</b> Apr 15, 2026<br>
-    <b>Tags:</b> #letsdefend #beginner #challenge #phishing #email-analysis #osint
+    <b>Tags:</b> #letsdefend #beginner #phishing #email-analysis #osint
   </sub>
 </p>
 
@@ -62,7 +62,7 @@ Return-Path: bounce@rjttznyzjjzydnillquh.designclub.uk.com
 
 ### Embedded URL Extraction
 
-I analysed the raw HTML source using knowledge of how anchor tags and `href` attributes are structured. Phishing emails commonly embed malicious destinations inside `<a href="">` tags styled to mimic legitimate links.
+I analysed the raw HTML source applying knowledge of how anchor tags and `href` attributes are structured. Phishing emails commonly embed malicious destinations inside `<a href="">` tags styled to mimic legitimate links.
 
 ```plaintext
 storage.googleapis.com
