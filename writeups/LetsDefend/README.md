@@ -9,7 +9,7 @@ coverHeight: 284
 
 LetsDefend is where the blue team side gets real. Challenges are built around genuine SOC workflows — you're not just reading about phishing emails or malware, you're triaging them. Log analysis, alert investigation, incident response, threat hunting — all in a hands-on environment that mirrors what an analyst actually deals with day to day.
 
-> **1 challenge completed · Last updated Apr 15, 2026**
+> **3 challenges completed · Last updated Apr 21, 2026**
 
 ***
 
