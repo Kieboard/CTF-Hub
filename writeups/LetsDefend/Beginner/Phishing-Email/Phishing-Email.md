@@ -62,7 +62,7 @@ Return-Path: bounce@rjttznyzjjzydnillquh.designclub.uk.com
 
 ### Embedded URL Extraction
 
-I analysed the raw HTML source using knowledge of how anchor tags and `href` attributes are structured. Phishing emails commonly embed malicious destinations inside `<a href="">` tags styled to mimic legitimate links.
+I analysed the raw HTML source applying knowledge of how anchor tags and `href` attributes are structured. Phishing emails commonly embed malicious destinations inside `<a href="">` tags styled to mimic legitimate links.
 
 ```plaintext
 storage.googleapis.com
