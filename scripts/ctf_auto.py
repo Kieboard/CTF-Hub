@@ -592,6 +592,18 @@ def format_with_claude(raw_notes: str, room_info: str, meta: dict, saved_screens
         f"#{meta['difficulty'].lower()}"
     )
 
+    # If the writeup file already exists and has a richer tag set, preserve it
+    existing_writeup = Path(CTFHUB_REPO_PATH) / "writeups" / meta["platform"] / meta.get("difficulty", "") / meta.get("room_clean", "") / f"{meta.get('room_clean', '')}.md"
+    if existing_writeup.exists():
+        import re as _re2
+        existing = existing_writeup.read_text(encoding="utf-8")
+        m = _re2.search(r'<b>Tags:</b>\s*(.+)', existing)
+        if m:
+            existing_tags = m.group(1).strip()
+            if len(existing_tags.split()) > len(tags_str.split()):
+                tags_str = existing_tags
+                print(f"   ℹ️  Preserved existing tags: {tags_str}")
+
     metadata_block = f"""<p align="right">
   <sub>
     <b>Platform:</b> {meta["platform"]}<br>
