@@ -124,26 +124,26 @@ DIFF_DESC  = {
 # ─────────────────────────────────────────────
 
 def build_tags_cell(meta: dict, topic_tags: list) -> str:
-    """Build a consistent 6-tag cell string used across ALL README tables.
+    """Build a consistent 5-tag cell string used across ALL README tables.
 
-    Fixed order: #platform #difficulty #type #topic1 #topic2 #topic3
+    Fixed order: #platform #difficulty #topic1 #topic2 #topic3
+
+    Topic tags come from the Notion "Topic Tags" field (canonical). The
+    #type word (machine/challenge) is intentionally NOT included — platform
+    and difficulty already give that context.
 
     Examples:
-      #tryhackme #easy #machine #file-upload #suid #privilege-escalation
-      #letsdefend #beginner #challenge #phishing #email-analysis #osint
+      #tryhackme #easy #file-upload #suid #privilege-escalation
+      #letsdefend #beginner #phishing #email-analysis #osint
     """
     platform   = f"`#{meta['platform'].lower().replace(' ', '')}`"
     difficulty = f"`#{meta['difficulty'].lower()}`"
-    room_type  = meta.get("room_type", "")
-    type_tag   = [f"`#{room_type.lower()}`"] if room_type else []
 
-    # Always exactly 3 topic tags from suggest_topic_tags
+    # Exactly 3 topic tags. No #misc padding — if fewer exist, show fewer.
     topics = [f"`#{t}`" for t in (topic_tags or [])[:3]]
-    while len(topics) < 3:
-        topics.append("`#misc`")
 
-    combined = list(dict.fromkeys([platform, difficulty] + type_tag + topics))
-    return " ".join(combined[:6])
+    combined = list(dict.fromkeys([platform, difficulty] + topics))
+    return " ".join(combined[:5])
 
 
 # ─────────────────────────────────────────────
@@ -176,6 +176,7 @@ def get_page_properties(page: dict) -> dict:
         "url":        "",
         "icon_url":   "",
         "tags":       [],
+        "notion_topic_tags": [],  # from the free-text "Topic Tags" field — canonical source
         "room_type":  "",
         "os":         "",      # NEW: Linux / Windows / Other
         "date":       datetime.now().strftime("%b %d, %Y"),
@@ -212,6 +213,19 @@ def get_page_properties(page: dict) -> dict:
     tags_prop = props.get("Tags", {})
     if tags_prop.get("type") == "multi_select":
         meta["tags"] = [t["name"] for t in tags_prop.get("multi_select", [])]
+
+    # Topic Tags — free-text field, the canonical source of topic tags
+    topic_prop = props.get("Topic Tags", {})
+    if topic_prop.get("type") == "rich_text":
+        texts = topic_prop.get("rich_text", [])
+        raw   = " ".join(t.get("plain_text", "") for t in texts).strip()
+        if raw:
+            # Split on whitespace/commas, strip any leading '#', lowercase, hyphenate
+            parts = re.split(r'[,\s]+', raw)
+            meta["notion_topic_tags"] = [
+                re.sub(r'[^a-z0-9\-]', '', p.lstrip('#').lower().replace(' ', '-'))
+                for p in parts if p.strip()
+            ]
 
     # Category property
     for cat_key in ("Category", "Type"):
@@ -584,25 +598,13 @@ def format_with_claude(raw_notes: str, room_info: str, meta: dict, saved_screens
         f'    <b>OS:</b> {meta["os"]}<br>\n'
         if meta.get("os") else ""
     )
-    # Use same 6-tag structure as README tables — built from tags_cell already on meta
-    # tags_cell uses backtick format; strip for plain metadata block
+    # Tags come from the canonical tags_cell (built from Notion Topic Tags).
+    # Strip backticks for the plain-text metadata block.
     tags_cell_str = meta.get("tags_cell", "")
     tags_str = tags_cell_str.replace("`", "") if tags_cell_str else (
         f"#{meta['platform'].lower().replace(' ', '')} "
         f"#{meta['difficulty'].lower()}"
     )
-
-    # If the writeup file already exists and has a richer tag set, preserve it
-    existing_writeup = Path(CTFHUB_REPO_PATH) / "writeups" / meta["platform"] / meta.get("difficulty", "") / meta.get("room_clean", "") / f"{meta.get('room_clean', '')}.md"
-    if existing_writeup.exists():
-        import re as _re2
-        existing = existing_writeup.read_text(encoding="utf-8")
-        m = _re2.search(r'<b>Tags:</b>\s*(.+)', existing)
-        if m:
-            existing_tags = m.group(1).strip()
-            if len(existing_tags.split()) > len(tags_str.split()):
-                tags_str = existing_tags
-                print(f"   ℹ️  Preserved existing tags: {tags_str}")
 
     metadata_block = f"""<p align="right">
   <sub>
@@ -1540,6 +1542,22 @@ def write_category_to_notion(page_id: str, category: str):
         print(f"   ⚠️  Could not set Notion Category: {e}")
 
 
+def write_topic_tags_to_notion(page_id: str, topic_tags: list):
+    """Write generated topic tags back to the Notion 'Topic Tags' field so
+    the database becomes the source of truth on subsequent runs."""
+    try:
+        value = " ".join(topic_tags)
+        notion.pages.update(
+            page_id=page_id,
+            properties={
+                "Topic Tags": {"rich_text": [{"type": "text", "text": {"content": value}}]}
+            }
+        )
+        print(f"   ✅ Notion Topic Tags set to: {value}")
+    except Exception as e:
+        print(f"   ⚠️  Could not set Notion Topic Tags: {e}")
+
+
 # ─────────────────────────────────────────────
 # MAIN PIPELINE
 # ─────────────────────────────────────────────
@@ -1608,8 +1626,18 @@ def process_page(page: dict):
         print(f"   → Downloading {len(image_urls)} screenshot(s)...")
         saved_screenshots = download_screenshots(image_urls, dest_folder)
 
-    # 8. Generate topic tags and build canonical tags cell (used everywhere)
-    topic_tags = suggest_topic_tags(raw_notes, room_info, meta["room_name"])
+    # 8. Resolve topic tags — Notion "Topic Tags" field is the source of truth.
+    #    Only fall back to Claude generation if that field is empty.
+    notion_topics = meta.get("notion_topic_tags", [])
+    if notion_topics:
+        topic_tags = notion_topics[:3]
+        print(f"   ✅ Topic tags from Notion: {topic_tags}")
+    else:
+        topic_tags = suggest_topic_tags(raw_notes, room_info, meta["room_name"])
+        print(f"   ℹ️  No Topic Tags in Notion — generated: {topic_tags}")
+        # Write them back so Notion becomes the source for next time
+        write_topic_tags_to_notion(meta["page_id"], topic_tags)
+
     meta["topic_tags"] = topic_tags  # store for metadata block
     meta["tags_cell"] = build_tags_cell(meta, topic_tags)  # canonical cell string
     print(f"   ✅ Tags cell: {meta['tags_cell']}")
@@ -1672,7 +1700,7 @@ def already_published_today() -> bool:
             filter={
                 "and": [
                     {"property": "Published", "checkbox": {"equals": True}},
-                    {"property": "Date", "date": {"equals": today}},
+                    {"property": "Updated", "last_edited_time": {"on_or_after": today}},
                 ]
             }
         )
