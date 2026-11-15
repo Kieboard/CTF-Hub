@@ -7,8 +7,8 @@ Easy difficulty Linux machines.
 ## Writeups
 
 | Icon | Room | Difficulty | Tags | Date |
+|  | [XO XO Exploit](XO-XO-Exploit/XO-XO-Exploit.md) | Challenge | `#hackthebox` `#easy` `#web` `#xxe` `#xml-external-entity` | Nov 15, 2026 |
 |------|------|------------|------|------|
-|  | [XO XO Exploit](XO-XO-Exploit/XO-XO-Exploit.md) | Challenge | `#hackthebox` `#easy` `#web` `#xxe` `#xml-external-entity` | Nov 14, 2026 |
 
 ---
 

@@ -7,8 +7,8 @@ Beginner-friendly rooms. Focus on core methodology, enumeration fundamentals, an
 ## Easy Writeups
 
 | Icon | Room | OS | Tags | Date |
+|  | [XO XO Exploit](Linux/XO-XO-Exploit/XO-XO-Exploit.md) | Linux | `#hackthebox` `#easy` `#web` `#xxe` `#xml-external-entity` | Nov 15, 2026 |
 |------|------|-----|------|------|
-|  | [XO XO Exploit](Linux/XO-XO-Exploit/XO-XO-Exploit.md) | Linux | `#hackthebox` `#easy` `#web` `#xxe` `#xml-external-entity` | Nov 14, 2026 |
 
 ---
 
