@@ -14,12 +14,11 @@ Not just _what_ I did — but _why_ it worked. Every recon step, every rabbit ho
 
 ## Progress
 
-| Platform   | Easy  | Medium | Hard  | Total |
-| ---------- | ----- | ------ | ----- | ----- |
-| TryHackMe  | 4     | —      | —     | 4     |
-| HackTheBox | —     | —      | —     | —     |
-| LetsDefend | 3     | —      | —     | 3     |
-| **Total**  | **7** | **0**  | **0** | **7** |
+| Platform | Easy | Medium | Hard | Total |
+|----------|------|--------|------|-------|
+| TryHackMe | 6 | — | — | 6 |
+| LetsDefend | 3 | — | — | 3 |
+| **Total** | **9** | **0** | **0** | **9** |
 
 > Stats update automatically with each published writeup.
 

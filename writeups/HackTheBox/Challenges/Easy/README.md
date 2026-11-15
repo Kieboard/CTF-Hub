@@ -13,7 +13,7 @@ Bite-sized technical challenges across web, crypto, reversing, forensics, OSINT,
 
 | Icon | Room | Difficulty | Tags | Date |
 | ---- | ---- | ---------- | ---- | ---- |
-| *Auto-populated as writeups are added* | | | | |
+|  | [XO XO Exploit](Linux/XO-XO-Exploit/XO-XO-Exploit.md) | Linux | `#hackthebox` `#easy` `#web` `#xxe` `#xml-external-entity` | Nov 15, 2026 |
 
 ---
 

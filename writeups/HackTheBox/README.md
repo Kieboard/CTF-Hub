@@ -43,7 +43,7 @@ HackTheBox is the step up. No hints, no guided tasks — just a machine and a fl
 
 | Icon | Room | Type | Tags | Date |
 |------|------|------|------|------|
-| *Auto-populated as writeups are added* | | | | |
+|  | [XO XO Exploit](Easy/Linux/XO-XO-Exploit/XO-XO-Exploit.md) | Easy | `#hackthebox` `#easy` `#web` `#xxe` `#xml-external-entity` | Nov 15, 2026 |
 
 ---
 
